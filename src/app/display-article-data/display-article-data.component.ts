@@ -5,10 +5,10 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './display-article-data.component.html',
   styleUrls: ['./display-article-data.component.less']
 })
+
 export class DisplayArticleDataComponent implements OnInit {
 
   constructor() { }
-
   ngOnInit() {
   }
 
