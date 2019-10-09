@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Check-in form</h1>
+<div mat-dialog-content>
+  <p>Name:</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.name">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Submit</button>
+</div>

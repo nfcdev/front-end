@@ -1,0 +1,8 @@
+<ol>
+    <li>
+      <button mat-raised-button (click)="openDialog()">Check-in</button>
+    </li>
+    <li *ngIf="name">
+      You checked in: <i>{{name}}</i>
+    </li>
+  </ol>
