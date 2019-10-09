@@ -19,7 +19,10 @@ export class CheckInFormComponent implements OnInit {
 
   constructor(public dialog: MatDialog) { }
 
+  
+
   openDialog(): void {
+    console.log("Hej");
     const dialogRef = this.dialog.open(CheckInFormDialog, {
       width: '250px',
       data: {name: this.name}
