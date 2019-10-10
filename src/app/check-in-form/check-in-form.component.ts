@@ -28,6 +28,7 @@ export interface Room {
 export class CheckInFormComponent implements OnInit {
 
 
+  //declare field variable
   name:string;
   material_number:number;
   reference_number:number;
@@ -42,13 +43,11 @@ export class CheckInFormComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(CheckInFormDialogComponent, {
       width: '500px',
-      data: {name: this.name, material_number: this.material_number,
-      reference_number: this.reference_number, description: this.description,
-      storage_room_id: this.storage_room_id, placement: this.placement,
-      parent_article_id: this.parent_article_id}
+      data: {} //send in data to form to be filled automatically TODO: send in room computer is in
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if(result != null){
       console.log('The dialog was closed');
       this.name = result.name;
       this.material_number = result.material_number;
@@ -61,6 +60,9 @@ export class CheckInFormComponent implements OnInit {
       //TODO: Jsonify data and send to back-end
 
       //clear data
+      } else {
+        console.log("Invalid");
+      }
     });
   }
 
@@ -103,6 +105,9 @@ export class CheckInFormDialogComponent {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+  public getValid(): boolean{
+    return this.checkInForm.valid;
   }
 }
 

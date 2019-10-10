@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Checka in</h1>
+<h1 mat-dialog-title>Första Check-in</h1>
 <div mat-dialog-content [formGroup]="checkInForm">
   <mat-form-field appearance="outline">
     <mat-label>Namn</mat-label>
@@ -46,6 +46,6 @@
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button (click)="onNoClick()">Cancel</button>
-  <button class="btn" mat-raised-button [disabled]="checkInForm.pristine || checkInForm.invalid" [mat-dialog-close]="data" cdkFocusInitial>Submit</button>
+  <button mat-raised-button (click)="onNoClick()">Avbryt</button>
+  <button class="btn" mat-raised-button [disabled]="checkInForm.pristine || checkInForm.invalid" [mat-dialog-close]="data" cdkFocusInitial>Skicka</button>
 </div>
