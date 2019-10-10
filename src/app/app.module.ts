@@ -4,21 +4,22 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CheckInFormComponent, CheckInFormDialog } from './check-in-form/check-in-form.component';
+import { CheckInFormComponent, CheckInFormDialogComponent } from './check-in-form/check-in-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { 
   MatFormFieldModule,
-  MatInputModule
+  MatInputModule,
+  MatSelectModule
 } from '@angular/material';
 
 @NgModule({
   declarations: [
     AppComponent,
     CheckInFormComponent,
-    CheckInFormDialog
+    CheckInFormDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -28,12 +29,13 @@ import {
     MatDialogModule,
     FormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
-    CheckInFormDialog
+    CheckInFormDialogComponent
   ]
 })
 export class AppModule { }
