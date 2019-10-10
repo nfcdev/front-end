@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { CheckInFormComponent, CheckInFormDialog } from './check-in-form/check-in-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { 
   MatFormFieldModule,
@@ -22,6 +23,7 @@ import {
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     MatDialogModule,
     FormsModule,

@@ -1,11 +1,36 @@
-<h1 mat-dialog-title>Check-in form</h1>
-<div mat-dialog-content>
-  <p>Name:</p>
+<h1 mat-dialog-title>Checka in</h1>
+<div mat-dialog-content [formGroup]="checkInForm">
+  <p>Namn*</p>
   <mat-form-field>
-    <input matInput [(ngModel)]="data.name">
+    <input class="form-control" formControlName="name" type="text" matInput required [(ngModel)]="data.name">
   </mat-form-field>
+  <p>Materialnummer*</p>
+  <mat-form-field>
+    <input matInput required [(ngModel)]="data.material_number">
+  </mat-form-field>
+  <p>Diarienummer*</p>
+  <mat-form-field>
+    <input matInput required [(ngModel)]="data.reference_number">
+  </mat-form-field>
+  <p>Beskrivning*</p>
+  <mat-form-field>
+    <input matInput required [(ngModel)]="data.description">
+  </mat-form-field>
+  <p>Rum*</p>
+  <mat-form-field>
+    <input matInput required [(ngModel)]="data.storage_room_id">
+  </mat-form-field>
+  <p>Hylla*</p>
+  <mat-form-field>
+    <input matInput required [(ngModel)]="data.placement">
+  </mat-form-field>
+  <p>Paket</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.parent_article_id">
+  </mat-form-field>
+  
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Submit</button>
+  <button mat-button [disabled]="checkInForm.pristine || checkInForm.invalid" [mat-dialog-close]="data" cdkFocusInitial>Submit</button>
 </div>
