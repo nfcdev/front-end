@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DisplayArticleDataComponent } from './display-article-data/display-article-data.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -12,9 +13,11 @@ import { DisplayArticleDataComponent } from './display-article-data/display-arti
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
+
+
 export class AppModule { }
