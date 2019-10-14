@@ -5,14 +5,13 @@ import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 
 export interface DialogData {
   name: string;
-  material_number:number;
-  reference_number:number;
-  description:string;
-  storage_room_id:number;
-  placement:string;
-  parent_article_id:number;
+  material_number: number;
+  reference_number: number;
+  description: string;
+  storage_room_id: number;
+  placement: string;
+  parent_article_id: number;
 }
-
 
 export interface Room {
   roomName: string;
@@ -27,41 +26,26 @@ export interface Room {
 
 export class CheckInFormComponent implements OnInit {
 
-
-  //declare field variable
-  name:string;
-  material_number:number;
-  reference_number:number;
-  description:string;
-  storage_room_id:number;
-  placement:string;
-  parent_article_id:number;
-
-
   constructor(public dialog: MatDialog) { }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(CheckInFormDialogComponent, {
       width: '500px',
-      data: {} //send in data to form to be filled automatically TODO: send in room computer is in
+      data: {} // send in data to form to be filled automatically TODO: send in room computer is in
     });
 
+    // runs every time we close the Modal or submit
     dialogRef.afterClosed().subscribe(result => {
-      if(result != null){
+
       console.log('The dialog was closed');
-      this.name = result.name;
-      this.material_number = result.material_number;
-      this.reference_number = result.reference_number;
-      this.description = result.description;
-      this.storage_room_id = result.storage_room_id;
-      this.placement = result.placement;
-      this.parent_article_id = result.parent_article_id;
 
-      //TODO: Jsonify data and send to back-end
+      if(result != null ){ // if user presses cancel the result is null. TODO: better solution for checking this
+      console.log(result);
 
-      //clear data
+      // TODO: Jsonify data and send to back-end
+
       } else {
-        console.log("Invalid");
+        console.log('Empty result');
       }
     });
   }
@@ -74,10 +58,10 @@ export class CheckInFormComponent implements OnInit {
   selector: 'app-check-in-form-dialog',
   templateUrl: './check-in-form-dialog.component.html',
 })
-export class CheckInFormDialogComponent { 
+export class CheckInFormDialogComponent {
   checkInForm: FormGroup;
 
-  //TODO: Get rooms from database instead of hard-coding them
+  // TODO: Get rooms from database instead of hard-coding them
   rooms: Room[] = [
     {roomName: 'Vapen', roomId : 1},
     {roomName: 'Bio', roomId : 2}
@@ -90,7 +74,7 @@ export class CheckInFormDialogComponent {
       this.createForm();
     }
   createForm() {
-    
+    // create variables and validators for form fields
     this.checkInForm = this.fb.group({
       name: ['', Validators.required],
       material_number: ['', Validators.required],
@@ -103,11 +87,8 @@ export class CheckInFormDialogComponent {
 
   }
 
-  onNoClick(): void {
+  onNoClick(): void {  // The cancel-button runs this function
     this.dialogRef.close();
-  }
-  public getValid(): boolean{
-    return this.checkInForm.valid;
   }
 }
 
