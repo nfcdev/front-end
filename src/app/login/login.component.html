@@ -1,0 +1,23 @@
+<div class = "body" >
+    <div class = "login-div">
+        <form [formGroup] = "loginForm" (ngSubmit) = "onSubmit()">
+
+        <mat-form-field appearance = "outline">
+            <mat-label>Användarnamn:</mat-label>
+            <input class ="form-control" type = "text"
+            matInput required formControlName = "username">
+        </mat-form-field>
+        <br>
+
+        <mat-form-field appearance = "outline">
+            <mat-label>Logga in:</mat-label>
+            <input class ="form-control" type = "text"
+            matInput required formControlName = "password">
+        </mat-form-field>
+        <br>
+
+        <button mat-raised-button type = "submit" [disabled] = "!loginForm.valid">Logga in</button>
+
+        </form>
+    </div>
+</div>
