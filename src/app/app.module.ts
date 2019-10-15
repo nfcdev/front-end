@@ -12,7 +12,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { 
   MatFormFieldModule,
   MatInputModule,
-  MatSelectModule
+  MatSelectModule,
+  MatButtonModule
 } from '@angular/material';
 
 @NgModule({
@@ -30,7 +31,8 @@ import {
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent],
