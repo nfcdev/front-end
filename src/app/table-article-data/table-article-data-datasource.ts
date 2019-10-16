@@ -6,11 +6,12 @@ import { Observable, of as observableOf, merge } from 'rxjs';
 import articleData from './example_data.json';
 
 export interface TableArticleDataItem {
-  id: number;
   material_number: string;
-  description: string;
-  parent: number;
   case: number;
+  storage_room: number;
+  placement: string;
+  action: string;
+  timestamp: number;
 }
 
 const EXAMPLE_DATA: TableArticleDataItem[] = articleData;
@@ -60,12 +61,15 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
       return data;
     }
 
-    //TODO: Add more sorting alternatives
     return data.sort((a, b) => {
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
         case 'article_nr': return compare(a.material_number, b.material_number, isAsc);
         case 'case_nr': return compare(+a.case, +b.case, isAsc);
+        case 'storage_room': return compare(+a.storage_room, +b.storage_room, isAsc);
+        case 'placement': return compare(+a.placement, +b.placement, isAsc);
+        case 'action': return compare(+a.action, +b.action, isAsc);
+        case 'timestamp': return compare(+a.timestamp, +b.timestamp, isAsc);
         default: return 0;
       }
     });
