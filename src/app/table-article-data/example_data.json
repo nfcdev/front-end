@@ -1,794 +1,560 @@
 [
     {
-        "material_number": "90",
-        "case": 61,
-        "storage_room": 3,
-        "placement": "B9",
-        "action": "processed",
-        "timestamp": 1513479703
-    },
-    {
         "material_number": "44",
-        "case": 85,
-        "storage_room": 3,
-        "placement": "Hylla 9",
-        "action": "check_out",
-        "timestamp": 1518160410
+        "reference_number": "743996",
+        "storage_room": "Vapen 1",
+        "shelf": "B3",
+        "status": "check_out",
+        "timestamp": 1552942078,
+        "last_modified": 1552942078
     },
     {
         "material_number": "57",
-        "case": 64,
-        "storage_room": 4,
-        "placement": "Hylla 4",
-        "action": "processed",
-        "timestamp": 1531038529
-    },
-    {
-        "material_number": "88",
-        "case": 18,
-        "storage_room": 5,
-        "placement": "Hylla 5",
-        "action": "discarded",
-        "timestamp": 1558304271
-    },
-    {
-        "material_number": "24",
-        "case": 9,
-        "storage_room": 1,
-        "placement": "B5",
-        "action": "check_in",
-        "timestamp": 1594782905
+        "reference_number": "505841",
+        "storage_room": "Vapen 1",
+        "shelf": "B10",
+        "status": "check_in",
+        "timestamp": 1549895201,
+        "last_modified": 1549895201
     },
     {
         "material_number": "76",
-        "case": 23,
-        "storage_room": 5,
-        "placement": "A4",
-        "action": "check_in",
-        "timestamp": 1595657124
-    },
-    {
-        "material_number": "29",
-        "case": 95,
-        "storage_room": 2,
-        "placement": "A2",
-        "action": "processed",
-        "timestamp": 1549507950
-    },
-    {
-        "material_number": "62",
-        "case": 94,
-        "storage_room": 3,
-        "placement": "A6",
-        "action": "discarded",
-        "timestamp": 1545368574
-    },
-    {
-        "material_number": "93",
-        "case": 13,
-        "storage_room": 4,
-        "placement": "Hylla 7",
-        "action": "processed",
-        "timestamp": 1517583284
-    },
-    {
-        "material_number": "82",
-        "case": 5,
-        "storage_room": 1,
-        "placement": "Hylla 7",
-        "action": "discarded",
-        "timestamp": 1510157046
-    },
-    {
-        "material_number": "82",
-        "case": 5,
-        "storage_room": 2,
-        "placement": "B1",
-        "action": "discarded",
-        "timestamp": 1510157046
+        "reference_number": "515426",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "A4",
+        "status": "discarded",
+        "timestamp": 1572879288,
+        "last_modified": 1572879288
     },
     {
         "material_number": "20",
-        "case": 43,
-        "storage_room": 4,
-        "placement": "Hylla 1",
-        "action": "discarded",
-        "timestamp": 1518598808
+        "reference_number": "728492",
+        "storage_room": "DNA materialrum 2",
+        "shelf": "B10",
+        "status": "check_out",
+        "timestamp": 1570706288,
+        "last_modified": 1570927614
     },
     {
         "material_number": "68",
-        "case": 48,
-        "storage_room": 1,
-        "placement": "Hylla 5",
-        "action": "processed",
-        "timestamp": 1583037177
-    },
-    {
-        "material_number": "62",
-        "case": 6,
-        "storage_room": 3,
-        "placement": "A6",
-        "action": "processed",
-        "timestamp": 1556236468
+        "reference_number": "822745",
+        "storage_room": "DNA materialrum 2",
+        "shelf": "Hylla 8",
+        "status": "discarded",
+        "timestamp": 1552728641,
+        "last_modified": 1552728641
     },
     {
         "material_number": "11",
-        "case": 68,
-        "storage_room": 4,
-        "placement": "B1",
-        "action": "check_out",
-        "timestamp": 1553822501
+        "reference_number": "443033",
+        "storage_room": "Uppackning fÃ¶rrÃ¥d",
+        "shelf": "A2",
+        "status": "processed",
+        "timestamp": 1516480603,
+        "last_modified": 1585152656
     },
     {
         "material_number": "51",
-        "case": 64,
-        "storage_room": 1,
-        "placement": "A3",
-        "action": "check_out",
-        "timestamp": 1582183106
+        "reference_number": "505841",
+        "storage_room": "DNA materialrum 2",
+        "shelf": "Hylla 1",
+        "status": "discarded",
+        "timestamp": 1593206996,
+        "last_modified": 1593206996
     },
     {
         "material_number": "72",
-        "case": 78,
-        "storage_room": 3,
-        "placement": "A4",
-        "action": "check_in",
-        "timestamp": 1575311513
-    },
-    {
-        "material_number": "31",
-        "case": 93,
-        "storage_room": 2,
-        "placement": "B3",
-        "action": "discarded",
-        "timestamp": 1593206996
+        "reference_number": "149017",
+        "storage_room": "Vapen 1",
+        "shelf": "",
+        "status": "check_out",
+        "timestamp": 1568225279,
+        "last_modified": 1568225279
     },
     {
         "material_number": "62",
-        "case": 28,
-        "storage_room": 3,
-        "placement": "A6",
-        "action": "discarded",
-        "timestamp": 1578930082
+        "reference_number": "293190",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "B2",
+        "status": "check_out",
+        "timestamp": 1553822501,
+        "last_modified": 1553822501
     },
     {
         "material_number": "31",
-        "case": 24,
-        "storage_room": 2,
-        "placement": "B3",
-        "action": "check_out",
-        "timestamp": 1583833040
+        "reference_number": "954898",
+        "storage_room": "Uppackning fÃ¶rrÃ¥d",
+        "shelf": "Hylla 1",
+        "status": "discarded",
+        "timestamp": 1558304271,
+        "last_modified": 1558304271
     },
     {
         "material_number": "44",
-        "case": 56,
-        "storage_room": 3,
-        "placement": "Hylla 9",
-        "action": "check_in",
-        "timestamp": 1533470885
+        "reference_number": "958520",
+        "storage_room": "Finger materialrum",
+        "shelf": "Hylla 5",
+        "status": "check_in",
+        "timestamp": 1595657124,
+        "last_modified": 1595657124
     },
     {
         "material_number": "15",
-        "case": 23,
-        "storage_room": 4,
-        "placement": "A2",
-        "action": "processed",
-        "timestamp": 1589380603
+        "reference_number": "515426",
+        "storage_room": "DNA materialrum 2",
+        "shelf": "B9",
+        "status": "discarded",
+        "timestamp": 1580183688,
+        "last_modified": 1580183688
     },
     {
         "material_number": "28",
-        "case": 44,
-        "storage_room": 4,
-        "placement": "B5",
-        "action": "discarded",
-        "timestamp": 1516531367
+        "reference_number": "102912",
+        "storage_room": "DNA materialrum 2",
+        "shelf": "A9",
+        "status": "processed",
+        "timestamp": 1539699395,
+        "last_modified": 1583037177
     },
     {
         "material_number": "77",
-        "case": 61,
-        "storage_room": 4,
-        "placement": "B2",
-        "action": "check_in",
-        "timestamp": 1548020152
-    },
-    {
-        "material_number": "08",
-        "case": 12,
-        "storage_room": 1,
-        "placement": "A6",
-        "action": "check_in",
-        "timestamp": 1542013296
+        "reference_number": "129274",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "B5",
+        "status": "check_in",
+        "timestamp": 1522885650,
+        "last_modified": 1549180505
     },
     {
         "material_number": "04",
-        "case": 74,
-        "storage_room": 3,
-        "placement": "Hylla 1",
-        "action": "discarded",
-        "timestamp": 1588093255
+        "reference_number": "677953",
+        "storage_room": "Finger materialrum",
+        "shelf": "B5",
+        "status": "check_out",
+        "timestamp": 1514925421,
+        "last_modified": 1564715713
     },
     {
         "material_number": "26",
-        "case": 88,
-        "storage_room": 3,
-        "placement": "B5",
-        "action": "check_in",
-        "timestamp": 1540069518
+        "reference_number": "330957",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "Hylla 1",
+        "status": "discarded",
+        "timestamp": 1585447811,
+        "last_modified": 1585447811
     },
     {
         "material_number": "99",
-        "case": 100,
-        "storage_room": 2,
-        "placement": "Hylla 9",
-        "action": "discarded",
-        "timestamp": 1554988465
-    },
-    {
-        "material_number": "03",
-        "case": 100,
-        "storage_room": 5,
-        "placement": "B10",
-        "action": "check_out",
-        "timestamp": 1564715713
-    },
-    {
-        "material_number": "55",
-        "case": 67,
-        "storage_room": 2,
-        "placement": "A5",
-        "action": "check_in",
-        "timestamp": 1517844941
+        "reference_number": "408022",
+        "storage_room": "Uppackning fÃ¶rrÃ¥d",
+        "shelf": "B5",
+        "status": "discarded",
+        "timestamp": 1510157046,
+        "last_modified": 1510739504
     },
     {
         "material_number": "57",
-        "case": 35,
-        "storage_room": 4,
-        "placement": "Hylla 4",
-        "action": "check_in",
-        "timestamp": 1563490996
+        "reference_number": "985407",
+        "storage_room": "DNA materialrum 2",
+        "shelf": "B3",
+        "status": "discarded",
+        "timestamp": 1533470885,
+        "last_modified": 1586097048
     },
     {
         "material_number": "57",
-        "case": 26,
-        "storage_room": 4,
-        "placement": "Hylla 4",
-        "action": "check_out",
-        "timestamp": 1564400609
+        "reference_number": "747238",
+        "storage_room": "Finger materialrum",
+        "shelf": "B7",
+        "status": "check_in",
+        "timestamp": 1553554201,
+        "last_modified": 1574504216
     },
     {
         "material_number": "56",
-        "case": 43,
-        "storage_room": 2,
-        "placement": "B3",
-        "action": "discarded",
-        "timestamp": 1572831206
+        "reference_number": "728492",
+        "storage_room": "DNA materialrum 2",
+        "shelf": "Hylla 9",
+        "status": "discarded",
+        "timestamp": 1601039017,
+        "last_modified": 1601039017
     },
     {
         "material_number": "77",
-        "case": 3,
-        "storage_room": 4,
-        "placement": "B2",
-        "action": "discarded",
-        "timestamp": 1590491660
-    },
-    {
-        "material_number": "01",
-        "case": 55,
-        "storage_room": 5,
-        "placement": "Hylla 4",
-        "action": "processed",
-        "timestamp": 1514925421
+        "reference_number": "440305",
+        "storage_room": "DNA materialrum 2",
+        "shelf": "Hylla 5",
+        "status": "processed",
+        "timestamp": 1527920009,
+        "last_modified": 1549507950
     },
     {
         "material_number": "64",
-        "case": 15,
-        "storage_room": 3,
-        "placement": "B9",
-        "action": "discarded",
-        "timestamp": 1589394465
-    },
-    {
-        "material_number": "45",
-        "case": 50,
-        "storage_room": 4,
-        "placement": "B2",
-        "action": "discarded",
-        "timestamp": 1580183688
+        "reference_number": "976316",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "A2",
+        "status": "discarded",
+        "timestamp": 1533831982,
+        "last_modified": 1597355308
     },
     {
         "material_number": "80",
-        "case": 54,
-        "storage_room": 1,
-        "placement": "Hylla 1",
-        "action": "discarded",
-        "timestamp": 1553554201
+        "reference_number": "772381",
+        "storage_room": "Vapen 1",
+        "shelf": "Hylla 8",
+        "status": "discarded",
+        "timestamp": 1550367855,
+        "last_modified": 1550367855
     },
     {
         "material_number": "99",
-        "case": 35,
-        "storage_room": 2,
-        "placement": "Hylla 9",
-        "action": "check_in",
-        "timestamp": 1531671037
+        "reference_number": "985407",
+        "storage_room": "Vapen 1",
+        "shelf": "Hylla 9",
+        "status": "processed",
+        "timestamp": 1589380603,
+        "last_modified": 1589380603
     },
     {
         "material_number": "22",
-        "case": 53,
-        "storage_room": 2,
-        "placement": "B9",
-        "action": "discarded",
-        "timestamp": 1566573383
+        "reference_number": "158130",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "B3",
+        "status": "discarded",
+        "timestamp": 1590491660,
+        "last_modified": 1590491660
     },
     {
         "material_number": "40",
-        "case": 57,
-        "storage_room": 1,
-        "placement": "B3",
-        "action": "discarded",
-        "timestamp": 1552728641
+        "reference_number": "303457",
+        "storage_room": "Uppackning fÃ¶rrÃ¥d",
+        "shelf": "Hylla 3",
+        "status": "processed",
+        "timestamp": 1517583284,
+        "last_modified": 1596636020
     },
     {
         "material_number": "59",
-        "case": 51,
-        "storage_room": 5,
-        "placement": "B1",
-        "action": "processed",
-        "timestamp": 1556945401
+        "reference_number": "040340",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "Hylla 6",
+        "status": "discarded",
+        "timestamp": 1554988465,
+        "last_modified": 1554988465
     },
     {
         "material_number": "73",
-        "case": 43,
-        "storage_room": 5,
-        "placement": "B2",
-        "action": "check_out",
-        "timestamp": 1559159689
+        "reference_number": "728492",
+        "storage_room": "Finger materialrum",
+        "shelf": "B1",
+        "status": "processed",
+        "timestamp": 1545368574,
+        "last_modified": 1590600451
     },
     {
         "material_number": "48",
-        "case": 14,
-        "storage_room": 1,
-        "placement": "B6",
-        "action": "discarded",
-        "timestamp": 1527632625
-    },
-    {
-        "material_number": "59",
-        "case": 19,
-        "storage_room": 5,
-        "placement": "B1",
-        "action": "discarded",
-        "timestamp": 1572879288
+        "reference_number": "137492",
+        "storage_room": "Finger materialrum",
+        "shelf": "Hylla 9",
+        "status": "discarded",
+        "timestamp": 1595959373,
+        "last_modified": 1595959373
     },
     {
         "material_number": "07",
-        "case": 80,
-        "storage_room": 1,
-        "placement": "A4",
-        "action": "discarded",
-        "timestamp": 1585447811
+        "reference_number": "161510",
+        "storage_room": "Vapen 1",
+        "shelf": "Hylla 6",
+        "status": "check_out",
+        "timestamp": 1516531367,
+        "last_modified": 1559159689
     },
     {
         "material_number": "23",
-        "case": 36,
-        "storage_room": 2,
-        "placement": "A9",
-        "action": "check_out",
-        "timestamp": 1571594616
+        "reference_number": "918521",
+        "storage_room": "Finger materialrum",
+        "shelf": "A3",
+        "status": "check_out",
+        "timestamp": 1594690037,
+        "last_modified": 1594690037
     },
     {
         "material_number": "21",
-        "case": 37,
-        "storage_room": 3,
-        "placement": "Hylla 5",
-        "action": "check_out",
-        "timestamp": 1570927614
+        "reference_number": "079699",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "B6",
+        "status": "check_in",
+        "timestamp": 1548020152,
+        "last_modified": 1548020152
     },
     {
         "material_number": "72",
-        "case": 9,
-        "storage_room": 3,
-        "placement": "A4",
-        "action": "check_out",
-        "timestamp": 1552942078
+        "reference_number": "587912",
+        "storage_room": "DNA materialrum 2",
+        "shelf": "B10",
+        "status": "check_out",
+        "timestamp": 1595059212,
+        "last_modified": 1599244870
     },
     {
         "material_number": "66",
-        "case": 55,
-        "storage_room": 3,
-        "placement": "A6",
-        "action": "discarded",
-        "timestamp": 1550367855
+        "reference_number": "959888",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "A1",
+        "status": "discarded",
+        "timestamp": 1572831206,
+        "last_modified": 1572831206
     },
     {
         "material_number": "48",
-        "case": 12,
-        "storage_room": 1,
-        "placement": "B6",
-        "action": "check_in",
-        "timestamp": 1574504216
-    },
-    {
-        "material_number": "89",
-        "case": 42,
-        "storage_room": 5,
-        "placement": "Hylla 4",
-        "action": "discarded",
-        "timestamp": 1510739504
-    },
-    {
-        "material_number": "73",
-        "case": 59,
-        "storage_room": 5,
-        "placement": "B2",
-        "action": "check_in",
-        "timestamp": 1549895201
+        "reference_number": "846405",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "A3",
+        "status": "processed",
+        "timestamp": 1513479703,
+        "last_modified": 1513479703
     },
     {
         "material_number": "48",
-        "case": 19,
-        "storage_room": 1,
-        "placement": "B6",
-        "action": "check_out",
-        "timestamp": 1594690037
-    },
-    {
-        "material_number": "24",
-        "case": 69,
-        "storage_room": 1,
-        "placement": "B5",
-        "action": "check_in",
-        "timestamp": 1591684992
+        "reference_number": "813814",
+        "storage_room": "Uppackning fÃ¶rrÃ¥d",
+        "shelf": "Hylla 8",
+        "status": "discarded",
+        "timestamp": 1559033963,
+        "last_modified": 1586912452
     },
     {
         "material_number": "66",
-        "case": 33,
-        "storage_room": 3,
-        "placement": "A6",
-        "action": "processed",
-        "timestamp": 1576785703
-    },
-    {
-        "material_number": "55",
-        "case": 8,
-        "storage_room": 2,
-        "placement": "A5",
-        "action": "check_out",
-        "timestamp": 1533831982
-    },
-    {
-        "material_number": "35",
-        "case": 39,
-        "storage_room": 3,
-        "placement": "A4",
-        "action": "discarded",
-        "timestamp": 1595059212
+        "reference_number": "795245",
+        "storage_room": "DNA materialrum 2",
+        "shelf": "B3",
+        "status": "discarded",
+        "timestamp": 1589394465,
+        "last_modified": 1589394465
     },
     {
         "material_number": "09",
-        "case": 1,
-        "storage_room": 1,
-        "placement": "A9",
-        "action": "check_in",
-        "timestamp": 1524948616
+        "reference_number": "607345",
+        "storage_room": "Vapen 1",
+        "shelf": "B1",
+        "status": "discarded",
+        "timestamp": 1543052591,
+        "last_modified": 1571110453
     },
     {
         "material_number": "19",
-        "case": 1,
-        "storage_room": 1,
-        "placement": "B2",
-        "action": "processed",
-        "timestamp": 1585152656
+        "reference_number": "607345",
+        "storage_room": "Uppackning fÃ¶rrÃ¥d",
+        "shelf": "B4",
+        "status": "check_in",
+        "timestamp": 1531671037,
+        "last_modified": 1531671037
     },
     {
         "material_number": "36",
-        "case": 41,
-        "storage_room": 1,
-        "placement": "A2",
-        "action": "discarded",
-        "timestamp": 1552887552
+        "reference_number": "408528",
+        "storage_room": "Vapen 1",
+        "shelf": "A3",
+        "status": "discarded",
+        "timestamp": 1578930082,
+        "last_modified": 1578930082
     },
     {
         "material_number": "91",
-        "case": 60,
-        "storage_room": 1,
-        "placement": "A4",
-        "action": "check_out",
-        "timestamp": 1512409410
+        "reference_number": "044556",
+        "storage_room": "Finger materialrum",
+        "shelf": "A6",
+        "status": "check_out",
+        "timestamp": 1571594616,
+        "last_modified": 1571594616
     },
     {
         "material_number": "81",
-        "case": 79,
-        "storage_room": 4,
-        "placement": "",
-        "action": "check_out",
-        "timestamp": 1564555500
+        "reference_number": "065957",
+        "storage_room": "Vapen 1",
+        "shelf": "Hylla 4",
+        "status": "check_in",
+        "timestamp": 1585560791,
+        "last_modified": 1585560791
     },
     {
         "material_number": "70",
-        "case": 15,
-        "storage_room": 2,
-        "placement": "A7",
-        "action": "discarded",
-        "timestamp": 1516480603
+        "reference_number": "976316",
+        "storage_room": "Finger materialrum",
+        "shelf": "B9",
+        "status": "check_in",
+        "timestamp": 1594782905,
+        "last_modified": 1594782905
     },
     {
         "material_number": "03",
-        "case": 68,
-        "storage_room": 5,
-        "placement": "B10",
-        "action": "check_out",
-        "timestamp": 1568225279
+        "reference_number": "443033",
+        "storage_room": "Uppackning fÃ¶rrÃ¥d",
+        "shelf": "B6",
+        "status": "check_in",
+        "timestamp": 1563490996,
+        "last_modified": 1563490996
     },
     {
         "material_number": "85",
-        "case": 43,
-        "storage_room": 5,
-        "placement": "A7",
-        "action": "processed",
-        "timestamp": 1596636020
+        "reference_number": "728492",
+        "storage_room": "Finger materialrum",
+        "shelf": "A6",
+        "status": "check_out",
+        "timestamp": 1516547263,
+        "last_modified": 1564400609
     },
     {
         "material_number": "37",
-        "case": 81,
-        "storage_room": 3,
-        "placement": "A2",
-        "action": "check_in",
-        "timestamp": 1585560791
+        "reference_number": "848771",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "B9",
+        "status": "discarded",
+        "timestamp": 1540069518,
+        "last_modified": 1581288681
     },
     {
         "material_number": "96",
-        "case": 82,
-        "storage_room": 2,
-        "placement": "A1",
-        "action": "discarded",
-        "timestamp": 1579886058
+        "reference_number": "058801",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "Hylla 5",
+        "status": "check_in",
+        "timestamp": 1524948616,
+        "last_modified": 1524948616
     },
     {
         "material_number": "20",
-        "case": 74,
-        "storage_room": 4,
-        "placement": "Hylla 1",
-        "action": "processed",
-        "timestamp": 1527920009
+        "reference_number": "677953",
+        "storage_room": "DNA materialrum 2",
+        "shelf": "B6",
+        "status": "check_out",
+        "timestamp": 1579886058,
+        "last_modified": 1583833040
     },
     {
         "material_number": "99",
-        "case": 11,
-        "storage_room": 2,
-        "placement": "Hylla 9",
-        "action": "discarded",
-        "timestamp": 1595959373
-    },
-    {
-        "material_number": "38",
-        "case": 25,
-        "storage_room": 5,
-        "placement": "Hylla 8",
-        "action": "processed",
-        "timestamp": 1590600451
+        "reference_number": "926656",
+        "storage_room": "DNA materialrum 2",
+        "shelf": "A7",
+        "status": "processed",
+        "timestamp": 1556236468,
+        "last_modified": 1556236468
     },
     {
         "material_number": "73",
-        "case": 57,
-        "storage_room": 5,
-        "placement": "B2",
-        "action": "check_in",
-        "timestamp": 1518924973
+        "reference_number": "303457",
+        "storage_room": "Finger materialrum",
+        "shelf": "A4",
+        "status": "check_out",
+        "timestamp": 1512409410,
+        "last_modified": 1512409410
     },
     {
         "material_number": "10",
-        "case": 4,
-        "storage_room": 2,
-        "placement": "Hylla 7",
-        "action": "check_out",
-        "timestamp": 1543052591
+        "reference_number": "295073",
+        "storage_room": "Vapen 1",
+        "shelf": "B2",
+        "status": "processed",
+        "timestamp": 1531038529,
+        "last_modified": 1531038529
     },
     {
         "material_number": "28",
-        "case": 16,
-        "storage_room": 4,
-        "placement": "B5",
-        "action": "discarded",
-        "timestamp": 1552643324
-    },
-    {
-        "material_number": "10",
-        "case": 12,
-        "storage_room": 2,
-        "placement": "Hylla 7",
-        "action": "check_out",
-        "timestamp": 1599244870
-    },
-    {
-        "material_number": "92",
-        "case": 72,
-        "storage_room": 2,
-        "placement": "B7",
-        "action": "check_out",
-        "timestamp": 1567758461
+        "reference_number": "434857",
+        "storage_room": "Finger materialrum",
+        "shelf": "Hylla 4",
+        "status": "check_out",
+        "timestamp": 1518160410,
+        "last_modified": 1518160410
     },
     {
         "material_number": "56",
-        "case": 15,
-        "storage_room": 2,
-        "placement": "B3",
-        "action": "check_out",
-        "timestamp": 1567821583
-    },
-    {
-        "material_number": "29",
-        "case": 52,
-        "storage_room": 2,
-        "placement": "A2",
-        "action": "check_in",
-        "timestamp": 1575750010
-    },
-    {
-        "material_number": "26",
-        "case": 30,
-        "storage_room": 3,
-        "placement": "B5",
-        "action": "check_out",
-        "timestamp": 1539699395
+        "reference_number": "976316",
+        "storage_room": "Uppackning fÃ¶rrÃ¥d",
+        "shelf": "B2",
+        "status": "discarded",
+        "timestamp": 1566573383,
+        "last_modified": 1566573383
     },
     {
         "material_number": "54",
-        "case": 82,
-        "storage_room": 4,
-        "placement": "Hylla 8",
-        "action": "discarded",
-        "timestamp": 1597355308
+        "reference_number": "058801",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "Hylla 1",
+        "status": "check_out",
+        "timestamp": 1552887552,
+        "last_modified": 1582183106
     },
     {
         "material_number": "07",
-        "case": 6,
-        "storage_room": 1,
-        "placement": "A4",
-        "action": "discarded",
-        "timestamp": 1566808608
+        "reference_number": "493064",
+        "storage_room": "Uppackning fÃ¶rrÃ¥d",
+        "shelf": "",
+        "status": "check_out",
+        "timestamp": 1507550381,
+        "last_modified": 1567821583
     },
     {
         "material_number": "44",
-        "case": 76,
-        "storage_room": 3,
-        "placement": "Hylla 9",
-        "action": "check_in",
-        "timestamp": 1549180505
+        "reference_number": "805560",
+        "storage_room": "DNA materialrum 2",
+        "shelf": "B1",
+        "status": "discarded",
+        "timestamp": 1517844941,
+        "last_modified": 1588093255
+    },
+    {
+        "material_number": "44",
+        "reference_number": "805560",
+        "storage_room": "DNA materialrum 1",
+        "shelf": "Hylla 7",
+        "status": "discarded",
+        "timestamp": 1517844941,
+        "last_modified": 1588093255
     },
     {
         "material_number": "58",
-        "case": 41,
-        "storage_room": 2,
-        "placement": "Hylla 4",
-        "action": "check_in",
-        "timestamp": 1527370792
+        "reference_number": "408528",
+        "storage_room": "Uppackning fÃ¶rrÃ¥d",
+        "shelf": "",
+        "status": "discarded",
+        "timestamp": 1552643324,
+        "last_modified": 1552643324
     },
     {
         "material_number": "92",
-        "case": 85,
-        "storage_room": 2,
-        "placement": "B7",
-        "action": "processed",
-        "timestamp": 1522885650
+        "reference_number": "743996",
+        "storage_room": "Vapen 1",
+        "shelf": "Hylla 2",
+        "status": "discarded",
+        "timestamp": 1518598808,
+        "last_modified": 1566808608
     },
     {
         "material_number": "69",
-        "case": 24,
-        "storage_room": 2,
-        "placement": "B6",
-        "action": "discarded",
-        "timestamp": 1586912452
-    },
-    {
-        "material_number": "41",
-        "case": 44,
-        "storage_room": 4,
-        "placement": "Hylla 3",
-        "action": "processed",
-        "timestamp": 1553078598
-    },
-    {
-        "material_number": "11",
-        "case": 94,
-        "storage_room": 4,
-        "placement": "B1",
-        "action": "processed",
-        "timestamp": 1507832983
+        "reference_number": "954898",
+        "storage_room": "Vapen 1",
+        "shelf": "A7",
+        "status": "check_in",
+        "timestamp": 1575311513,
+        "last_modified": 1575311513
     },
     {
         "material_number": "68",
-        "case": 24,
-        "storage_room": 1,
-        "placement": "Hylla 5",
-        "action": "discarded",
-        "timestamp": 1516547263
+        "reference_number": "954898",
+        "storage_room": "Vapen 1",
+        "shelf": "Hylla 5",
+        "status": "check_out",
+        "timestamp": 1567758461,
+        "last_modified": 1567758461
     },
     {
         "material_number": "62",
-        "case": 25,
-        "storage_room": 3,
-        "placement": "A6",
-        "action": "check_in",
-        "timestamp": 1569220723
-    },
-    {
-        "material_number": "62",
-        "case": 98,
-        "storage_room": 3,
-        "placement": "A6",
-        "action": "check_in",
-        "timestamp": 1570706288
-    },
-    {
-        "material_number": "53",
-        "case": 74,
-        "storage_room": 3,
-        "placement": "B4",
-        "action": "processed",
-        "timestamp": 1535486586
-    },
-    {
-        "material_number": "87",
-        "case": 53,
-        "storage_room": 5,
-        "placement": "Hylla 8",
-        "action": "discarded",
-        "timestamp": 1581288681
-    },
-    {
-        "material_number": "18",
-        "case": 84,
-        "storage_room": 4,
-        "placement": "B3",
-        "action": "check_out",
-        "timestamp": 1507550381
-    },
-    {
-        "material_number": "75",
-        "case": 41,
-        "storage_room": 4,
-        "placement": "A7",
-        "action": "discarded",
-        "timestamp": 1601039017
-    },
-    {
-        "material_number": "36",
-        "case": 82,
-        "storage_room": 1,
-        "placement": "A2",
-        "action": "discarded",
-        "timestamp": 1546861894
-    },
-    {
-        "material_number": "03",
-        "case": 88,
-        "storage_room": 5,
-        "placement": "B10",
-        "action": "check_out",
-        "timestamp": 1559033963
-    },
-    {
-        "material_number": "86",
-        "case": 62,
-        "storage_room": 5,
-        "placement": "A7",
-        "action": "discarded",
-        "timestamp": 1586097048
-    },
-    {
-        "material_number": "50",
-        "case": 31,
-        "storage_room": 1,
-        "placement": "A1",
-        "action": "discarded",
-        "timestamp": 1571110453
-    },
-    {
-        "material_number": "45",
-        "case": 66,
-        "storage_room": 4,
-        "placement": "B2",
-        "action": "check_out",
-        "timestamp": 1538419299
+        "reference_number": "594120",
+        "storage_room": "Vapen 1",
+        "shelf": "Hylla 4",
+        "status": "processed",
+        "timestamp": 1518924973,
+        "last_modified": 1535486586
     }
 ]

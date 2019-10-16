@@ -7,11 +7,12 @@ import articleData from './example_data.json';
 
 export interface TableArticleDataItem {
   material_number: string;
-  case: number;
-  storage_room: number;
-  placement: string;
-  action: string;
+  reference_number: string;
+  storage_room: string;
+  shelf: string;
+  status: string;
   timestamp: number;
+  last_modified: number;
 }
 
 const EXAMPLE_DATA: TableArticleDataItem[] = articleData;
@@ -65,11 +66,13 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
         case 'article_nr': return compare(a.material_number, b.material_number, isAsc);
-        case 'case_nr': return compare(+a.case, +b.case, isAsc);
+        case 'case_nr': return compare(+a.reference_number, +b.reference_number, isAsc);
         case 'storage_room': return compare(+a.storage_room, +b.storage_room, isAsc);
-        case 'placement': return compare(+a.placement, +b.placement, isAsc);
-        case 'action': return compare(+a.action, +b.action, isAsc);
+        case 'placement': return compare(+a.shelf, +b.shelf, isAsc);
+        case 'action': return compare(+a.status, +b.status, isAsc);
         case 'timestamp': return compare(+a.timestamp, +b.timestamp, isAsc);
+        case 'last_modified': return compare(+a.timestamp, +b.timestamp, isAsc);
+
         default: return 0;
       }
     });
