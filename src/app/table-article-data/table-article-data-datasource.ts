@@ -68,10 +68,10 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
         case 'article_nr': return compare(a.material_number, b.material_number, isAsc);
         case 'case_nr': return compare(+a.reference_number, +b.reference_number, isAsc);
         case 'storage_room': return compare(+a.storage_room, +b.storage_room, isAsc);
-        case 'placement': return compare(+a.shelf, +b.shelf, isAsc);
-        case 'action': return compare(+a.status, +b.status, isAsc);
+        case 'shelf': return compare(+a.shelf, +b.shelf, isAsc);
+        case 'status': return compare(+a.status, +b.status, isAsc);
         case 'timestamp': return compare(+a.timestamp, +b.timestamp, isAsc);
-        case 'last_modified': return compare(+a.timestamp, +b.timestamp, isAsc);
+        case 'last_modified': return compare(+a.last_modified, +b.last_modified, isAsc);
 
         default: return 0;
       }
