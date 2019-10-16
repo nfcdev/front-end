@@ -1,15 +1,29 @@
 .login-div {
     padding: 3px;
     width: 400px;
-    height: 255px;
+    min-height: auto;
+    max-height: 350px;
     border-radius: 18px;
     text-align: center;
-    background-color: whitesmoke;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    margin-bottom: auto;
+    background-color: white;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    position: absolute;
 }
+
+// Contains the login-div in the html-file
+.login-body {
+    background-color: gray;
+    height: 100%;
+    margin: 0; 
+    position: relative;;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// The following css connected to the angular-material-forms and might need to be moved to the global less.
 
 // mat-icon-stepper selected color change 
 ::ng-deep .mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit {
@@ -24,7 +38,7 @@
 
 //mat-input focused color
 ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
-    color: purple;
+    color: green;
 }
 
 // mat-input error outline color
