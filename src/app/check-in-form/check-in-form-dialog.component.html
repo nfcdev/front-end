@@ -1,12 +1,6 @@
 <h1 mat-dialog-title>Första Check-in</h1>
 <div mat-dialog-content [formGroup]="checkInForm">
-  <mat-form-field appearance="outline">
-    <mat-label>Namn</mat-label>
-    <input class="form-control" type="text"
-     matInput required formControlName="name"
-     [(ngModel)]="data.name">
-  </mat-form-field>
-  <br>
+  
 
   <mat-form-field appearance="outline">
       <mat-label>Materialnummer</mat-label>
@@ -25,14 +19,23 @@
   <br>
   
   <mat-form-field appearance="outline">
-      <mat-label>Beskrivning</mat-label>
+      <mat-label>Kommentar</mat-label>
     <input class="form-control" type="text"
-     matInput required formControlName="description"
-      [(ngModel)]="data.description">
+     matInput required formControlName="comment"
+      [(ngModel)]="data.comment">
   </mat-form-field>
   <br>
-  
+
   <mat-form-field appearance="outline">
+    <mat-label>Användarnamn</mat-label> 
+  <input class="form-control" type="text"
+   matInput required formControlName="user_name"
+    [(ngModel)]="data.user_name">
+</mat-form-field>
+<br>
+  
+  <!-- //OLD SOLUTION FOR SELECTING ROOM
+     <mat-form-field appearance="outline">
       <mat-label>Rum</mat-label> 
     <mat-select formControlName="storage_room_id"
      [(ngModel)]="data.storage_room_id" name="storage_room_id">
@@ -41,7 +44,15 @@
         </mat-option>
       </mat-select>
   </mat-form-field>
-  <br>
+  <br> -->
+
+  <mat-form-field appearance="outline">
+    <mat-label>Rum</mat-label> 
+  <input class="form-control" type="text"
+   matInput required formControlName="storage_room"
+    [(ngModel)]="data.storage_room">
+</mat-form-field>
+<br>
  
   <mat-form-field appearance="outline">
       <mat-label>Hylla</mat-label> 
@@ -51,13 +62,6 @@
   </mat-form-field>
   <br>
   
-  <mat-form-field appearance="outline">
-      <mat-label>Paket</mat-label> 
-    <input class="form-control" type="text"
-     matInput formControlName="parent_article_id"
-      [(ngModel)]="data.parent_article_id">
-  </mat-form-field>
-</div>
 
 <div mat-dialog-actions>
   <button mat-raised-button (click)="onNoClick()">Avbryt</button>
