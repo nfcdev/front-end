@@ -9,18 +9,25 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { 
+import {
   MatFormFieldModule,
   MatInputModule,
   MatSelectModule,
   MatButtonModule
 } from '@angular/material';
+import { TableArticleDataComponent } from './table-article-data/table-article-data.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
     CheckInFormComponent,
-    CheckInFormDialogComponent
+    CheckInFormDialogComponent,
+    TableArticleDataComponent
   ],
   imports: [
     BrowserModule,
@@ -32,12 +39,17 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatButtonModule
-  ],
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
+    ],
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
     CheckInFormDialogComponent
   ]
 })
+
+
 export class AppModule { }
