@@ -1,0 +1,36 @@
+<h1 mat-dialog-title>Ny händelse</h1>
+<div mat-dialog-content [formGroup]="storageEventForm">
+
+    <mat-form-field appearance="outline">
+        <mat-label>Typ av händelse</mat-label> 
+      <mat-select required formControlName="action"
+       [(ngModel)]="data.action" name="action">
+          <mat-option *ngFor="let act of actions" [value]="act.action_id">
+            {{act.action_name}}
+          </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br> 
+
+  <mat-form-field appearance="outline">
+      <mat-label>Materialnummer</mat-label>
+    <input class="form-control" type="number"
+     matInput required formControlName="material_number"
+      [(ngModel)]="data.material_number">
+  </mat-form-field>
+  <br>
+  
+  <mat-form-field appearance="outline">
+      <mat-label>Kommentar</mat-label>
+    <input class="form-control" type="text"
+     matInput formControlName="comment"
+      [(ngModel)]="data.comment">
+  </mat-form-field>
+  <br>
+
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="onNoClick()">Avbryt</button>
+  <button class="btn" mat-raised-button
+   [disabled]="storageEventForm.pristine || storageEventForm.invalid" 
+   [mat-dialog-close]="data" cdkFocusInitial>Skicka</button>
+</div>

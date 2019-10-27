@@ -8,13 +8,23 @@ import { TableArticleDataComponent } from './table-article-data/table-article-da
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { StorageEventFormComponent, StorageEventFormDialogComponent } from './storage-event-form/storage-event-form.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-
+import {
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatButtonModule
+} from '@angular/material';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TableArticleDataComponent
+    TableArticleDataComponent,
+    StorageEventFormComponent,
+    StorageEventFormDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -23,9 +33,19 @@ import { MatSortModule } from '@angular/material/sort';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    FormsModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatFormFieldModule
     ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    StorageEventFormDialogComponent
+  ]
 })
 
 
