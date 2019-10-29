@@ -4,17 +4,21 @@ import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 
 
 export interface DialogData {
-  user_name: string;
   material_number: number;
   reference_number: number;
-  comment: string;
+  area: string;
   storage_room: string;
-  placement: string;
+  shelf: string;
+  package: string;
 }
 
 export interface Room {
   roomName: string;
   roomId: number;
+}
+export interface Area {
+  areaName: string;
+  areaId: number;
 }
 
 @Component({
@@ -26,29 +30,34 @@ export interface Room {
 export class CheckInFormComponent implements OnInit {
 
   given_storage_room_id : number;
-  given_user_name: string;
-  given_material_number: number;
+  given_area_id: number;
 
   // TODO: Get rooms from database instead of hard-coding them
   rooms: Room[] = [
-    {roomName: 'Vapen', roomId : 1},
-    {roomName: 'Bio', roomId : 2}
+    {roomName: 'Rum 1', roomId : 1},
+    {roomName: 'Rum 2', roomId : 2}
   ];
+
+  areas: Area[] = [
+    {areaName: 'Område 1', areaId: 1},
+    {areaName: 'Område 2', areaId: 1}
+  ];
+
 
   constructor(public dialog: MatDialog) { }
 
   openDialog(): void {
 
-    this.given_material_number = 1000; //TODO: Get material number here
     this.given_storage_room_id = 1; //TODO: Get storage room ID here
-    this.given_user_name = 'danbr'; //TODO: Get username here
+    this.given_area_id = 1; //TODO: Get area id here
 
     const dialogRef = this.dialog.open(CheckInFormDialogComponent, {
       width: '500px',
       // send in data to form to be filled automatically TODO: send in room computer is in
-      data: {user_name: this.given_user_name,
-      storage_room: this.rooms.find(x => x.roomId === this.given_storage_room_id ).roomName, //finds the room name from the given id
-      material_number: this.given_material_number }
+      data:
+      {area: this.areas.find(x => x.areaId === this.given_area_id ).areaName, //finds the room name from the given id
+      storage_room: this.rooms.find(x => x.roomId === this.given_storage_room_id ).roomName //finds the room name from the given id
+      }
     });
 
     // runs every time we close the Modal or submit
@@ -60,8 +69,6 @@ export class CheckInFormComponent implements OnInit {
       console.log(result);
 
       // TODO: Jsonify data and send to back-end
-      // things to send: given_material_number, given_storage_room_id, given_user_name,
-      // result.reference_number, result.placement, result.comment
 
       } else {
         console.log('Empty result');
@@ -80,7 +87,9 @@ export class CheckInFormComponent implements OnInit {
 export class CheckInFormDialogComponent {
   checkInForm: FormGroup;
 
-  
+  shelves: string[] = [ //TODO: Get shelves from database here instead
+    'A15', 'A18', 'B18', 'B23'
+  ];
 
   constructor(
     public dialogRef: MatDialogRef<CheckInFormDialogComponent>,
@@ -91,12 +100,12 @@ export class CheckInFormDialogComponent {
   createForm() {
     // create variables and validators for form fields
     this.checkInForm = this.fb.group({
-      user_name: [{value: '', disabled: true}, Validators.required],
-      material_number: [{value: '', disabled: true}, Validators.required],
+      material_number: ['', Validators.required],
       reference_number: ['', Validators.required],
-      comment: ['', Validators.required],
+      area: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
-      placement: ['', Validators.required]
+      shelf: ['', Validators.required],
+      package: ['']
     });
 
   }

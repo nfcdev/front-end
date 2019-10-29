@@ -2,6 +2,15 @@
 <div mat-dialog-content [formGroup]="checkInForm">
   
 
+
+  <mat-form-field appearance="outline">
+    <mat-label>Diarienummer</mat-label> 
+  <input class="form-control" type="number"
+  matInput required formControlName="reference_number"
+  [(ngModel)]="data.reference_number">
+</mat-form-field>
+<br>
+
   <mat-form-field appearance="outline">
       <mat-label>Materialnummer</mat-label>
     <input class="form-control" type="number"
@@ -9,42 +18,14 @@
       [(ngModel)]="data.material_number">
   </mat-form-field>
   <br>
- 
-  <mat-form-field appearance="outline">
-      <mat-label>Diarienummer</mat-label> 
-    <input class="form-control" type="number"
-    matInput required formControlName="reference_number"
-    [(ngModel)]="data.reference_number">
-  </mat-form-field>
-  <br>
   
   <mat-form-field appearance="outline">
-      <mat-label>Kommentar</mat-label>
+      <mat-label>Område</mat-label>
     <input class="form-control" type="text"
-     matInput required formControlName="comment"
-      [(ngModel)]="data.comment">
+     matInput required formControlName="area"
+      [(ngModel)]="data.area">
   </mat-form-field>
   <br>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Användarnamn</mat-label> 
-  <input class="form-control" type="text"
-   matInput required formControlName="user_name"
-    [(ngModel)]="data.user_name">
-</mat-form-field>
-<br>
-  
-  <!-- //OLD SOLUTION FOR SELECTING ROOM
-     <mat-form-field appearance="outline">
-      <mat-label>Rum</mat-label> 
-    <mat-select formControlName="storage_room_id"
-     [(ngModel)]="data.storage_room_id" name="storage_room_id">
-        <mat-option *ngFor="let room of rooms" [value]="room.roomId">
-          {{room.roomName}}
-        </mat-option>
-      </mat-select>
-  </mat-form-field>
-  <br> -->
 
   <mat-form-field appearance="outline">
     <mat-label>Rum</mat-label> 
@@ -54,13 +35,32 @@
 </mat-form-field>
 <br>
  
-  <mat-form-field appearance="outline">
+  <!-- <mat-form-field appearance="outline">
       <mat-label>Hylla</mat-label> 
     <input class="form-control" type="text"
-     matInput required formControlName="placement"
-      [(ngModel)]="data.placement">
+     matInput required formControlName="shelf"
+      [(ngModel)]="data.shelf">
   </mat-form-field>
-  <br>
+  <br> -->
+
+  <mat-form-field appearance="outline">
+    <mat-label>Hylla</mat-label> 
+  <mat-select formControlName="shelf"
+   [(ngModel)]="data.shelf" name="shelf">
+      <mat-option *ngFor="let sh of shelves" [value]="sh">
+        {{sh}}
+      </mat-option>
+    </mat-select>
+</mat-form-field>
+<br> 
+
+  <mat-form-field appearance="outline">
+    <mat-label>Kolli</mat-label> 
+  <input class="form-control" type="text"
+   matInput formControlName="package"
+    [(ngModel)]="data.placement">
+</mat-form-field>
+<br>
   
 
 <div mat-dialog-actions>
