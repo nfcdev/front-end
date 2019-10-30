@@ -1,23 +1,36 @@
-import { AppPage } from './app.po';
 import { browser, logging } from 'protractor';
+import { async } from 'q';
+const puppeteer = require('puppeteer');
+
+const sleep = () => {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      res();
+    }, 3000);
+  })
+}
 
 describe('workspace-project App', () => {
-  let page: AppPage;
+  
+  it('should display welcome message', async () => {
+    const browser = await puppeteer.launch({args: [
+      'no-sandbox',
+      'disable-setuid-sandbox',
+    ]});
+    const page = await browser.newPage();
 
-  beforeEach(() => {
-    page = new AppPage();
-  });
 
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getTitleText()).toEqual('front-end app is running!');
-  });
+    await page.setViewport({
+      "width": 1000,
+      "height": 1000
+    });
 
-  afterEach(async () => {
-    // Assert that there are no errors emitted from the browser
-    const logs = await browser.manage().logs().get(logging.Type.BROWSER);
-    expect(logs).not.toContain(jasmine.objectContaining({
-      level: logging.Level.SEVERE,
-    } as logging.Entry));
+    await page.goto('http://localhost:4200');
+
+    await page.keyboard.press('Enter', {delay: 2000});
+
+    const pageTitle = page.title();
+
+    expect(pageTitle).toEqual('FrontEnd');
   });
 });
