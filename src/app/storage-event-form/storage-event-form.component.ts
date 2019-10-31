@@ -57,6 +57,7 @@ export class StorageEventFormDialogComponent {
 
   shelfDisabled: boolean = false;
   packageDisabled: boolean = false;
+  formIsValid: boolean = false;
 
   actions: Action[] = [
     {action_id: 1, action_name: 'Checka in'},
@@ -86,45 +87,59 @@ export class StorageEventFormDialogComponent {
   toggleRequired(): void {
     this.storageEventForm.get('action').valueChanges.subscribe(act => {
       if(act && act === 1) { //Check-in
-        this.storageEventForm.controls['shelf'].setValidators([Validators.required]);
-        this.storageEventForm.controls['package'].setValidators([Validators.required]);
-        console.log("Pack req");
-        console.log("Shelf req");
+       this.storageEventForm.get('shelf').setValidators([Validators.required]);
+       this.storageEventForm.get('package').setValidators([Validators.required]);
       } else if (act && act === 2 ) { //Check-out
-        this.storageEventForm.controls['shelf'].clearValidators();
-        this.storageEventForm.controls['package'].clearValidators();
-        console.log("Pack clr");
-        console.log("Shelf clr");
+        this.storageEventForm.get('shelf').clearValidators();
+        this.storageEventForm.get('shelf').clearValidators();
       }
     });
-    this.storageEventForm.updateValueAndValidity();
+    this.storageEventForm.get('package').updateValueAndValidity();
+    this.storageEventForm.get('shelf').updateValueAndValidity();
   }
   toggleShelf(): void {
     this.storageEventForm.get('package').valueChanges.subscribe(pack => {
       if(pack && pack.length > 0) {
         this.shelfDisabled = true;
-        this.storageEventForm.controls['package'].setValidators([Validators.required]);
-        this.storageEventForm.controls['shelf'].clearValidators();
+        this.storageEventForm.get('package').setValidators([Validators.required]);
+        this.storageEventForm.get('shelf').clearValidators();
+        console.log("Package req, shelf cleared");
       } else {
         this.shelfDisabled = false;
-        this.storageEventForm.controls['shelf'].setValidators([Validators.required]);
-        this.storageEventForm.controls['package'].clearValidators();
+        this.storageEventForm.get('shelf').setValidators([Validators.required]);
+        this.storageEventForm.get('package').clearValidators();
+        console.log("Package cleared, shelf req");
       }
     });
-    this.storageEventForm.updateValueAndValidity();
+    this.storageEventForm.get('package').updateValueAndValidity();
+    this.storageEventForm.get('shelf').updateValueAndValidity();
   }
   togglePackage(): void {
     this.storageEventForm.get('shelf').valueChanges.subscribe(shelf => {
       if(shelf && shelf.length > 0) {
         this.packageDisabled = true;
-        this.storageEventForm.controls['shelf'].setValidators([Validators.required]);
-        this.storageEventForm.controls['package'].clearValidators();
+        this.storageEventForm.get('shelf').setValidators([Validators.required]);
+        this.storageEventForm.get('package').clearValidators();
+        console.log("Package cleared, shelf req");
       } else {
         this.packageDisabled = false;
-        this.storageEventForm.controls['package'].setValidators([Validators.required]);
-        this.storageEventForm.controls['shelf'].clearValidators();
+        this.storageEventForm.get('package').setValidators([Validators.required]);
+        this.storageEventForm.get('shelf').clearValidators();
+        console.log("Package req, shelf cleared");
       }
     });
-    this.storageEventForm.updateValueAndValidity();
+    this.storageEventForm.get('package').updateValueAndValidity();
+    this.storageEventForm.get('shelf').updateValueAndValidity();
+  }
+  public updateValidity(_event: Event) {
+    setTimeout(() => {
+      this.storageEventForm.get('package').updateValueAndValidity();
+      this.storageEventForm.get('shelf').updateValueAndValidity();
+      this.formIsValid = this.storageEventForm.valid;
+      console.log("set validity to " + this.storageEventForm.valid);
+    }, 0);
+  }
+  public isSubmitEnabled() {
+    return this.formIsValid;
   }
 }

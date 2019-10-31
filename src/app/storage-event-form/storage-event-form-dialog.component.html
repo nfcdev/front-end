@@ -5,7 +5,7 @@
         <mat-label>Typ av händelse</mat-label> 
       <mat-select required formControlName="action"
        [(ngModel)]="data.action" name="action"
-       (ngModelChange)="toggleRequired()">
+       (ngModelChange)="toggleRequired() && updateValidity($event)">
           <mat-option *ngFor="let act of actions" [value]="act.action_id">
             {{act.action_name}}
           </mat-option>
@@ -17,7 +17,8 @@
       <mat-label>Materialnummer</mat-label>
     <input class="form-control" type="number"
      matInput required formControlName="material_number"
-      [(ngModel)]="data.material_number">
+      [(ngModel)]="data.material_number"
+      (ngModelChange)="updateValidity($event)">
   </mat-form-field>
   <br>
   
@@ -25,7 +26,8 @@
       <mat-label>Kommentar</mat-label>
     <input class="form-control" type="text"
      matInput formControlName="comment"
-      [(ngModel)]="data.comment">
+      [(ngModel)]="data.comment"
+      (ngModelChange)="updateValidity($event)">
   </mat-form-field>
   <br>
 
@@ -38,7 +40,8 @@
          matInput formControlName="shelf"
          [readonly]="this.shelfDisabled"
           [(ngModel)]="data.shelf"
-          (ngModelChange)="togglePackage()">
+          (ngModelChange)="togglePackage()"
+          (ngModelChange)="updateValidity($event)">
           <div *ngIf="this.shelfDisabled">Kolli valt</div>
       </mat-form-field>
       
@@ -50,7 +53,8 @@
          matInput formControlName="package"
          [readonly]="this.packageDisabled"
           [(ngModel)]="data.package"
-          (ngModelChange)="toggleShelf()">
+          (ngModelChange)="toggleShelf()"
+          (ngModelChange)="updateValidity($event)">
           <div *ngIf="this.packageDisabled">Hylla valt</div>
       </mat-form-field>
       
@@ -60,6 +64,6 @@
 <div mat-dialog-actions>
   <button mat-raised-button (click)="onNoClick()">Avbryt</button>
   <button class="btn" mat-raised-button
-   [disabled]="storageEventForm.pristine || storageEventForm.invalid" 
-   [mat-dialog-close]="data" cdkFocusInitial>Skicka</button>
+   [disabled]="!isSubmitEnabled()" 
+   [mat-dialog-close]="data">Skicka</button>
 </div>
