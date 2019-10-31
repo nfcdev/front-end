@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CheckInFormComponent, CheckInFormDialogComponent } from './check-in-form/check-in-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TableArticleDataComponent } from './table-article-data/table-article-data.component';
 import { MatTableModule } from '@angular/material/table';
@@ -12,38 +13,49 @@ import { StorageEventFormComponent, StorageEventFormDialogComponent } from './st
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-import {
-  MatFormFieldModule,
-  MatInputModule,
-  MatSelectModule,
-  MatButtonModule
-} from '@angular/material';
+
+import { LoginComponent } from './login/login.component';
+
+
+import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule } from '@angular/material';
+import { MainComponent } from './main/main.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TableArticleDataComponent,
     StorageEventFormComponent,
-    StorageEventFormDialogComponent
+    StorageEventFormDialogComponent,
+    CheckInFormComponent,
+    CheckInFormDialogComponent,
+    LoginComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
+    MatDialogModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
     ReactiveFormsModule,
-    MatDialogModule,
-    FormsModule,
+    MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatButtonModule,
-    MatFormFieldModule
-    ],
+    BrowserAnimationsModule,
+    MatButtonModule
+  ],
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
+    CheckInFormDialogComponent,
     StorageEventFormDialogComponent
   ]
 })
