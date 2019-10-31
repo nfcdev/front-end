@@ -6,6 +6,8 @@ export interface DialogData {
   action: number;
   material_number: number;
   comment: string;
+  shelf: string;
+  package: string;
 }
 export interface Action {
   action_id: number;
@@ -52,6 +54,10 @@ export class StorageEventFormComponent implements OnInit {
 })
 export class StorageEventFormDialogComponent {
 
+
+  shelfDisabled: boolean = false;
+  packageDisabled: boolean = false;
+
   actions: Action[] = [
     {action_id: 1, action_name: 'Checka in'},
     {action_id: 2, action_name: 'Checka ut'}
@@ -68,10 +74,57 @@ export class StorageEventFormDialogComponent {
     this.storageEventForm = this.fb.group({
       action: ['', Validators.required],
       material_number: ['', Validators.required],
-      comment: ['']
+      comment: [''],
+      shelf: [''],
+      package: ['']
     });
+
   }
   onNoClick(): void {
     this.dialogRef.close();
+  }
+  toggleRequired(): void {
+    this.storageEventForm.get('action').valueChanges.subscribe(act => {
+      if(act && act === 1) { //Check-in
+        this.storageEventForm.controls['shelf'].setValidators([Validators.required]);
+        this.storageEventForm.controls['package'].setValidators([Validators.required]);
+        console.log("Pack req");
+        console.log("Shelf req");
+      } else if (act && act === 2 ) { //Check-out
+        this.storageEventForm.controls['shelf'].clearValidators();
+        this.storageEventForm.controls['package'].clearValidators();
+        console.log("Pack clr");
+        console.log("Shelf clr");
+      }
+    });
+    this.storageEventForm.updateValueAndValidity();
+  }
+  toggleShelf(): void {
+    this.storageEventForm.get('package').valueChanges.subscribe(pack => {
+      if(pack && pack.length > 0) {
+        this.shelfDisabled = true;
+        this.storageEventForm.controls['package'].setValidators([Validators.required]);
+        this.storageEventForm.controls['shelf'].clearValidators();
+      } else {
+        this.shelfDisabled = false;
+        this.storageEventForm.controls['shelf'].setValidators([Validators.required]);
+        this.storageEventForm.controls['package'].clearValidators();
+      }
+    });
+    this.storageEventForm.updateValueAndValidity();
+  }
+  togglePackage(): void {
+    this.storageEventForm.get('shelf').valueChanges.subscribe(shelf => {
+      if(shelf && shelf.length > 0) {
+        this.packageDisabled = true;
+        this.storageEventForm.controls['shelf'].setValidators([Validators.required]);
+        this.storageEventForm.controls['package'].clearValidators();
+      } else {
+        this.packageDisabled = false;
+        this.storageEventForm.controls['package'].setValidators([Validators.required]);
+        this.storageEventForm.controls['shelf'].clearValidators();
+      }
+    });
+    this.storageEventForm.updateValueAndValidity();
   }
 }

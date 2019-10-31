@@ -4,7 +4,8 @@
     <mat-form-field appearance="outline">
         <mat-label>Typ av händelse</mat-label> 
       <mat-select required formControlName="action"
-       [(ngModel)]="data.action" name="action">
+       [(ngModel)]="data.action" name="action"
+       (ngModelChange)="toggleRequired()">
           <mat-option *ngFor="let act of actions" [value]="act.action_id">
             {{act.action_name}}
           </mat-option>
@@ -27,6 +28,34 @@
       [(ngModel)]="data.comment">
   </mat-form-field>
   <br>
+
+  <div *ngIf="storageEventForm.value.action == 1">
+    <h1 mat-dialog-title>Fyll i hylla eller kolli</h1>
+    
+      <mat-form-field appearance="outline">
+          <mat-label>Hylla</mat-label>
+        <input class="form-control" type="text"
+         matInput formControlName="shelf"
+         [readonly]="this.shelfDisabled"
+          [(ngModel)]="data.shelf"
+          (ngModelChange)="togglePackage()">
+          <div *ngIf="this.shelfDisabled">Kolli valt</div>
+      </mat-form-field>
+      
+      <br>
+      
+      <mat-form-field appearance="outline">
+          <mat-label>Kolli</mat-label>
+        <input class="form-control" type="text"
+         matInput formControlName="package"
+         [readonly]="this.packageDisabled"
+          [(ngModel)]="data.package"
+          (ngModelChange)="toggleShelf()">
+          <div *ngIf="this.packageDisabled">Hylla valt</div>
+      </mat-form-field>
+      
+      <br>
+    </div>
 
 <div mat-dialog-actions>
   <button mat-raised-button (click)="onNoClick()">Avbryt</button>
