@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 export interface DialogData {
   action: number;
@@ -58,6 +58,7 @@ export class StorageEventFormDialogComponent {
   shelfDisabled: boolean = false;
   packageDisabled: boolean = false;
   formIsValid: boolean = false;
+  eventTypeChosen: boolean = false;
 
   actions: Action[] = [
     {action_id: 1, action_name: 'Checka in'},
@@ -75,68 +76,60 @@ export class StorageEventFormDialogComponent {
     this.storageEventForm = this.fb.group({
       action: ['', Validators.required],
       material_number: ['', Validators.required],
-      comment: [''],
-      shelf: [''],
-      package: ['']
+      comment: ['']
     });
 
   }
   onNoClick(): void {
     this.dialogRef.close();
   }
-  toggleRequired(): void {
+  toggleAction(): void { // Runs when we change the storage event type
     this.storageEventForm.get('action').valueChanges.subscribe(act => {
-      if(act && act === 1) { //Check-in
-       this.storageEventForm.get('shelf').setValidators([Validators.required]);
-       this.storageEventForm.get('package').setValidators([Validators.required]);
-      } else if (act && act === 2 ) { //Check-out
-        this.storageEventForm.get('shelf').clearValidators();
-        this.storageEventForm.get('shelf').clearValidators();
+      if(act && act === 1) { // We chose Check-in
+        // Adds new form controls for shelf and packages and makes them required
+       this.storageEventForm.addControl('shelf', new FormControl('', Validators.required));
+       this.storageEventForm.addControl('package', new FormControl('', Validators.required));
+      } else if (act && act === 2 ) { // We chose Check-out
+        // If we switch back to check-out we want to remove these controls
+        this.storageEventForm.removeControl('shelf');
+        this.storageEventForm.removeControl('package');
       }
     });
+  }
+  toggleShelf(): void {  // Checks if package is filled in and if so disables the shelf field
+    this.storageEventForm.get('package').valueChanges.subscribe(pack => { // When field is changed
+      if(pack && pack.length > 0) { // Package is filled in
+        this.shelfDisabled = true; // Make the shelf field read-only
+        this.storageEventForm.get('package').setValidators([Validators.required]); // Set package required
+        this.storageEventForm.get('shelf').clearValidators(); // Remove required from shelf
+      } else { // We get here if package is filled in and then erased
+        this.shelfDisabled = false; // Make the shelf field editable again
+        this.storageEventForm.get('shelf').setValidators([Validators.required]); // Set shelf required again
+      }
+    });
+    // Updates the form controls
     this.storageEventForm.get('package').updateValueAndValidity();
     this.storageEventForm.get('shelf').updateValueAndValidity();
   }
-  toggleShelf(): void {
-    this.storageEventForm.get('package').valueChanges.subscribe(pack => {
-      if(pack && pack.length > 0) {
-        this.shelfDisabled = true;
-        this.storageEventForm.get('package').setValidators([Validators.required]);
-        this.storageEventForm.get('shelf').clearValidators();
-        console.log("Package req, shelf cleared");
-      } else {
-        this.shelfDisabled = false;
-        this.storageEventForm.get('shelf').setValidators([Validators.required]);
-        this.storageEventForm.get('package').clearValidators();
-        console.log("Package cleared, shelf req");
-      }
-    });
-    this.storageEventForm.get('package').updateValueAndValidity();
-    this.storageEventForm.get('shelf').updateValueAndValidity();
-  }
-  togglePackage(): void {
+
+  togglePackage(): void { // Same function as above but to toggle the package field
     this.storageEventForm.get('shelf').valueChanges.subscribe(shelf => {
       if(shelf && shelf.length > 0) {
         this.packageDisabled = true;
         this.storageEventForm.get('shelf').setValidators([Validators.required]);
         this.storageEventForm.get('package').clearValidators();
-        console.log("Package cleared, shelf req");
       } else {
         this.packageDisabled = false;
         this.storageEventForm.get('package').setValidators([Validators.required]);
-        this.storageEventForm.get('shelf').clearValidators();
-        console.log("Package req, shelf cleared");
       }
     });
+    // Updates the form controls
     this.storageEventForm.get('package').updateValueAndValidity();
     this.storageEventForm.get('shelf').updateValueAndValidity();
   }
-  public updateValidity(_event: Event) {
-    setTimeout(() => {
-      this.storageEventForm.get('package').updateValueAndValidity();
-      this.storageEventForm.get('shelf').updateValueAndValidity();
+  public updateValidity(_event: Event) {  // Updates the validity of the form
+    setTimeout(() => { // Timeout is needed in order to not get an exception when button changes to disabled on action change
       this.formIsValid = this.storageEventForm.valid;
-      console.log("set validity to " + this.storageEventForm.valid);
     }, 0);
   }
   public isSubmitEnabled() {

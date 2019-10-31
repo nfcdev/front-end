@@ -5,7 +5,8 @@
         <mat-label>Typ av händelse</mat-label> 
       <mat-select required formControlName="action"
        [(ngModel)]="data.action" name="action"
-       (ngModelChange)="toggleRequired() && updateValidity($event)">
+       (ngModelChange)="toggleAction()"
+       (ngModelChange)="updateValidity($event)">
           <mat-option *ngFor="let act of actions" [value]="act.action_id">
             {{act.action_name}}
           </mat-option>
@@ -30,8 +31,9 @@
       (ngModelChange)="updateValidity($event)">
   </mat-form-field>
   <br>
-
-  <div *ngIf="storageEventForm.value.action == 1">
+  
+<!-- Shows extra fields if Check-in is chosen -->
+  <div *ngIf="storageEventForm.value.action == 1"> 
     <h1 mat-dialog-title>Fyll i hylla eller kolli</h1>
     
       <mat-form-field appearance="outline">
