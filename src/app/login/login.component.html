@@ -1,22 +1,23 @@
 <!-- The classes "login-body" and "login-div" are specified in the login.component.less
      This creates the login form with the button-->
-<div class = "login-body">
-    <div class = "login-div">
-        <h1>Logga in</h1>
-        <form [formGroup] = "loginForm" (ngSubmit) = "onSubmit()">
-        <mat-form-field appearance = "outline">
-            <mat-label>Användarnamn:</mat-label>
-            <input class ="form-control" type = "text"
-            matInput required formControlName = "username">
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance = "outline">
-            <mat-label>Lösenord:</mat-label>
-            <input class ="form-control" type = "password"
-            matInput required formControlName = "password">
-        </mat-form-field>
-        <br>
-        <button mat-raised-button type = "submit" [disabled] = "!loginForm.valid">Logga in</button>
-        </form>
-    </div>
+<div class="login-body">
+  <div class="login-div">
+    <h1>Logga in</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Användarnamn:</mat-label>
+        <input class="form-control" type="text" matInput required formControlName="username" />
+      </mat-form-field>
+      <br />
+      <mat-form-field appearance="outline">
+        <mat-label>Lösenord:</mat-label>
+        <input class="form-control" type="password" matInput required formControlName="password" />
+      </mat-form-field>
+      <br />
+      <button mat-raised-button href="https://stackoverflow.com/" [disabled]="!loginForm.valid">
+        Logga in
+      </button>
+    </form>
+    <a href="http://localhost:9000/login">Logga in här istället, det är mycket bättre</a>
+  </div>
 </div>
