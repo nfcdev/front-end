@@ -1,13 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CheckInFormComponent, CheckInFormDialogComponent } from './check-in-form/check-in-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule } from '@angular/material/dialog';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TableArticleDataComponent } from './table-article-data/table-article-data.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -15,6 +12,10 @@ import { MatSortModule } from '@angular/material/sort';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { StorageEventFormComponent, StorageEventFormDialogComponent } from './storage-event-form/storage-event-form.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
 import { LoginComponent } from './login/login.component';
 
 import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule } from '@angular/material';
@@ -23,7 +24,16 @@ import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 import { AuthenticationService } from './auth/authService';
 
 @NgModule({
-  declarations: [AppComponent, CheckInFormComponent, CheckInFormDialogComponent, TableArticleDataComponent, LoginComponent, MainComponent],
+  declarations: [
+    AppComponent,
+    TableArticleDataComponent,
+    StorageEventFormComponent,
+    StorageEventFormDialogComponent,
+    CheckInFormComponent,
+    CheckInFormDialogComponent,
+    LoginComponent,
+    MainComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -57,6 +67,6 @@ import { AuthenticationService } from './auth/authService';
     AuthenticationService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CheckInFormDialogComponent]
+  entryComponents: [CheckInFormDialogComponent, StorageEventFormDialogComponent]
 })
 export class AppModule {}
