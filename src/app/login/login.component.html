@@ -3,6 +3,7 @@
 <div class="login-body">
   <div class="login-div">
     <h1>Logga in</h1>
+    <!-- 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline">
         <mat-label>Användarnamn:</mat-label>
@@ -17,7 +18,8 @@
       <button mat-raised-button href="https://stackoverflow.com/" [disabled]="!loginForm.valid">
         Logga in
       </button>
-    </form>
-    <a href="http://localhost:9000/login">Logga in här istället, det är mycket bättre</a>
+    </form> 
+    -->
+    <a mat-raised-button href="http://localhost:9000/login">Klicka här för att logga in</a>
   </div>
 </div>

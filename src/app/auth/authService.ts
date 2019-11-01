@@ -1,6 +1,6 @@
-import { Injectable, Output, EventEmitter } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-import { JwtHelperService } from "@auth0/angular-jwt";
+import { Injectable, Output, EventEmitter } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
 export class AuthenticationService {
@@ -10,11 +10,10 @@ export class AuthenticationService {
   private helper = new JwtHelperService();
 
   constructor() {
-    this.token = localStorage.getItem("token");
+    this.token = localStorage.getItem('token');
     if (this.token) {
       this.isUserLoggedIn.next(true);
       const user = this.decodeToken();
-      console.log("User", user);
       this.user.next({ email: user.email });
     }
   }
@@ -28,7 +27,6 @@ export class AuthenticationService {
   }
 
   login(res): void {
-    console.log("Got login event");
     this.setToken(res.token);
     this.isUserLoggedIn.next(true);
     this.user.next({ email: this.decodeToken().email });
@@ -38,11 +36,11 @@ export class AuthenticationService {
     this.isUserLoggedIn.next(false);
     this.user.next({});
     this.token = null;
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
   }
 
   setToken(token) {
-    localStorage.setItem("token", token);
+    localStorage.setItem('token', token);
     this.token = token;
   }
 
