@@ -49,7 +49,7 @@ jobs:
           at: ~/
       - run:
           name: move front-end code
-          command: mkdir ~/project/c4solutions/back-end && sudo mv ~/front-end/* ~/project/c4solutions/front-end/
+          command: mkdir ~/project/c4solutions/front-end && sudo mv ~/front-end/* ~/project/c4solutions/front-end/
       - setup_remote_docker
       - run:
           name: run test
