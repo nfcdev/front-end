@@ -12,7 +12,8 @@ let page;
 
 before(async () => {
   browser = await puppeteer.launch({
-    headless: false,
+    // headless: false,
+    // slowMo: 100,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
@@ -34,5 +35,17 @@ describe('Test Website meta information', () => {
     const pageTitle = await page.title();
 
     expect(pageTitle).to.equal('FrontEnd');
+  });
+});
+
+
+describe('Login', () => {
+  it('User should be able to login', async () => {
+    await page.goto(HOST_URL, { waitUntil: 'networkidle2' });
+
+    await page.type('input[formcontrolname="username"]', 'Hello world!');
+    await page.type('input[formcontrolname="password"]', 'password');
+    await page.waitForSelector('button[type=submit]');
+    await page.click('button[type=submit]');
   });
 });
