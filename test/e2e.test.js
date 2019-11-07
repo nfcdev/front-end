@@ -1,9 +1,12 @@
 /* eslint-disable no-undef */
 const puppeteer = require('puppeteer');
 const { expect } = require('chai');
+const ip = require('ip');
+
+const IP_ADDRESS = ip.address();
 
 const PORT = '9001';
-const BASE_URL = process.env.IN_DOCKER ? 'test-frontend' : 'http://localhost';
+const BASE_URL = process.env.IN_DOCKER ? 'test-frontend' : `http://${IP_ADDRESS}`;
 const HOST_URL = `${BASE_URL}:${PORT}`;
 console.log(`Connecting to host url: ${HOST_URL}`);
 
