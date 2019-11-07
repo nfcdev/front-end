@@ -1,1 +1,7 @@
-<router-outlet></router-outlet>
+<mat-toolbar *ngIf="userLoggedIn">
+  <span>NFC Storage Tracker</span>
+  <span class="spacer"></span>
+  <span class="user-label">Inloggad som: {{ this.user?.email }}</span>
+  <mat-icon class="log-out-icon" (click)="logOut()" aria-hidden="false" aria-label="Logga ut användare">exit_to_app</mat-icon>
+</mat-toolbar>
+<router-outlet> </router-outlet>
