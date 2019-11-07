@@ -51,9 +51,9 @@ jobs:
           name: move front-end code
           command: mkdir ~/project/c4solutions/front-end && sudo mv ~/front-end/* ~/project/c4solutions/front-end/
       - setup_remote_docker
-      - run:
-          name: run test
-          command: cd c4solutions && npm install && npm run start
+      # - run:
+      #     name: run test
+      #     command: cd c4solutions && npm install && npm run start
 
 workflows:
   version: 2
