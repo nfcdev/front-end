@@ -22,6 +22,7 @@ import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule } 
 import { MainComponent } from './main/main.component';
 import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 import { AuthenticationService } from './auth/authService';
+import { StorageRoomStore } from './storage-room/storage-room-store';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { AuthenticationService } from './auth/authService';
       useClass: UnauthorizedInterceptor,
       multi: true
     },
-    AuthenticationService
+    AuthenticationService,
+    StorageRoomStore
   ],
   bootstrap: [AppComponent],
   entryComponents: [CheckInFormDialogComponent, StorageEventFormDialogComponent]
