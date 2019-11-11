@@ -22,6 +22,7 @@ import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule } 
 import { MainComponent } from './main/main.component';
 import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 import { AuthenticationService } from './auth/authService';
+import { MaterialPageComponent, MaterialPageDialogComponent } from './material-page/material-page.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,9 @@ import { AuthenticationService } from './auth/authService';
     CheckInFormComponent,
     CheckInFormDialogComponent,
     LoginComponent,
-    MainComponent
+    MainComponent,
+    MaterialPageComponent,
+    MaterialPageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +70,8 @@ import { AuthenticationService } from './auth/authService';
     AuthenticationService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CheckInFormDialogComponent, StorageEventFormDialogComponent]
+  entryComponents: [CheckInFormDialogComponent,
+     StorageEventFormDialogComponent,
+     MaterialPageDialogComponent]
 })
 export class AppModule {}
