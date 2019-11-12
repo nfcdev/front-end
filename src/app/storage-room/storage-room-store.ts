@@ -17,8 +17,12 @@ export class StorageRoomStore {
   });
 
   constructor() {
-    const storedRoom = JSON.parse(atob(localStorage.getItem('app_config')));
-    if (storedRoom) this.setStorageRoom(storedRoom);
+    const stored = localStorage.getItem('app_config');
+    let storedRoom: StorageRoom;
+    if (stored) {
+      storedRoom = JSON.parse(atob(stored));
+      this.setStorageRoom(storedRoom);
+    }
   }
 
   public setStorageRoom(storageRoom: StorageRoom) {
