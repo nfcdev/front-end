@@ -11,6 +11,7 @@ export interface EventTable {
   shelf: string;
   package: string;
   user: string;
+  comment: string;
 }
 
 export interface MaterialInfo {
@@ -23,16 +24,16 @@ export interface MaterialInfo {
 
 // Temporary test data. TODO: Get this data from the back-end using the provided material_number
 const EVENT_DATA: EventTable[] = [
-  {date: '20190123 11.02', event: 'Skapad', branch: 'Vapen', room: 'Vapen Material', shelf: 'H15', package: 'P1', user: 'user1'},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2'},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2'},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2'},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2'},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2'},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2'},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2'},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2'},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2'}
+  {date: '20190123 11.02', event: 'Skapad', branch: 'Vapen', room: 'Vapen Material', shelf: 'H15', package: 'P1', user: 'user1', comment: null},
+  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: 'En kommentar'},
+  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
+  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: 'En till kommentar'},
+  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
+  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
+  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
+  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
+  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
+  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''}
 ];
 
 const MATERIAL_DATA: MaterialInfo = {created_by: 'user1', created_date: '20190123',
@@ -88,7 +89,7 @@ export class MaterialPageComponent implements OnInit {
   templateUrl: './material-page-dialog.component.html',
 })
 export class MaterialPageDialogComponent {
-  displayedColumns = ['date', 'event', 'branch', 'room', 'shelf', 'package', 'user'];
+  displayedColumns = ['comment', 'date', 'event', 'branch', 'room', 'shelf', 'package', 'user'];
   dataSource = EVENT_DATA;
 
   constructor(
