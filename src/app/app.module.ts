@@ -18,7 +18,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { LoginComponent } from './login/login.component';
 
-import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatGridListModule } from '@angular/material';
 import { MainComponent } from './main/main.component';
 import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 import { AuthenticationService } from './auth/authService';
@@ -59,7 +59,8 @@ import { MaterialPageComponent, MaterialPageDialogComponent } from './material-p
     MatButtonModule,
     HttpClientModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatGridListModule
   ],
   providers: [
     {

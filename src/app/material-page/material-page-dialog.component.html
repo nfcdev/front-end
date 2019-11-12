@@ -1,6 +1,12 @@
 <div class="matPage">
-<div class="matPageHeader" style="text-align:center; font-size: 22px;">Materialnummer: {{data.material_number}}</div><br>
-
+<div class="MatPageHeader" style="width:100%;">
+  <mat-grid-list cols="7" rowHeight="100px">
+  <mat-grid-tile [colspan]='1' class="matPageBackButton"><button mat-raised-button (click)="onBackButton()">A--</button></mat-grid-tile>
+  <mat-grid-tile [colspan]='5' class="matPageHeaderText" style="font-size: 22px; text-decoration: underline; ">Materialnummer: {{data.material_number}}</mat-grid-tile>
+  <mat-grid-tile [colspan]='1' class="matPageExitButton"><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
+</mat-grid-list>
+</div>
+<br>
 <div class="matInfo">
     <table class="matInfoTable">
             <td>
@@ -10,16 +16,14 @@
               <tr><b class="matInfoLabel">Nuvarande plats </b></tr>
               <tr><b class="matInfoLabel">Senast ändrad   </b></tr>
             </td>
-            <!-- Get information from the back-end about the material and insert it here VV -->
             <td>
-              <tr>user1</tr>
-              <tr>20190123</tr>
-              <tr>Incheckad</tr>
-              <tr>Bio</tr>
-              <tr>20190211 11.03</tr>
+              <tr>{{data.MATERIAL_DATA.created_by}}</tr>
+              <tr>{{data.MATERIAL_DATA.created_date}}</tr>
+              <tr>{{data.MATERIAL_DATA.status}}</tr>
+              <tr>{{data.MATERIAL_DATA.current_placement}}</tr>
+              <tr>{{data.MATERIAL_DATA.last_modified}}</tr>
             </td>
     </table>
-
 </div>
 <!-- Table for displaying the material's events -->
 <div class="matEventTable">
