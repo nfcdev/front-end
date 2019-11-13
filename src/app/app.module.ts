@@ -23,6 +23,7 @@ import { MainComponent } from './main/main.component';
 import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 import { AuthenticationService } from './auth/authService';
 import { MaterialPageComponent, MaterialPageDialogComponent } from './material-page/material-page.component';
+import { PackagePageComponent, PackagePageDialogComponent } from './package-page/package-page.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,9 @@ import { MaterialPageComponent, MaterialPageDialogComponent } from './material-p
     LoginComponent,
     MainComponent,
     MaterialPageComponent,
-    MaterialPageDialogComponent
+    MaterialPageDialogComponent,
+    PackagePageComponent,
+    PackagePageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -73,6 +76,7 @@ import { MaterialPageComponent, MaterialPageDialogComponent } from './material-p
   bootstrap: [AppComponent],
   entryComponents: [CheckInFormDialogComponent,
      StorageEventFormDialogComponent,
-     MaterialPageDialogComponent]
+     MaterialPageDialogComponent,
+     PackagePageDialogComponent]
 })
 export class AppModule {}

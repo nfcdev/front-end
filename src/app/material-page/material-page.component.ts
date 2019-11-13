@@ -41,8 +41,8 @@ const MATERIAL_DATA: MaterialInfo = {created_by: 'user1', created_date: '2019012
 
 export interface DialogData{
   material_number: number;
-  EVENT_DATA: EventTable[];
-  MATERIAL_DATA: MaterialInfo;
+  event_data: EventTable[];
+  material_data: MaterialInfo;
 }
 
 
@@ -69,10 +69,11 @@ export class MaterialPageComponent implements OnInit {
 
     const dialogRef = this.dialog.open(MaterialPageDialogComponent, {
       width: '1000px',
+      height: '500px',
       data:
       {material_number: this.material_number,
-        EVENT_DATA: this.table_data,
-        MATERIAL_DATA: this.material_data
+        event_data: this.table_data,
+        material_data: this.material_data
       }
     });
 
@@ -90,17 +91,18 @@ export class MaterialPageComponent implements OnInit {
 })
 export class MaterialPageDialogComponent {
   displayedColumns = ['comment', 'date', 'event', 'branch', 'room', 'shelf', 'package', 'user'];
-  dataSource = EVENT_DATA;
+  dataSource = this.data.event_data;
 
   constructor(
     public dialogRef: MatDialogRef<MaterialPageDialogComponent>,
+    private allDialogRef: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     ) {
     }
 
     // Runs when X-button is clicked
-  onNoClick(): void {  
-    this.dialogRef.close();
+  onNoClick(): void {
+    this.allDialogRef.closeAll();
   }
     // Runs when the back arrow button is clicked
   onBackButton() : void {

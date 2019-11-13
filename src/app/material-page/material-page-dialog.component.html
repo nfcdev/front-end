@@ -1,6 +1,6 @@
 <div class="matPage">
 <div class="MatPageHeader" style="width:100%;">
-  <mat-grid-list cols="7" rowHeight="100px">
+  <mat-grid-list cols="7" rowHeight="50px">
   <mat-grid-tile [colspan]='1' class="matPageBackButton"><button mat-raised-button (click)="onBackButton()">←</button></mat-grid-tile>
   <mat-grid-tile [colspan]='5' class="matPageHeaderText" style="font-size: 22px; text-decoration: underline; ">Materialnummer: {{data.material_number}}</mat-grid-tile>
   <mat-grid-tile [colspan]='1' class="matPageExitButton"><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
@@ -17,19 +17,19 @@
               <tr><b class="matInfoLabel">Senast ändrad   </b></tr>
             </td>
             <td>
-              <tr>{{data.MATERIAL_DATA.created_by}}</tr>
-              <tr>{{data.MATERIAL_DATA.created_date}}</tr>
+              <tr>{{data.material_data.created_by}}</tr>
+              <tr>{{data.material_data.created_date}}</tr>
               <tr>
                   <mat-form-field appearance="none" style=" margin-bottom: -30px; margin-top: -20px; width: 100px;">
                   <select matNativeControl>
-                      <option value="{{data.MATERIAL_DATA.status}}">{{data.MATERIAL_DATA.status}}</option>
-                      <option *ngIf="data.MATERIAL_DATA.status == 'Incheckad'" value="Utcheckad" >Utcheckad</option>
-                      <option *ngIf="data.MATERIAL_DATA.status == 'Utcheckad'" value="Incheckad" >Incheckad</option>
+                      <option value="{{data.material_data.status}}">{{data.material_data.status}}</option>
+                      <option *ngIf="data.material_data.status == 'Incheckad'" value="Utcheckad" >Utcheckad</option>
+                      <option *ngIf="data.material_data.status == 'Utcheckad'" value="Incheckad" >Incheckad</option>
                     </select>
                   </mat-form-field>
               </tr>
-              <tr>{{data.MATERIAL_DATA.current_placement}}</tr>
-              <tr>{{data.MATERIAL_DATA.last_modified}}</tr>
+              <tr>{{data.material_data.current_placement}}</tr>
+              <tr>{{data.material_data.last_modified}}</tr>
             </td>
     </table>
 </div>
@@ -80,7 +80,7 @@
         <!-- Package Column -->
         <ng-container matColumnDef="package">
             <th mat-header-cell *matHeaderCellDef> Paket </th>
-            <td mat-cell *matCellDef="let row"> {{row.package}} </td>
+            <td mat-cell *matCellDef="let row"><app-package-page [package]='row.package'></app-package-page></td>
           </ng-container>
 
         <!-- User Column -->
