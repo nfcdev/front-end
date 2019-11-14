@@ -9,16 +9,19 @@ import { TableArticleDataComponent } from './table-article-data/table-article-da
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 import { StorageEventFormComponent, StorageEventFormDialogComponent } from './storage-event-form/storage-event-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-
 import { LoginComponent } from './login/login.component';
-
 
 import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule } from '@angular/material';
 import { MainComponent } from './main/main.component';
+import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
+import { AuthenticationService } from './auth/authService';
 
 @NgModule({
   declarations: [
@@ -50,15 +53,20 @@ import { MainComponent } from './main/main.component';
     MatInputModule,
     MatSelectModule,
     BrowserAnimationsModule,
-    MatButtonModule
+    MatButtonModule,
+    HttpClientModule,
+    MatToolbarModule,
+    MatIconModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
+      multi: true
+    },
+    AuthenticationService
+  ],
   bootstrap: [AppComponent],
-  entryComponents: [
-    CheckInFormDialogComponent,
-    StorageEventFormDialogComponent
-  ]
+  entryComponents: [CheckInFormDialogComponent, StorageEventFormDialogComponent]
 })
-
-
-export class AppModule { }
+export class AppModule {}
