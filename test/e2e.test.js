@@ -45,9 +45,15 @@ describe('Login', () => {
   it('User should be able to login', async () => {
     await page.goto(HOST_URL, { waitUntil: 'networkidle2' });
 
-    await page.type('input[formcontrolname="username"]', 'Hello world!');
-    await page.type('input[formcontrolname="password"]', 'password');
-    await page.waitForSelector('button[type=submit]');
-    await page.click('button[type=submit]');
+
+    await page.waitForSelector('a[href="http://localhost:9000/login"]');
+    await page.click('a[href="http://localhost:9000/login"]');
+
+    await page.waitForSelector('input[name="username"]');
+    await page.type('input[name="username"]', 'user1');
+    await page.type('input[name="password"]', 'user1pass');
+
+    await page.waitForSelector('button[tabindex="6"]');
+    await page.click('button[tabindex="6"]');
   });
 });
