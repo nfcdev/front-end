@@ -24,6 +24,7 @@ import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 import { AuthenticationService } from './auth/authService';
 import { MaterialPageComponent, MaterialPageDialogComponent } from './material-page/material-page.component';
 import { PackagePageComponent, PackagePageDialogComponent } from './package-page/package-page.component';
+import { ShelfPageComponent, ShelfPageDialogComponent } from './shelf-page/shelf-page.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,9 @@ import { PackagePageComponent, PackagePageDialogComponent } from './package-page
     MaterialPageComponent,
     MaterialPageDialogComponent,
     PackagePageComponent,
-    PackagePageDialogComponent
+    PackagePageDialogComponent,
+    ShelfPageComponent,
+    ShelfPageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -77,6 +80,7 @@ import { PackagePageComponent, PackagePageDialogComponent } from './package-page
   entryComponents: [CheckInFormDialogComponent,
      StorageEventFormDialogComponent,
      MaterialPageDialogComponent,
-     PackagePageDialogComponent]
+     PackagePageDialogComponent,
+     ShelfPageDialogComponent]
 })
 export class AppModule {}
