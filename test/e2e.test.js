@@ -2,9 +2,8 @@
 const puppeteer = require('puppeteer');
 const { expect } = require('chai');
 const ip = require('ip');
-// asd
-const IP_ADDRESS = ip.address();
 
+const IP_ADDRESS = process.env.TOOLBOX ? '192.168.99.100' : ip.address();
 const PORT = '9001';
 const BASE_URL = process.env.IN_DOCKER ? 'test-frontend' : `http://${IP_ADDRESS}`;
 const HOST_URL = `${BASE_URL}:${PORT}`;
@@ -15,8 +14,8 @@ let page;
 
 before(async () => {
   browser = await puppeteer.launch({
-    // headless: false,
-    // slowMo: 100,
+    headless: false,
+    slowMo: 100,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
