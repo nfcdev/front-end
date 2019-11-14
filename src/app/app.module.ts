@@ -18,7 +18,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { LoginComponent } from './login/login.component';
 
-import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatExpansionModule, MatCheckboxModule } from '@angular/material';
 import { MainComponent } from './main/main.component';
 import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 import { AuthenticationService } from './auth/authService';
@@ -56,7 +56,9 @@ import { AuthenticationService } from './auth/authService';
     MatButtonModule,
     HttpClientModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatExpansionModule,
+    MatCheckboxModule
   ],
   providers: [
     {

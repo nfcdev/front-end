@@ -14,6 +14,7 @@ export class TableArticleDataComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatTable, {static: false}) table: MatTable<TableArticleDataItem>;
   dataSource: TableArticleDataDataSource;
+  
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['article_nr', 'case_nr', 'storage_room', 'shelf',
