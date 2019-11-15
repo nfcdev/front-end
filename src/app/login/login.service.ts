@@ -7,7 +7,9 @@ export class LoginService {
   constructor(private http: HttpClient) {}
 
   getToken(): Observable<any> {
-    return this.http.get('http://localhost:9000/login/token', { withCredentials: true });
+    let ret = this.http.get('http://localhost:9000/login/token', { withCredentials: true });
+    console.log(ret);
+    return ret;
   }
 
   logout() {
