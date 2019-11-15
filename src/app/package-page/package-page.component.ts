@@ -21,13 +21,13 @@ const MATERIALS: number[] = [55123123, 42123123123, 33123123, 42123123, 77231233
 })
 export class PackagePageComponent implements OnInit {
   @Input()package: string;
-  materials: number[] = MATERIALS; // TODO: Get materials in the package from the back-end instead
+  materials: number[] = MATERIALS;
   constructor(public dialog: MatDialog) { }
 
 
   openDialog(): void {
 
-    // TODO: Get information about the material here and then send it to the dialog
+    // TODO: Get information about the materials that are in this package from the back end here and then send it to the dialog
 
     const dialogRef = this.dialog.open(PackagePageDialogComponent, {
       width: '1000px',

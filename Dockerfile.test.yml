@@ -1,0 +1,38 @@
+# FROM node:10.16.3
+# WORKDIR /front-end
+
+# RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64.deb
+# RUN dpkg -i dumb-init_*.deb || true
+# ENTRYPOINT ["dumb-init"]
+
+# # Install Google Chrome
+# RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+# RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+# RUN apt-get update && apt-get install -y google-chrome-stable
+
+# FROM buildkite/puppeteer:latest
+
+# ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
+# RUN chmod +x /wait
+# COPY ./package*.json ./
+# RUN npm install && npm install mocha -g
+# COPY ./test ./test
+# CMD /wait && npm run test
+
+
+# COPY package*.json ./
+# RUN npm install
+# RUN npm install -g @angular/cli
+
+# COPY . ./
+# EXPOSE 9800
+# CMD ["npm","test"]
+
+FROM node:10.16.3
+WORKDIR /front-end
+COPY package*.json ./
+RUN npm install
+RUN npm install -g @angular/cli
+COPY . ./
+EXPOSE 3001
+CMD npm run start:ci

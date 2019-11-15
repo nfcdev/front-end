@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 
-// Table fields
+// Event table fields
 export interface EventTable {
   date: string;
   event: string;
@@ -14,6 +14,7 @@ export interface EventTable {
   comment: string;
 }
 
+// Material info fields
 export interface MaterialInfo {
   created_by: string;
   created_date: string;
@@ -36,6 +37,7 @@ const EVENT_DATA: EventTable[] = [
   {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''}
 ];
 
+// Temporary test data.
 const MATERIAL_DATA: MaterialInfo = {created_by: 'user1', created_date: '20190123',
   status: 'Incheckat', current_placement: 'Bio; Bio Uppack; A15; P1', last_modified: '20190211 11.03'};
 
@@ -65,7 +67,7 @@ export class MaterialPageComponent implements OnInit {
 
   openDialog(): void {
 
-    // TODO: Get information about the material here and then send it to the dialog
+    // TODO: Get information about the material from the back end here and then send it to the dialog
 
     const dialogRef = this.dialog.open(MaterialPageDialogComponent, {
       width: '1000px',

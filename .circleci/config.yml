@@ -3,7 +3,6 @@ jobs:
   setup-environment:
     docker:
       - image: circleci/node:10.16.3
-
     working_directory: ~/front-end
     steps:
       - checkout
@@ -40,4 +39,4 @@ workflows:
       - setup-environment
       - build:
           requires:
-            - setup-environment 
+            - setup-environment

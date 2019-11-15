@@ -16,6 +16,7 @@ export interface ShelfPageData {
   package: string;
 }
 
+// Temporary test data
 const SHELF_DATA: ShelfPageData[] = [{material_number: 33, package: null},
   {material_number: 2233, package: 'P1'},
   {material_number: 7333, package: 'K1'},
@@ -44,7 +45,7 @@ export class ShelfPageComponent implements OnInit {
 
   openDialog(): void {
 
-    // TODO: Get materials and their packages here and send it to the dialog
+    // TODO: Get materials and their packages here from the back end and send it to the dialog
 
     const dialogRef = this.dialog.open(ShelfPageDialogComponent, {
       width: '1000px',
@@ -84,7 +85,6 @@ export class ShelfPageDialogComponent implements AfterViewInit{
   onBackButton(): void {
     this.dialogRef.close();
   }
-
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }
