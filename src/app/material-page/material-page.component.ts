@@ -25,19 +25,19 @@ export interface MaterialInfo {
 // Temporary test data. TODO: Get this data from the back-end using the provided material_number
 const EVENT_DATA: EventTable[] = [
   {date: '20190123 11.02', event: 'Skapad', branch: 'Vapen', room: 'Vapen Material', shelf: 'H15', package: 'P1', user: 'user1', comment: null},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: 'En kommentar'},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: 'En till kommentar'},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
-  {date: '20190211 11.03', event: 'Incheckad', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''}
+  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: 'En kommentar'},
+  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
+  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: 'En till kommentar'},
+  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
+  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
+  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
+  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
+  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
+  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''}
 ];
 
 const MATERIAL_DATA: MaterialInfo = {created_by: 'user1', created_date: '20190123',
-  status: 'Incheckad', current_placement: 'Bio; Bio Uppack; A15; P1', last_modified: '20190211 11.03'};
+  status: 'Incheckat', current_placement: 'Bio; Bio Uppack; A15; P1', last_modified: '20190211 11.03'};
 
 export interface DialogData{
   material_number: number;
@@ -83,7 +83,8 @@ export class MaterialPageComponent implements OnInit {
   }
 
 }
-
+// The different statuses a material can have
+const STATUSES: string[] = ['Incheckat','Utcheckat','Åter','Införlivat','Kasserat'];
 
 @Component({
   selector: 'app-material-page-dialog',
@@ -92,6 +93,8 @@ export class MaterialPageComponent implements OnInit {
 export class MaterialPageDialogComponent {
   displayedColumns = ['comment', 'date', 'event', 'branch', 'room', 'shelf', 'package', 'user'];
   dataSource = this.data.event_data;
+  statuses: string[] = STATUSES;
+
 
   constructor(
     public dialogRef: MatDialogRef<MaterialPageDialogComponent>,
@@ -107,6 +110,11 @@ export class MaterialPageDialogComponent {
     // Runs when the back arrow button is clicked
   onBackButton() : void {
     this.dialogRef.close();
+  }
+  // This function is run when a new status is selected in the status selection 
+  changeStatus() : void{
+    // TODO: change the status in the back-end
+    // console.log(this.data.material_data.status);
   }
 }
 

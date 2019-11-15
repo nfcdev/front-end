@@ -21,13 +21,8 @@
               <tr>{{data.material_data.created_date}}</tr>
               <tr>
                   <mat-form-field appearance="none" style=" margin-bottom: -30px; margin-top: -20px; width: 100px;">
-                  <select matNativeControl>
-                      <option value="{{data.material_data.status}}">{{data.material_data.status}}</option>
-                      <option *ngIf="data.material_data.status !== 'Incheckad'" value="Incheckad" >Utcheckad</option>
-                      <option *ngIf="data.material_data.status !== 'Utcheckad'" value="Utcheckad" >Incheckad</option>
-                      <option *ngIf="data.material_data.status !== 'Åter'" value="Åter" >Åter</option>
-                      <option *ngIf="data.material_data.status !== 'Kasserat'" value="Kasserat" >Kasserat</option>
-
+                  <select matNativeControl [(ngModel)]="data.material_data.status" name="status" (ngModelChange)="changeStatus()" [value]='data.material_data.status'>
+                      <option *ngFor="let st of statuses" [value]="st" >{{st}}</option>        
                     </select>
                   </mat-form-field>
               </tr>
