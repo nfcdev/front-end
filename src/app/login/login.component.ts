@@ -10,17 +10,20 @@ import { AuthenticationService } from "../auth/authService";
   providers: [LoginService]
 })
 export class LoginComponent implements OnInit {
-  u_shortcode: string;
-  u_password: string;
 
   constructor(private router: Router, private loginService: LoginService, private authService: AuthenticationService) { }
 
-  ngOnInit() {
-    this.loginService.getToken().subscribe(resp => {
-      console.log("resp", resp);
+  u_shortcode: string;
+  u_password: string;
 
-      this.authService.login(resp);
-      this.router.navigate(["/main"]);
+  ngOnInit() {
+    this.authService.isUserLoggedIn.subscribe(loggedIn => {
+      if (loggedIn) {
+        console.log("User is logged in!");
+        this.router.navigate(["/main"]);
+        return
+      }
+      console.log("User is not logged in!");
     });
   }
 
@@ -29,7 +32,17 @@ export class LoginComponent implements OnInit {
     console.log("Running login function.");
     console.log("kortkod", this.u_shortcode);
     console.log("lösenord", this.u_password);
-    // TODO: Request authentication/verification from back-end
-    // TODO: Add an action if the verification fails
+    let user = {
+      "password": this.u_password,
+      "name": this.u_shortcode
+    }
+    this.loginService.login(user).subscribe(res => {
+      console.log("res", res);
+      this.authService.login(res);
+      this.router.navigate(["/main"]);
+    });
+
+    // TODO: Add an action if the login fails. User most be notified
+    // It should be done in unauthorized.interceptor.ts and connected with observable
   }
 }

@@ -21,7 +21,7 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
       // A client-side or network error occurred. Handle it accordingly.
       console.error("An error occurred:", error.error.message);
     } else {
-      console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
+      console.error(`Backend returned code ${error.status}, ` + "body was:", error.error);
       if (error.status == 401) {
         this.router.navigateByUrl("/");
         this.authService.logout();
