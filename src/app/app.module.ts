@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { StorageEventFormComponent, StorageEventFormDialogComponent } from './storage-event-form/storage-event-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 
 import { LoginComponent } from './login/login.component';
 
@@ -56,7 +57,8 @@ import { AuthenticationService } from './auth/authService';
     MatButtonModule,
     HttpClientModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule
   ],
   providers: [
     {
@@ -69,4 +71,4 @@ import { AuthenticationService } from './auth/authService';
   bootstrap: [AppComponent],
   entryComponents: [CheckInFormDialogComponent, StorageEventFormDialogComponent]
 })
-export class AppModule {}
+export class AppModule { }

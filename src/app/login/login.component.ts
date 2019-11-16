@@ -1,7 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { LoginService } from "./login.service";
 import { AuthenticationService } from "../auth/authService";
 
@@ -12,26 +10,25 @@ import { AuthenticationService } from "../auth/authService";
   providers: [LoginService]
 })
 export class LoginComponent implements OnInit {
-  loginForm = new FormGroup({
-    username: new FormControl("", Validators.required),
-    password: new FormControl("", Validators.required)
-  });
+  u_shortcode: string;
+  u_password: string;
 
-  constructor(private router: Router, private loginService: LoginService, private authService: AuthenticationService) {}
+  constructor(private router: Router, private loginService: LoginService, private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.loginService.getToken().subscribe(resp => {
-      console.log("resp",resp);
-      
+      console.log("resp", resp);
+
       this.authService.login(resp);
       this.router.navigate(["/main"]);
     });
   }
 
-  onSubmit() {
+  login() {
     // This just prints the result, remove later.
-    console.log(this.loginForm.value);
-
+    console.log("Running login function.");
+    console.log("kortkod", this.u_shortcode);
+    console.log("lösenord", this.u_password);
     // TODO: Request authentication/verification from back-end
     // TODO: Add an action if the verification fails
   }

@@ -4,7 +4,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class LoginService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getToken(): Observable<any> {
     let ret = this.http.get('http://localhost:9000/login/token', { withCredentials: true });
@@ -15,7 +15,7 @@ export class LoginService {
   logout() {
     // return this.http.post('http://localhost:9000/logout', {}, { withCredentials: true });
     console.log("---Mocked logout---");
-    
+
     return new BehaviorSubject<any>({});;
   }
 }
