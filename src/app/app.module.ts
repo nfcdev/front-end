@@ -18,10 +18,11 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { LoginComponent } from './login/login.component';
 
-import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatMenuModule } from '@angular/material';
 import { MainComponent } from './main/main.component';
 import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 import { AuthenticationService } from './auth/authService';
+import { CheckInDropDownComponent } from './check-in-drop-down/check-in-drop-down.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AuthenticationService } from './auth/authService';
     CheckInFormComponent,
     CheckInFormDialogComponent,
     LoginComponent,
-    MainComponent
+    MainComponent,
+    CheckInDropDownComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +59,8 @@ import { AuthenticationService } from './auth/authService';
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatMenuModule
   ],
   providers: [
     {
