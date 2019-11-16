@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { MatCheckboxModule } from "@angular/material/checkbox";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CheckInFormComponent, CheckInFormDialogComponent } from './check-in-form/check-in-form.component';
@@ -56,7 +56,8 @@ import { AuthenticationService } from './auth/authService';
     MatButtonModule,
     HttpClientModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatCheckboxModule
   ],
   providers: [
     {
