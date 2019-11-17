@@ -1,9 +1,11 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
 import articleData from './example_data.json';
+import {BehaviorSubject} from 'rxjs';
 
 export interface TableArticleDataItem {
   material_number: string;
@@ -21,6 +23,9 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
   data: TableArticleDataItem[] = EXAMPLE_DATA;
   paginator: MatPaginator;
   sort: MatSort;
+  filterPredicate: (data: TableArticleDataItem, filter: string) => boolean;
+  filter: string;
+  filterCheckboxes: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
   constructor() {
     super();

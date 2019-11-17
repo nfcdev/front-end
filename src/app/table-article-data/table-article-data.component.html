@@ -1,5 +1,8 @@
 <div class="mat-elevation-z8">
   <table mat-table class="full-width-table" matSort aria-label="Elements">
+    <head>
+      
+    </head>
     <!-- Id Column -->
     <ng-container matColumnDef="article_nr">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Article #
@@ -15,22 +18,6 @@
 
     <ng-container matColumnDef="storage_room">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Room
-
-          <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  Filter
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              <mat-checkbox>
-                check me!
-              </mat-checkbox>
-              <mat-checkbox>
-                  Check me more!
-                </mat-checkbox>
-              
-            
-            </mat-expansion-panel>
       </th>
       <td mat-cell *matCellDef="let row">{{row.storage_room}}</td>
     </ng-container>
@@ -41,7 +28,8 @@
     </ng-container>
 
     <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Status
+      </th>
       <td mat-cell *matCellDef="let row">{{row.status}}</td>
     </ng-container>
 
@@ -54,10 +42,43 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Last modified</th>
       <td mat-cell *matCellDef="let row">{{row.last_modified}}</td>
     </ng-container>
-  -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <ng-container matColumnDef="empty">
+        <th mat-header-cell *matHeaderCellDef> 
+      </ng-container>
+
+    <ng-container matColumnDef="Filtring">
+        <th mat-header-cell *matHeaderCellDef>  
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Filter
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-checkbox>
+
+                </mat-checkbox>
+                <input type="checkbox"/>
+               <!--  <div *ngFor="let status of TableArticleDataItem; let i = index;">
+                <input type="checkbox" [(ngModel)]="TableArticleDataItem.checked"/>
+                <label for="{{TableArticleDataItem}}">{{TableArticleDataItem.status}}</label>
+              </div>
+              <!-- value="check_out" (change)="addFilter($event)">check_out -->
+                
+              
+              </mat-expansion-panel>
+        </th>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="['empty','empty','Filtring','Filtring','Filtring','empty','empty']"
+      class="first-header-row">
+    </tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"
+      class="second-header-row">
+    </tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  
 
   <mat-paginator #paginator
       [length]="dataSource?.data.length"
