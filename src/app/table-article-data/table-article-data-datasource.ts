@@ -19,6 +19,7 @@ const EXAMPLE_DATA: TableArticleDataItem[] = articleData;
 
 export class TableArticleDataDataSource extends DataSource<TableArticleDataItem> {
   data: TableArticleDataItem[] = EXAMPLE_DATA;
+  searchOption=[];
   paginator: MatPaginator;
   sort: MatSort;
 

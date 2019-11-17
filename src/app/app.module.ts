@@ -18,10 +18,12 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { LoginComponent } from './login/login.component';
 
-import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatAutocompleteModule, MatChipsModule } from '@angular/material';
 import { MainComponent } from './main/main.component';
 import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 import { AuthenticationService } from './auth/authService';
+import { SearchBarComponent } from './search-bar/search-bar.component';
+import { DataService } from './data.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { AuthenticationService } from './auth/authService';
     CheckInFormComponent,
     CheckInFormDialogComponent,
     LoginComponent,
-    MainComponent
+    MainComponent,
+    SearchBarComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +59,9 @@ import { AuthenticationService } from './auth/authService';
     MatButtonModule,
     HttpClientModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatAutocompleteModule,
+    MatChipsModule
   ],
   providers: [
     {
@@ -64,7 +69,8 @@ import { AuthenticationService } from './auth/authService';
       useClass: UnauthorizedInterceptor,
       multi: true
     },
-    AuthenticationService
+    AuthenticationService,
+    DataService
   ],
   bootstrap: [AppComponent],
   entryComponents: [CheckInFormDialogComponent, StorageEventFormDialogComponent]
