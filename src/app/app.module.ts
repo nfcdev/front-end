@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { MatCheckboxModule } from "@angular/material/checkbox";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CheckInFormComponent, CheckInFormDialogComponent } from './check-in-form/check-in-form.component';
@@ -66,7 +66,8 @@ import { ShelfPageComponent, ShelfPageDialogComponent } from './shelf-page/shelf
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
-    MatGridListModule
+    MatGridListModule,
+    MatCheckboxModule
   ],
   providers: [
     {
