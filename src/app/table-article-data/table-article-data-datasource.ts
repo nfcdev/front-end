@@ -23,9 +23,8 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
   data: TableArticleDataItem[] = EXAMPLE_DATA;
   paginator: MatPaginator;
   sort: MatSort;
-  filterPredicate: (data: TableArticleDataItem, filter: string) => boolean;
-  filter: string;
-  filterCheckboxes: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  
+  
 
   constructor() {
     super();
@@ -62,6 +61,7 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
     return data.splice(startIndex, this.paginator.pageSize);
   }
 
+  
   private getSortedData(data: TableArticleDataItem[]) {
     if (!this.sort.active || this.sort.direction === '') {
       return data;

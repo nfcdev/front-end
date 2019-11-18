@@ -1,3 +1,4 @@
+<input matInput (keyup)="applyFilter($event.target.value)">
 <div class="mat-elevation-z8">
   <table mat-table class="full-width-table" matSort aria-label="Elements">
     <head>
@@ -40,13 +41,14 @@
 
     <ng-container matColumnDef="last_modified">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Last modified</th>
-      <td mat-cell *matCellDef="let row">{{row.last_modified}}</td>
+      <td mat-cell *matCellDef="let row">{{row.last_modified}} </td>
+      
     </ng-container>
     <ng-container matColumnDef="empty">
         <th mat-header-cell *matHeaderCellDef> 
       </ng-container>
 
-    <ng-container matColumnDef="Filtring">
+    <ng-container matColumnDef="filter_room">
         <th mat-header-cell *matHeaderCellDef>  
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
@@ -54,22 +56,47 @@
                     Filter
                   </mat-panel-title>
                 </mat-expansion-panel-header>
-                <mat-checkbox>
-
-                </mat-checkbox>
-                <input type="checkbox"/>
-               <!--  <div *ngFor="let status of TableArticleDataItem; let i = index;">
-                <input type="checkbox" [(ngModel)]="TableArticleDataItem.checked"/>
-                <label for="{{TableArticleDataItem}}">{{TableArticleDataItem.status}}</label>
-              </div>
-              <!-- value="check_out" (change)="addFilter($event)">check_out -->
+                 <mat-checkbox value="Vapen">Vapen </mat-checkbox><br/>
+                 <mat-checkbox>Finger </mat-checkbox><br/>
+                 <mat-checkbox>DNA </mat-checkbox><br/>
+                 <mat-checkbox>Uppackning </mat-checkbox><br/>
                 
-              
               </mat-expansion-panel>
         </th>
       </ng-container>
+      <ng-container matColumnDef="filter_shelf">
+          <th mat-header-cell *matHeaderCellDef>  
+              <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Filter
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                   <mat-checkbox value="A">A </mat-checkbox><br/>
+                   <mat-checkbox>B </mat-checkbox><br/>
+                   <mat-checkbox>Hylla </mat-checkbox><br/>
+                  
+                </mat-expansion-panel>
+          </th>
+        </ng-container>
+        <ng-container matColumnDef="filter_status">
+            <th mat-header-cell *matHeaderCellDef>  
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        Filter
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                     <mat-checkbox value="check_in">check_in </mat-checkbox><br/>
+                     <mat-checkbox>check_out </mat-checkbox><br/>
+                     <mat-checkbox>discarded </mat-checkbox><br/>
+                     <mat-checkbox>processed </mat-checkbox><br/>
+                    
+                  </mat-expansion-panel>
+            </th>
+          </ng-container>
     
-      <tr mat-header-row *matHeaderRowDef="['empty','empty','Filtring','Filtring','Filtring','empty','empty']"
+      <tr mat-header-row *matHeaderRowDef="['empty','empty','filter_room','filter_shelf','filter_status','empty','empty']"
       class="first-header-row">
     </tr>
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"

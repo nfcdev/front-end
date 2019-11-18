@@ -16,35 +16,23 @@ export class TableArticleDataComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatTable, {static: false}) table: MatTable<TableArticleDataItem>;
   dataSource: TableArticleDataDataSource;
-  filterCheckboxes: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   
-
+  
+  
+  
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['article_nr', 'case_nr', 'storage_room', 'shelf',
                       'status', 'timestamp', 'last_modified'];
-           
+                     
 
   ngOnInit() {
     this.dataSource = new TableArticleDataDataSource();
-    this.dataSource.filterPredicate = (data: TableArticleDataItem, filter: string) => {
-      return filter.split(',').every((item: string) => data.status.indexOf(item) !== -1);
-    };
-    this.filterCheckboxes.subscribe((newFilterValue: string[]) => {
-      this.dataSource.filter = newFilterValue.join(',');
-    });
-  }
-
-  addFilter(change: MatCheckboxChange) {
-    if (this.filterCheckboxes.value.some((a: string) => a === change.source.value)) {
-      this.filterCheckboxes.next(this.filterCheckboxes.value.filter((a: string) => a !== change.source.value));
-    } else {
-      this.filterCheckboxes.next(this.filterCheckboxes.value.concat(change.source.value));
-    }
+    
   }
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
-    this.addFilter = this.addFilter;
+    
   }
 }
