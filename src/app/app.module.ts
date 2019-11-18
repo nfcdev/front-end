@@ -18,10 +18,13 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { LoginComponent } from './login/login.component';
 
-import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatGridListModule } from '@angular/material';
 import { MainComponent } from './main/main.component';
 import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 import { AuthenticationService } from './auth/authService';
+import { MaterialPageComponent, MaterialPageDialogComponent } from './material-page/material-page.component';
+import { PackagePageComponent, PackagePageDialogComponent } from './package-page/package-page.component';
+import { ShelfPageComponent, ShelfPageDialogComponent } from './shelf-page/shelf-page.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,13 @@ import { AuthenticationService } from './auth/authService';
     CheckInFormComponent,
     CheckInFormDialogComponent,
     LoginComponent,
-    MainComponent
+    MainComponent,
+    MaterialPageComponent,
+    MaterialPageDialogComponent,
+    PackagePageComponent,
+    PackagePageDialogComponent,
+    ShelfPageComponent,
+    ShelfPageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +66,7 @@ import { AuthenticationService } from './auth/authService';
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
+    MatGridListModule,
     MatCheckboxModule
   ],
   providers: [
@@ -68,6 +78,10 @@ import { AuthenticationService } from './auth/authService';
     AuthenticationService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CheckInFormDialogComponent, StorageEventFormDialogComponent]
+  entryComponents: [CheckInFormDialogComponent,
+     StorageEventFormDialogComponent,
+     MaterialPageDialogComponent,
+     PackagePageDialogComponent,
+     ShelfPageDialogComponent]
 })
 export class AppModule {}
