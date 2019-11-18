@@ -67,9 +67,9 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
       switch (this.sort.active) {
         case 'article_nr': return compare(a.material_number, b.material_number, isAsc);
         case 'case_nr': return compare(+a.reference_number, +b.reference_number, isAsc);
-        case 'storage_room': return compare(+a.storage_room, +b.storage_room, isAsc);
-        case 'shelf': return compare(+a.shelf, +b.shelf, isAsc);
-        case 'status': return compare(+a.status, +b.status, isAsc);
+        case 'storage_room': return compare(a.storage_room, b.storage_room, isAsc);
+        case 'shelf': return compare(a.shelf, b.shelf, isAsc);
+        case 'status': return compare(a.status, b.status, isAsc);
         case 'timestamp': return compare(+a.timestamp, +b.timestamp, isAsc);
         case 'last_modified': return compare(+a.last_modified, +b.last_modified, isAsc);
 
@@ -82,3 +82,5 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
 function compare(a, b, isAsc) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
+
+
