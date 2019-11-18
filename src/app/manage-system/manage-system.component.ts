@@ -31,8 +31,26 @@ export class ManageSystemComponent implements OnInit {
   // Variables for alerts
   private _success = new Subject<string>();
   private _failed = new Subject<string>();
+  private _branchConfirmation = new Subject<string>();
+  private _roomConfirmation = new Subject<string>();
+  private _shelfConfirmation = new Subject<string>();
   successMessage: string;
   failedMessage: string;
+
+  // Variables for removal confirmation alerts
+  branchConfirmationMessage: string;
+  branchToRemove: string;
+
+  roomConfirmationMessage: string;
+  roomToRemove: string;
+  roomToRemoveBranch: string;
+
+  shelfConfirmationMessage: string;
+  shelfToRemove: string;
+  shelfToRemoveRoom: string;
+  shelfToRemoveBranch: string;
+
+ 
   constructor() { }
 
   ngOnInit() {
@@ -68,8 +86,9 @@ export class ManageSystemComponent implements OnInit {
     { branch: 'Finger', room: 'Finger Labb', shelf: 'B13' },
     { branch: 'Finger', room: 'Finger Uppack', shelf: 'B14' }];
 
-   
 
+
+    // Sets up the alert system subscriptions. Debounce time sets how long the message stays before it disappears.
     this._success.subscribe((message) => this.successMessage = message);
     this._success.pipe(
       debounceTime(5000)
@@ -80,9 +99,24 @@ export class ManageSystemComponent implements OnInit {
       debounceTime(5000)
     ).subscribe(() => this.failedMessage = null);
 
+    this._branchConfirmation.subscribe((message) => this.branchConfirmationMessage = message);
+    this._branchConfirmation.pipe(
+      debounceTime(10000)
+    ).subscribe(() => this.branchConfirmationMessage = null);
+
+    this._roomConfirmation.subscribe((message) => this.roomConfirmationMessage = message);
+    this._roomConfirmation.pipe(
+      debounceTime(10000)
+    ).subscribe(() => this.roomConfirmationMessage = null);
+
+    this._shelfConfirmation.subscribe((message) => this.shelfConfirmationMessage = message);
+    this._shelfConfirmation.pipe(
+      debounceTime(10000)
+    ).subscribe(() => this.shelfConfirmationMessage = null);
+
 
   }
-  // Alert system
+  // Alert system methods
   public changeSuccessMessage(message: string) {
     this._success.next(message);
   }
@@ -91,29 +125,65 @@ export class ManageSystemComponent implements OnInit {
     this._failed.next(message);
   }
 
+  public changeBranchConfirmationMessage(message: string) {
+    this._branchConfirmation.next(message);
+  }
+
+  public changeRoomConfirmationMessage(message: string) {
+    this._roomConfirmation.next(message);
+  }
+
+  public changeShelfConfirmationMessage(message: string) {
+    this._shelfConfirmation.next(message);
+  }
 
 
-  // MANAGE BRANCHES
+
+  // --------------- MANAGE BRANCHES -----------------------
+
+  // Adds a new branch
   addBranch(newBranch: string): void {
-    if (newBranch.length > 0) {
-      this.branches.push(newBranch);
-      this.changeSuccessMessage('Ny avdelning ' + newBranch + ' skapad.');
+    this.branchConfirmationMessage = null;
+    this.shelfConfirmationMessage = null;
+    this.roomConfirmationMessage = null;
+    if (!this.branches.includes(newBranch)) {
+      if (newBranch.length > 0) {
+        this.branches.push(newBranch);
+        this.changeSuccessMessage('Du har lagt till avdelning ' + newBranch + '.');
+      }
+    } else {
+      this.changeFailedMessage('Avdelning ' + newBranch + ' finns redan.')
     }
     // TODO: save new branch in back-end
   }
-  removeBranch(branch: string): void {
+  // Sends the confirmation message to remove a branch
+  removeBranchConfirmation(branch: string): void {
+    this.successMessage = null;
+    this.failedMessage = null;
     if (this.isEmptyBranch(branch)) {
-      this.branches.forEach((item, index) => {
-        if (item === branch) this.branches.splice(index, 1);
-
-        // TODO: remove branch from back-end too
-      });
-      this.changeSuccessMessage('Avdelning ' + branch + ' borttagen.');
+      this.changeBranchConfirmationMessage('Vill du verkligen ta bort avdelning ' + branch + '?');
+      this.branchToRemove = branch;
     } else {
       this.changeFailedMessage('Kan inte ta bort avdelning som innehåller incheckade material.');
+      this.branchConfirmationMessage = null;
+      this.shelfConfirmationMessage = null;
+      this.roomConfirmationMessage = null;
     }
   }
-  // Returns true if branch is empty. TODO: check in back-end if branch is empty
+
+  // Removes the branch when the confirm button is pressed
+  removeBranch(branch: string): void {
+    this.branches.forEach((item, index) => {
+      if (item === branch) this.branches.splice(index, 1);
+
+      // TODO: remove branch from back-end too
+    });
+    this.changeSuccessMessage('Avdelning ' + branch + ' borttagen.');
+    this.branchConfirmationMessage = null;
+    this.chosenBranchInRoom = null;
+    this.chosenBranchInShelf = null;
+  }
+  // TEMPORARY: Returns true if branch is empty. TODO: check in back-end if branch is empty
   isEmptyBranch(branch: string): boolean {
     if (branch == 'Vapen') {
       return false;
@@ -122,31 +192,61 @@ export class ManageSystemComponent implements OnInit {
     }
   }
 
-  // MANAGE ROOMS
+  // ----------------- MANAGE ROOMS -------------------------
   addRoom(newRoom: string): void {
-    if (newRoom.length > 0) {
-      if(this.chosenBranchInRoom){
-      var temp: Room = { room: newRoom, branch: this.chosenBranchInRoom };
-      this.rooms.push(temp);
-      this.changeSuccessMessage('Nytt rum ' + newRoom + ' skapad i avdelning ' + this.chosenBranchInRoom);
+    this.branchConfirmationMessage = null;
+    this.shelfConfirmationMessage = null;
+    this.roomConfirmationMessage = null;
+
+    var temp: Room = { room: newRoom, branch: this.chosenBranchInRoom };
+    if (this.chosenBranchInRoom) {
+      if (!this.roomAlreadyExists(newRoom, this.chosenBranchInRoom)) {
+        if (newRoom.length > 0) {
+          this.rooms.push(temp);
+          this.changeSuccessMessage('Du har lagt till rum ' + newRoom + '.');
+        }
       } else {
-        this.changeFailedMessage('Välj en avdelning att skapa rummet i först.');
+        this.changeFailedMessage('Rum ' + newRoom + ' finns redan i denna avdelning.');
       }
+    } else {
+      this.changeFailedMessage('Välj en avdelning att skapa rummet i först.');
     }
     // TODO: save new room in back-end
   }
-  removeRoom(room: string): void {
+  roomAlreadyExists(room: string, branch: string): boolean {
+    var exists: boolean = false;
+    this.rooms.forEach(function (value) {
+      if (value.room.match(room) && value.branch.match(branch)) {
+        exists = true;
+      }
+    });
+    return exists;
+  }
+  removeRoomConfirmation(room: string, branch: string): void {
+    this.successMessage = null;
+    this.failedMessage = null;
     if (this.isEmptyRoom(room)) {
-      this.rooms.forEach((item, index) => {
-        if (item.room === room) this.rooms.splice(index, 1);
-        this.changeSuccessMessage('Rum ' + room + ' borttagen från avdelning ' + this.chosenBranchInRoom);
-        // TODO: remove room from back-end too
-      });
+      this.changeRoomConfirmationMessage('Vill du verkligen ta bort rum ' + room + '?');
+      this.roomToRemove = room;
+      this.roomToRemoveBranch = branch;
     } else {
       this.changeFailedMessage('Kan inte ta bort rum som innehåller incheckade material');
+      this.branchConfirmationMessage = null;
+      this.shelfConfirmationMessage = null;
+      this.roomConfirmationMessage = null;
     }
+
   }
-  // Returns true if room is empty. TODO: check in back-end if room is empty
+  removeRoom(room: string): void {
+    this.rooms.forEach((item, index) => {
+      if (item.room === room) this.rooms.splice(index, 1);
+    });
+    this.changeSuccessMessage('Rum ' + room + ' borttagen från avdelning ' + this.roomToRemoveBranch);
+    this.roomConfirmationMessage = null;
+    this.chosenRoomInShelf = null;
+    // TODO: remove room from back-end too
+  }
+  // TEMPORARY: Returns true if room is empty. TODO: check in back-end if room is empty
   isEmptyRoom(room: string): boolean {
     if (room == 'Vapen Material') {
       return false;
@@ -155,33 +255,63 @@ export class ManageSystemComponent implements OnInit {
     }
   }
 
-  // MANAGE SHELVES
+  // ------------------------ MANAGE SHELVES ---------------------------------
   addShelf(newShelf: string): void {
-    if (newShelf.length > 0) {
-      if(this.chosenBranchInShelf && this.chosenRoomInShelf){
-      var temp: Shelf = { shelf: newShelf, room: this.chosenRoomInShelf, branch: this.chosenBranchInShelf };
-      this.shelves.push(temp);
-      this.changeSuccessMessage('Ny hylla ' + newShelf + ' skapad i rum ' + this.chosenRoomInShelf +
-       ' i avdelning ' + this.chosenBranchInShelf);
+    this.branchConfirmationMessage = null;
+    this.shelfConfirmationMessage = null;
+    this.roomConfirmationMessage = null;
+
+    var temp: Shelf = { shelf: newShelf, room: this.chosenRoomInShelf, branch: this.chosenBranchInShelf };
+    if (this.chosenBranchInShelf && this.chosenRoomInShelf) {
+      if (!this.shelfAlreadyExists(newShelf, this.chosenRoomInShelf, this.chosenBranchInShelf)) {
+        if (newShelf.length > 0) {
+          this.shelves.push(temp);
+          this.changeSuccessMessage('Du har lagt till hylla ' + newShelf + '.');
+        }
       } else {
-        this.changeFailedMessage('Välj avdelning och rum först att skapa hyllan i först.');
+        this.changeFailedMessage('Hylla ' + newShelf + ' finns redan i detta rum');
       }
+    } else {
+      this.changeFailedMessage('Välj avdelning och rum att skapa hyllan i först.');
     }
     // TODO: save new shelf in back-end
   }
-  removeShelf(shelf: string): void {
+  shelfAlreadyExists(shelf: string, room: string, branch: string): boolean {
+    var exists: boolean = false;
+    this.shelves.forEach(function (value) {
+      if (value.shelf.match(shelf) && value.room.match(room) && value.branch.match(branch)) {
+        exists = true;
+      }
+    });
+    return exists;
+  }
+
+  removeShelfConfirmation(shelf: string, room: string, branch: string): void {
+    this.successMessage = null;
+    this.failedMessage = null;
     if (this.isEmptyShelf(shelf)) {
-      this.shelves.forEach((item, index) => {
-        if (item.shelf === shelf) this.shelves.splice(index, 1);
-        this.changeSuccessMessage('Hylla ' + shelf + ' borttagen från rum ' +
-         this.chosenRoomInShelf + ' i avdelning ' + this.chosenBranchInShelf);
-        // TODO: remove shelf from back-end too
-      });
+      this.changeShelfConfirmationMessage('Vill du verkligen ta bort hylla ' + shelf + '?');
+      this.shelfToRemove = shelf;
+      this.shelfToRemoveRoom = room;
+      this.shelfToRemoveBranch = branch;
     } else {
       this.changeFailedMessage('Kan inte ta bort hylla som innehåller incheckade material');
+      this.branchConfirmationMessage = null;
+      this.shelfConfirmationMessage = null;
+      this.roomConfirmationMessage = null;
     }
+
   }
-  // Returns true if shelf is empty. TODO: check in back-end if shelf is empty
+  removeShelf(shelf: string): void {
+    this.shelves.forEach((item, index) => {
+      if (item.shelf === shelf) this.shelves.splice(index, 1);
+    });
+    this.changeSuccessMessage('Hylla ' + shelf + ' borttagen från rum ' +
+        this.shelfToRemoveRoom + '.');
+      this.shelfConfirmationMessage = null;
+      // TODO: remove shelf from back-end too
+  }
+  // TEMPORARY: Returns true if shelf is empty. TODO: check in back-end if shelf is empty
   isEmptyShelf(shelf: string): boolean {
     if (shelf == 'A15') {
       return false;

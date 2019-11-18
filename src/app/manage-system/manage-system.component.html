@@ -20,7 +20,7 @@
                 <ul class="system-list">
                     <li *ngFor="let branch of branches">
                         {{branch}}
-                        <button mat-button (click)="removeBranch(branch);">X</button>
+                        <button mat-button (click)="removeBranchConfirmation(branch);">X</button>
                     </li>
                 </ul>
                 <input #newBranch class="add-new" placeholder="Ny avdelning"
@@ -45,7 +45,7 @@
                             <li>
                                 {{room.room}}
 
-                                <button mat-button (click)="removeRoom(room.room);">X</button>
+                                <button mat-button (click)="removeRoomConfirmation(room.room, chosenBranchInRoom);">X</button>
                             </li>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                     && shelf.room == chosenRoomInShelf">
                             <li>
                                 {{shelf.shelf}}
-                                <button mat-button (click)="removeShelf(shelf.shelf);">X</button>
+                                <button mat-button (click)="removeShelfConfirmation(shelf.shelf, chosenRoomInShelf, chosenBranchInShelf);">X</button>
                             </li>
                         </div>
                     </div>
@@ -96,9 +96,19 @@
         </mat-grid-tile>
 
     </mat-grid-list>
-    <div style="text-align: center; font-size: 24px; width: 50%; margin: auto;">
-        <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null || failedMessage">{{ successMessage }}</ngb-alert>
-        <ngb-alert *ngIf="failedMessage" type="danger" (close)="failedMessage = null || successMessage">{{ failedMessage }}</ngb-alert>
+    <div class="alerts">
+        <ngb-alert *ngIf="branchConfirmationMessage" type="warning" (close)="branchConfirmationMessage = null">{{ branchConfirmationMessage }}
+            <button style="margin-left: 10px;" mat-raised-button (click)="removeBranch(branchToRemove);">Ta bort</button>
+        </ngb-alert>
+        <ngb-alert *ngIf="roomConfirmationMessage" type="warning" (close)="roomConfirmationMessage = null">{{ roomConfirmationMessage }}
+            <button style="margin-left: 10px;" mat-raised-button (click)="removeRoom(roomToRemove);">Ta bort</button>
+        </ngb-alert>
+        <ngb-alert *ngIf="shelfConfirmationMessage" type="warning" (close)="shelfConfirmationMessage = null">{{ shelfConfirmationMessage }}
+            <button style="margin-left: 10px;" mat-raised-button (click)="removeShelf(shelfToRemove);">Ta bort</button>
+        </ngb-alert>
+
+        <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
+        <ngb-alert *ngIf="failedMessage" type="danger" (close)="failedMessage = null">{{ failedMessage }}</ngb-alert>
     </div>
 
 
