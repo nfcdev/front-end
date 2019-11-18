@@ -13,7 +13,7 @@ export class SearchBarComponent implements OnInit {
 
   myControl = new FormControl();
   filteredOptions: Observable<string[]>;
-  allPosts: TableArticleDataItem[];
+  allPosts: TableArticleDataDataSource;
   autoCompleteList: any[];
 
   @ViewChild('autocompleteInput') autocompleteInput: ElementRef;
