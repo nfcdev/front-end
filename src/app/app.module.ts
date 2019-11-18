@@ -23,6 +23,7 @@ import { MainComponent } from './main/main.component';
 import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 import { AuthenticationService } from './auth/authService';
 import { ManageSystemComponent } from './manage-system/manage-system.component';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { ManageSystemComponent } from './manage-system/manage-system.component';
     MatToolbarModule,
     MatIconModule,
     MatCheckboxModule,
-    MatGridListModule
+    MatGridListModule,
+    NgbAlertModule
   ],
   providers: [
     {

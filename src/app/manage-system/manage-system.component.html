@@ -96,9 +96,10 @@
         </mat-grid-tile>
 
     </mat-grid-list>
-    <div style="text-align: center; font-size: 24px;">
-        <div *ngIf="roomNotEmptyAlert">Kan inte ta bort rum som innehåller incheckade material</div>
-        <div *ngIf="branchNotEmptyAlert">Kan inte ta bort avdelning som innehåller incheckade material</div>
-        <div *ngIf="shelfNotEmptyAlert">Kan inte ta bort hylla som innehåller incheckade material</div>
+    <div style="text-align: center; font-size: 24px; width: 50%; margin: auto;">
+        <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null || failedMessage">{{ successMessage }}</ngb-alert>
+        <ngb-alert *ngIf="failedMessage" type="danger" (close)="failedMessage = null || successMessage">{{ failedMessage }}</ngb-alert>
     </div>
+
+
 </div>

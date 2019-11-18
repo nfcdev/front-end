@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 
 export interface Room {
@@ -22,14 +24,15 @@ export class ManageSystemComponent implements OnInit {
   rooms: Room[];
   shelves: Shelf[];
 
-  branchNotEmptyAlert: boolean = false;
-  roomNotEmptyAlert: boolean = false;
-  shelfNotEmptyAlert: boolean = false;
-
   chosenBranchInRoom: string;
   chosenBranchInShelf: string;
   chosenRoomInShelf: string;
 
+  // Variables for alerts
+  private _success = new Subject<string>();
+  private _failed = new Subject<string>();
+  successMessage: string;
+  failedMessage: string;
   constructor() { }
 
   ngOnInit() {
@@ -65,13 +68,36 @@ export class ManageSystemComponent implements OnInit {
     { branch: 'Finger', room: 'Finger Labb', shelf: 'B13' },
     { branch: 'Finger', room: 'Finger Uppack', shelf: 'B14' }];
 
+   
+
+    this._success.subscribe((message) => this.successMessage = message);
+    this._success.pipe(
+      debounceTime(5000)
+    ).subscribe(() => this.successMessage = null);
+
+    this._failed.subscribe((message) => this.failedMessage = message);
+    this._failed.pipe(
+      debounceTime(5000)
+    ).subscribe(() => this.failedMessage = null);
 
 
   }
+  // Alert system
+  public changeSuccessMessage(message: string) {
+    this._success.next(message);
+  }
+
+  public changeFailedMessage(message: string) {
+    this._failed.next(message);
+  }
+
+
+
   // MANAGE BRANCHES
   addBranch(newBranch: string): void {
     if (newBranch.length > 0) {
       this.branches.push(newBranch);
+      this.changeSuccessMessage('Ny avdelning ' + newBranch + ' skapad.');
     }
     // TODO: save new branch in back-end
   }
@@ -82,11 +108,9 @@ export class ManageSystemComponent implements OnInit {
 
         // TODO: remove branch from back-end too
       });
-      this.branchNotEmptyAlert = false;
-      this.shelfNotEmptyAlert = false;
-      this.roomNotEmptyAlert = false;
+      this.changeSuccessMessage('Avdelning ' + branch + ' borttagen.');
     } else {
-      this.branchNotEmptyAlert = true;
+      this.changeFailedMessage('Kan inte ta bort avdelning som innehåller incheckade material.');
     }
   }
   // Returns true if branch is empty. TODO: check in back-end if branch is empty
@@ -101,8 +125,13 @@ export class ManageSystemComponent implements OnInit {
   // MANAGE ROOMS
   addRoom(newRoom: string): void {
     if (newRoom.length > 0) {
+      if(this.chosenBranchInRoom){
       var temp: Room = { room: newRoom, branch: this.chosenBranchInRoom };
       this.rooms.push(temp);
+      this.changeSuccessMessage('Nytt rum ' + newRoom + ' skapad i avdelning ' + this.chosenBranchInRoom);
+      } else {
+        this.changeFailedMessage('Välj en avdelning att skapa rummet i först.');
+      }
     }
     // TODO: save new room in back-end
   }
@@ -110,13 +139,11 @@ export class ManageSystemComponent implements OnInit {
     if (this.isEmptyRoom(room)) {
       this.rooms.forEach((item, index) => {
         if (item.room === room) this.rooms.splice(index, 1);
+        this.changeSuccessMessage('Rum ' + room + ' borttagen från avdelning ' + this.chosenBranchInRoom);
         // TODO: remove room from back-end too
       });
-      this.roomNotEmptyAlert = false;
-      this.branchNotEmptyAlert = false;
-      this.shelfNotEmptyAlert = false;
     } else {
-      this.roomNotEmptyAlert = true;
+      this.changeFailedMessage('Kan inte ta bort rum som innehåller incheckade material');
     }
   }
   // Returns true if room is empty. TODO: check in back-end if room is empty
@@ -131,8 +158,14 @@ export class ManageSystemComponent implements OnInit {
   // MANAGE SHELVES
   addShelf(newShelf: string): void {
     if (newShelf.length > 0) {
+      if(this.chosenBranchInShelf && this.chosenRoomInShelf){
       var temp: Shelf = { shelf: newShelf, room: this.chosenRoomInShelf, branch: this.chosenBranchInShelf };
       this.shelves.push(temp);
+      this.changeSuccessMessage('Ny hylla ' + newShelf + ' skapad i rum ' + this.chosenRoomInShelf +
+       ' i avdelning ' + this.chosenBranchInShelf);
+      } else {
+        this.changeFailedMessage('Välj avdelning och rum först att skapa hyllan i först.');
+      }
     }
     // TODO: save new shelf in back-end
   }
@@ -140,14 +173,12 @@ export class ManageSystemComponent implements OnInit {
     if (this.isEmptyShelf(shelf)) {
       this.shelves.forEach((item, index) => {
         if (item.shelf === shelf) this.shelves.splice(index, 1);
-
+        this.changeSuccessMessage('Hylla ' + shelf + ' borttagen från rum ' +
+         this.chosenRoomInShelf + ' i avdelning ' + this.chosenBranchInShelf);
         // TODO: remove shelf from back-end too
       });
-      this.shelfNotEmptyAlert = false;
-      this.branchNotEmptyAlert = false;
-      this.roomNotEmptyAlert = false;
     } else {
-      this.shelfNotEmptyAlert = true;
+      this.changeFailedMessage('Kan inte ta bort hylla som innehåller incheckade material');
     }
   }
   // Returns true if shelf is empty. TODO: check in back-end if shelf is empty
