@@ -18,11 +18,14 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { LoginComponent } from './login/login.component';
 
-import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatMenuModule } from '@angular/material';
+import { CheckInDropDownComponent } from './check-in-drop-down/check-in-drop-down.component';
+import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatGridListModule } from '@angular/material';
 import { MainComponent } from './main/main.component';
 import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 import { AuthenticationService } from './auth/authService';
-import { CheckInDropDownComponent } from './check-in-drop-down/check-in-drop-down.component';
+import { MaterialPageComponent, MaterialPageDialogComponent } from './material-page/material-page.component';
+import { PackagePageComponent, PackagePageDialogComponent } from './package-page/package-page.component';
+import { ShelfPageComponent, ShelfPageDialogComponent } from './shelf-page/shelf-page.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,13 @@ import { CheckInDropDownComponent } from './check-in-drop-down/check-in-drop-dow
     CheckInFormDialogComponent,
     LoginComponent,
     MainComponent,
-    CheckInDropDownComponent
+    CheckInDropDownComponent,
+    MaterialPageComponent,
+    MaterialPageDialogComponent,
+    PackagePageComponent,
+    PackagePageDialogComponent,
+    ShelfPageComponent,
+    ShelfPageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -59,8 +68,9 @@ import { CheckInDropDownComponent } from './check-in-drop-down/check-in-drop-dow
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
-    MatCheckboxModule,
-    MatMenuModule
+    MatMenuModule,
+    MatGridListModule,
+    MatCheckboxModule
   ],
   providers: [
     {
@@ -71,6 +81,10 @@ import { CheckInDropDownComponent } from './check-in-drop-down/check-in-drop-dow
     AuthenticationService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CheckInFormDialogComponent, StorageEventFormDialogComponent]
+  entryComponents: [CheckInFormDialogComponent,
+     StorageEventFormDialogComponent,
+     MaterialPageDialogComponent,
+     PackagePageDialogComponent,
+     ShelfPageDialogComponent]
 })
 export class AppModule {}
