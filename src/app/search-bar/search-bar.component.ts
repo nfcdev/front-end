@@ -16,7 +16,7 @@ export class SearchBarComponent implements OnInit {
   allPosts: TableArticleDataDataSource;
   autoCompleteList: any[];
 
-  @ViewChild('autocompleteInput') autocompleteInput: ElementRef;
+  // @ViewChild('autocompleteInput') autocompleteInput: ElementRef;
   @Output() onSelectedOption = new EventEmitter();
 
   constructor(
@@ -30,61 +30,61 @@ export class SearchBarComponent implements OnInit {
       this.allPosts = posts
     });
 
-    //whe user types something in input, the value changes will come through this
-    this.myControl.valueChanges.subscribe(userInput => {
-      this.autoCompleteExpenseList(userInput);
-    })
-  }
+  //   //whe user types something in input, the value changes will come through this
+  //   this.myControl.valueChanges.subscribe(userInput => {
+  //     this.autoCompleteExpenseList(userInput);
+  //   })
+  // }
 
-  private autoCompleteExpenseList(input) {
-    let categoryList = this.filterCategoryList(input)
-    this.autoCompleteList = categoryList;
-  }
+  // private autoCompleteExpenseList(input) {
+  //   let categoryList = this.filterCategoryList(input)
+  //   this.autoCompleteList = categoryList;
+  // }
 
-  // this is where filtering the data happens according to your typed value
-  filterCategoryList(val) {
-    var categoryList = [];
-    if (typeof val !="string") {
-      return [];
-    }
-    if (val ==='' || val === null) {
-      return [];
-    }
+  // // this is where filtering the data happens according to your typed value
+  // filterCategoryList(val) {
+  //   var categoryList = [];
+  //   if (typeof val !="string") {
+  //     return [];
+  //   }
+  //   if (val ==='' || val === null) {
+  //     return [];
+  //   }
 
-    return val ? this.allPosts.filter(s => s.title.toLowerCase().indexOf(val.toLowerCase()) != -1)
-      : this.allPosts;
-  }
+  //   return val ? this.allPosts.filter(s => s.title.toLowerCase().indexOf(val.toLowerCase()) != -1)
+  //     : this.allPosts;
+  // }
 
-  //after you clicked an autosuggest option, this function will show the field you want to show in input
-  displayFn(post: TableArticleDataItem) {
-    let k = post ? post.title : post;
-    return k;
-  }
+  // //after you clicked an autosuggest option, this function will show the field you want to show in input
+  // displayFn(post: TableArticleDataItem) {
+  //   let k = post ? post.title : post;
+  //   return k;
+  // }
 
-  filterPostList(event) {
-    var posts = event.source.value;
-    if (!posts) {
-      this.dataService.searchOption = []
-    }
-    else {
-      this.dataService.searchOption.push(posts);
-      this.onSelectedOption.emit(this.dataService.searchOption)
-    }
-    this.focusOnPlaceInput();
-  }
+  // filterPostList(event) {
+  //   var posts = event.source.value;
+  //   if (!posts) {
+  //     this.dataService.searchOption = []
+  //   }
+  //   else {
+  //     this.dataService.searchOption.push(posts);
+  //     this.onSelectedOption.emit(this.dataService.searchOption)
+  //   }
+  //   this.focusOnPlaceInput();
+  // }
 
-  removeOption(option) {
-    let index =this.dataService.searchOption.indexOf(option);
-    if (index >=0)
-      this.dataService.searchOption.splice(index, 1);
-    this.focusOnPlaceInput();
+  // removeOption(option) {
+  //   let index =this.dataService.searchOption.indexOf(option);
+  //   if (index >=0)
+  //     this.dataService.searchOption.splice(index, 1);
+  //   this.focusOnPlaceInput();
 
-    this.onSelectedOption.emit(this.dataService.searchOption)
-  }
+  //   this.onSelectedOption.emit(this.dataService.searchOption)
+  // }
 
-  //focus the input field and remove any unwanted text
-  focusOnPlaceInput() {
-    this.autocompleteInput.nativeElement.focus();
-    this.autocompleteInput.nativeElement.value = '';
+  // //focus the input field and remove any unwanted text
+  // focusOnPlaceInput() {
+  //   this.autocompleteInput.nativeElement.focus();
+  //   this.autocompleteInput.nativeElement.value = '';
   }
 }
