@@ -31,7 +31,8 @@ import {
   MatSelectModule,
   MatButtonModule,
   MatGridListModule,
-  MatMenuModule
+  MatMenuModule,
+  MatCardModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
 import { UnauthorizedInterceptor } from "./auth/unauthorized.interceptor";
@@ -48,6 +49,7 @@ import {
   ShelfPageComponent,
   ShelfPageDialogComponent
 } from "./shelf-page/shelf-page.component";
+import { CheckInDublcateComponent, CheckInDublcateComponentDialog } from './check-in-dublcate/check-in-dublcate.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,9 @@ import {
     PackagePageComponent,
     PackagePageDialogComponent,
     ShelfPageComponent,
-    ShelfPageDialogComponent
+    ShelfPageDialogComponent,
+    CheckInDublcateComponent,
+    CheckInDublcateComponentDialog
   ],
   imports: [
     BrowserModule,
@@ -108,7 +112,9 @@ import {
     StorageEventFormDialogComponent,
     MaterialPageDialogComponent,
     PackagePageDialogComponent,
-    ShelfPageDialogComponent
+    ShelfPageDialogComponent,
+    CheckInDublcateComponentDialog,
+   
   ]
 })
 export class AppModule {}
