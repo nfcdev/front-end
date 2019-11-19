@@ -1,6 +1,6 @@
 {
   "name": "front-end",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 3001 --host 0.0.0.0 --poll=2000",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.5",
-    "@angular/cli": "~8.3.5",
+    "@angular/cli": "^8.3.18",
     "@angular/compiler-cli": "~8.2.7",
     "@angular/language-service": "~8.2.7",
     "@types/jasmine": "~3.3.8",
