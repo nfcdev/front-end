@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private loginService: LoginService, private authService: AuthenticationService) { }
 
   u_shortcode: string;
-  u_password: string;
+  // u_password: string;
 
   ngOnInit() {
     this.authService.isUserLoggedIn.subscribe(loggedIn => {
@@ -31,9 +31,7 @@ export class LoginComponent implements OnInit {
     // This just prints the result, remove later.
     console.log("Running login function.");
     console.log("kortkod", this.u_shortcode);
-    console.log("lösenord", this.u_password);
     let user = {
-      "password": this.u_password,
       "name": this.u_shortcode
     }
     this.loginService.login(user).subscribe(res => {
