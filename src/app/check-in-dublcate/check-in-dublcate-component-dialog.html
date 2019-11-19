@@ -1,0 +1,12 @@
+
+<div class ="errormessage">
+    Materialnummer/Paket XXX är för närvarande incheckat i rum RRR, vill du trots det checka in materialet i rum YYY? 
+</div>
+
+       
+      
+<mat-dialog-actions actionButtons align="end" style="margin-bottom: -20px;" >
+<button mat-button="cancel"  (click)="onNoClick()">Cancel</button>
+<span class="spacer"></span>
+<button mat-button="check_in" [mat-dialog-close]= cdkFocusInitial>Checka in</button>
+</mat-dialog-actions>
