@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { CdkTableModule } from '@angular/cdk/table';
+import { CdkTreeModule } from '@angular/cdk/tree';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CheckInFormComponent, CheckInFormDialogComponent } from './check-in-form/check-in-form.component';
@@ -15,15 +16,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { StorageEventFormComponent, StorageEventFormDialogComponent } from './storage-event-form/storage-event-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { LoginComponent } from './login/login.component';
 
-import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatAutocompleteModule, MatChipsModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatChipsModule } from '@angular/material';
 import { MainComponent } from './main/main.component';
 import { UnauthorizedInterceptor } from './auth/unauthorized.interceptor';
 import { AuthenticationService } from './auth/authService';
 import { SearchBarComponent } from './search-bar/search-bar.component';
-import { DataService } from './data.service';
 
 @NgModule({
   declarations: [
@@ -60,8 +60,10 @@ import { DataService } from './data.service';
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
-    MatAutocompleteModule,
-    MatChipsModule
+    MatChipsModule,
+    CdkTableModule,
+    CdkTreeModule,
+    MatCheckboxModule
   ],
   providers: [
     {
@@ -69,8 +71,7 @@ import { DataService } from './data.service';
       useClass: UnauthorizedInterceptor,
       multi: true
     },
-    AuthenticationService,
-    DataService
+    AuthenticationService
   ],
   bootstrap: [AppComponent],
   entryComponents: [CheckInFormDialogComponent, StorageEventFormDialogComponent]

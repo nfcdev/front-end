@@ -1,19 +1,26 @@
-<form class="example-form">
-    <mat-form-field class="example-full-width" style="width: 100%">
+<form  (ngSubmit)="onSubmit()">
+    <!-- Creates the search-bar component as well as the chip list -->
+    <mat-form-field appearance="outline">
         <mat-chip-list #chipList>
-            <mat-chip style="margin-top:0.4em;" *ngFor="let option of this.dataService.searchOption" (removed)="removeOption(option)">
-                
-                <span>{{option.title}}</span>
-
-                <mat-icon matChipRemove>cancel</mat-icon>
+            <mat-chip *ngFor="let option of options" [selectable] = "selectable"
+                    [removable]="removable" (removed)="remove(option)">
+                {{option.name}} ({{option.category}})
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
             </mat-chip>
-            <input #autocompleteInput type="text" placeholder="Enter title" aria-label="Number" matInput [formControl]="myControl"
-                [matAutocomplete]="auto" [matChipInputFor]="chipList">
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                <mat-option *ngFor="let option of autoCompleteList" [value]="option" (onSelectionChange)="filterPostLists($event)">
-                    {{option.title}}
-                </mat-option>
-            </mat-autocomplete>
+            <input placeholder="Sök..."
+                    [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)">
         </mat-chip-list>
     </mat-form-field>
+    <mat-checkbox [(ngModel)]="activeMaterials" [ngModelOptions]="{standalone: true}">
+        Aktiva material
+    </mat-checkbox>
+    <mat-checkbox [(ngModel)]="inactiveMaterials" [ngModelOptions]="{standalone: true}">
+        Inaktiva material
+    </mat-checkbox>
+    <button mat-raised-button href="https://stackoverflow.com/" id="search">
+        Sök
+    </button>
 </form>
