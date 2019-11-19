@@ -50,7 +50,7 @@ import {
   ShelfPageDialogComponent
 } from "./shelf-page/shelf-page.component";
 import { MaterialCheckOutComponent, MaterialCheckOutDialogComponent } from './material-check-out/material-check-out.component';
-import { MaterialCheckOutService } from './material-check-out/material-check-out.service';
+import { MaterialCheckBoxService } from './table-article-data/material-check-box.service';
 
 @NgModule({
   declarations: [
@@ -107,7 +107,7 @@ import { MaterialCheckOutService } from './material-check-out/material-check-out
       multi: true,
     },
     AuthenticationService,
-    MaterialCheckOutService
+    MaterialCheckBoxService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

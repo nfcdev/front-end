@@ -6,13 +6,47 @@
         <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
     </mat-grid-list>
 </div>
+<div class="checkOutContent">
+    <!-- Content to display before confirmation -->
+    <div *ngIf="!checkOutConfirmed && data.preChosen">
+        <div style="text-align: center;">Vill du checka ut följande material?</div>
+    </div>
 
-<div style="text-align: center;" >Vill du checka ut följande material?</div>
-<div class="materialCheckOutTable" >
-    <mat-list dense role="list"></mat-list>
-    <ng-container *ngFor="let sel of data.selection">
-    <mat-list-item role="listitem">
-            <app-material-page [material_number]='sel.material_number'></app-material-page>
-    </mat-list-item>
-</ng-container>
+    <div class="addNewField" *ngIf="!data.preChosen && !checkOutConfirmed">
+        Scanna/fyll i nytt material:
+        <input #newMaterial class="add-new" placeholder="Fyll i.."
+            (keyup.enter)="addMaterial(newMaterial.value); newMaterial.value='' ">
+        <button mat-raised-button (click)="addMaterial(newMaterial.value); newMaterial.value='' ">
+            +
+        </button>
+    </div>
+    <!-- Content to display after confirmation -->
+    <div *ngIf="checkOutConfirmed">
+        <div style="text-align: center;">Följande material har checkats ut:</div>
+    </div>
+
+    <div class="materialCheckOutTable">
+        <mat-list dense role="list"></mat-list>
+        <ng-container *ngFor="let sel of data.selectedMaterials">
+            <mat-list-item role="listitem">
+                <app-material-page [material_number]='sel'></app-material-page>
+                <button *ngIf="!checkOutConfirmed && !data.preChosen" mat-button (click)="removeMaterial(sel);">X</button>
+            </mat-list-item>
+        </ng-container>
+    </div>
+
+
+    <div *ngIf="!checkOutConfirmed">
+        <div class="commentField">
+            Anteckningar:
+            <textarea placeholder="Fyll i..." [(ngModel)]="comment"></textarea>
+        </div>
+        <mat-grid-list cols="7" rowHeight="50px">
+            <mat-grid-tile [colspan]='1'></mat-grid-tile>
+            <mat-grid-tile [colspan]='5' style="font-size: 22px;
+              text-decoration: underline; "></mat-grid-tile>
+            <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onConfirm()">Checka Ut</button>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
 </div>

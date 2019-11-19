@@ -1,10 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MaterialCheckOutService } from './material-check-out.service';
+import { MaterialCheckBoxService } from '../table-article-data/material-check-box.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { SelectionModel, DataSource } from '@angular/cdk/collections';
 
 export interface DialogData{
-  selection: any[];
+  selectedMaterials: string[];
+  preChosen: boolean;
 }
 
 @Component({
@@ -15,28 +16,38 @@ export interface DialogData{
 export class MaterialCheckOutComponent implements OnInit {
 
   selection : any[];
+  materials: string[];
+  preChosen = false;
 
   constructor(
-    private materialCheckOutService: MaterialCheckOutService,
+    private materialCheckBoxService: MaterialCheckBoxService,
     public dialog: MatDialog
   ) { }
 
   openDialog(): void {
     // TODO: Get information about the material from the back end here and then send it to the dialog
-    console.log(this.selection);
+
+    if((this.materials && this.materials.length > 0)){
+      this.preChosen= true;
+    } else {
+      this.preChosen = false;
+      this.materials = [] as string[];
+    }
     const dialogRef = this.dialog.open(MaterialCheckOutDialogComponent, {
       width: '1000px',
       height: '500px',
       data:
-      {selection: this.selection
+      {selectedMaterials: this.materials,
+        preChosen: this.preChosen
       }
     });
 
   }
 
   ngOnInit() {
-    this.materialCheckOutService.checkBoxChange.subscribe(newSelection => {
+    this.materialCheckBoxService.checkBoxChange.subscribe(newSelection => {
       this.selection = newSelection.selected;
+      this.materials = this.selection.reduce((a, {material_number}) => a.concat(material_number), []);
     });
   }
 
@@ -46,8 +57,11 @@ export class MaterialCheckOutComponent implements OnInit {
   selector: 'app-material-check-out-dialog',
   templateUrl: './material-check-out-dialog.component.html',
 })
-export class MaterialCheckOutDialogComponent {
-
+export class MaterialCheckOutDialogComponent implements OnInit{
+  checkOutConfirmed : boolean = false;
+  preChosen : boolean = false;
+  comment: string;
+  materials: string[];
   constructor(
     public dialogRef: MatDialogRef<MaterialCheckOutDialogComponent>,
     private allDialogRef: MatDialog,
@@ -62,5 +76,30 @@ export class MaterialCheckOutDialogComponent {
     // Runs when the back arrow button is clicked
   onBackButton() : void {
     this.dialogRef.close();
+  }
+// Runs when "Checka Ut" button is pressed
+  onConfirm() : void {
+    this.checkOutConfirmed = true;
+    console.log(this.comment);
+    // TODO: check-out the materials in this.data.selection in the back-end here together with this.comment
+  }
+
+  addMaterial(newMaterial : string) : void {
+    if (!this.data.selectedMaterials.includes(newMaterial)) { 
+      if(newMaterial.length > 0) {
+        this.data.selectedMaterials.push(newMaterial);
+      }
+    } else {
+      // duplicate
+    }
+  }
+
+  removeMaterial(material : string ) : void {
+    this.data.selectedMaterials.forEach((item, index) => {
+      if (item === material) this.data.selectedMaterials.splice(index, 1);
+    });
+  }
+  ngOnInit() : void {
+    
   }
 }
