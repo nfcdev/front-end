@@ -38,3 +38,4 @@ const puppeteer = require('puppeteer');
   await page.screenshot({ path: 'after_sort_article.png' })
   await browser.close()
 })()
+
