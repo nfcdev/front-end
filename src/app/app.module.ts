@@ -19,7 +19,7 @@ import {
   StorageEventFormComponent,
   StorageEventFormDialogComponent
 } from "./storage-event-form/storage-event-form.component";
-import { MatDialogModule } from "@angular/material/dialog";
+import { MatDialogModule} from '@angular/material/dialog';
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { LoginComponent } from "./login/login.component";
@@ -34,6 +34,7 @@ import {
   MatMenuModule,
   MatCardModule
 } from "@angular/material";
+
 import { MainComponent } from "./main/main.component";
 import { UnauthorizedInterceptor } from "./auth/unauthorized.interceptor";
 import { AuthenticationService } from "./auth/authService";
@@ -49,6 +50,7 @@ import {
   ShelfPageComponent,
   ShelfPageDialogComponent
 } from "./shelf-page/shelf-page.component";
+
 import { CheckInDublcateComponent, CheckInDublcateComponentDialog } from './check-in-dublcate/check-in-dublcate.component';
 
 @NgModule({
@@ -96,7 +98,8 @@ import { CheckInDublcateComponent, CheckInDublcateComponentDialog } from './chec
     MatIconModule,
     MatMenuModule,
     MatGridListModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule
   ],
   providers: [
     {
