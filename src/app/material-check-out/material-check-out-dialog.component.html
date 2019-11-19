@@ -1,0 +1,18 @@
+<div class="packPageHeader" style="width:100%;">
+    <mat-grid-list cols="7" rowHeight="50px">
+        <mat-grid-tile [colspan]='1'></mat-grid-tile>
+        <mat-grid-tile [colspan]='5' style="font-size: 22px;
+      text-decoration: underline; "></mat-grid-tile>
+        <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
+    </mat-grid-list>
+</div>
+
+<div style="text-align: center;" >Vill du checka ut följande material?</div>
+<div class="materialCheckOutTable" >
+    <mat-list dense role="list"></mat-list>
+    <ng-container *ngFor="let sel of data.selection">
+    <mat-list-item role="listitem">
+            <app-material-page [material_number]='sel.material_number'></app-material-page>
+    </mat-list-item>
+</ng-container>
+</div>
