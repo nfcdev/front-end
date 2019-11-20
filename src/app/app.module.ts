@@ -1,5 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import { CdkTableModule } from "@angular/cdk/table";
+import { CdkTreeModule } from "@angular/cdk/tree";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -36,9 +38,11 @@ import {
   MatButtonModule,
   MatGridListModule,
   MatMenuModule,
-  MatListModule
+  MatListModule,
+  MatChipsModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
+import { SearchBarComponent } from "./search-bar/search-bar.component";
 import { UnauthorizedInterceptor } from "./auth/unauthorized.interceptor";
 import { AuthenticationService } from "./auth/authService";
 import {
@@ -76,6 +80,7 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     CheckInFormDialogComponent,
     LoginComponent,
     MainComponent,
+    SearchBarComponent,
     ManageSystemComponent,
     CheckInDropDownComponent,
     MaterialPageComponent,
@@ -114,6 +119,9 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
+    MatChipsModule,
+    CdkTableModule,
+    CdkTreeModule,
     MatCardModule,
     MatCheckboxModule,
     MatGridListModule,
