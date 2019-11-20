@@ -1,0 +1,26 @@
+<form  (ngSubmit)="onSubmit()">
+    <!-- Creates the search-bar component as well as the chip list -->
+    <mat-form-field appearance="outline">
+        <mat-chip-list #chipList>
+            <mat-chip *ngFor="let option of options" [selectable] = "selectable"
+                    [removable]="removable" (removed)="remove(option)">
+                {{option.name}} ({{option.category}})
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="Sök..."
+                    [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+    </mat-form-field>
+    <mat-checkbox [(ngModel)]="activeMaterials" [ngModelOptions]="{standalone: true}">
+        Aktiva material
+    </mat-checkbox>
+    <mat-checkbox [(ngModel)]="inactiveMaterials" [ngModelOptions]="{standalone: true}">
+        Inaktiva material
+    </mat-checkbox>
+    <button mat-raised-button href="https://stackoverflow.com/" id="search">
+        Sök
+    </button>
+</form>
