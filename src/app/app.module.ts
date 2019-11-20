@@ -21,7 +21,8 @@ import {
   StorageEventFormComponent,
   StorageEventFormDialogComponent
 } from "./storage-event-form/storage-event-form.component";
-import { MatDialogModule } from "@angular/material/dialog";
+import { DataVisualizationDialogComponent } from "./data-visualization/data-visualization.component";
+import { MatDialogModule } from "@angular/material";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { MatCardModule } from "@angular/material/card";
 
@@ -58,6 +59,7 @@ import {
 } from "./shelf-page/shelf-page.component";
 import { ManageSystemComponent } from "./manage-system/manage-system.component";
 import { NgbAlertModule } from "@ng-bootstrap/ng-bootstrap";
+import { DataVisualizationComponent } from "./data-visualization/data-visualization.component";
 import {
   ManageSystemDialogComponent,
   ManageSystemDialogPopupComponent
@@ -90,7 +92,9 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     ManageSystemDialogComponent,
     ManageSystemDialogPopupComponent,
     MaterialCheckOutComponent,
-    MaterialCheckOutDialogComponent
+    MaterialCheckOutDialogComponent,
+    DataVisualizationComponent,
+    DataVisualizationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -145,7 +149,8 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     PackagePageDialogComponent,
     ShelfPageDialogComponent,
     ManageSystemDialogPopupComponent,
-    MaterialCheckOutDialogComponent
+    MaterialCheckOutDialogComponent,
+    DataVisualizationDialogComponent
   ]
 })
 export class AppModule {}
