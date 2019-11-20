@@ -57,7 +57,6 @@ import { ManageSystemDialogComponent, ManageSystemDialogPopupComponent } from '.
 import { MaterialCheckOutComponent, MaterialCheckOutDialogComponent } from './material-check-out/material-check-out.component';
 import { MaterialCheckBoxService } from './table-article-data/material-check-box.service';
 import { MaterialCheckInComponent } from './material-check-in/material-check-in.component';
-import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -81,7 +80,6 @@ import {MatChipsModule} from '@angular/material/chips';
     ManageSystemDialogPopupComponent,
     MaterialCheckOutComponent,
     MaterialCheckOutDialogComponent,
-    MaterialCheckInComponent,
     MaterialCheckInComponent,
     MaterialCheckInDialogComponent,
   ],
