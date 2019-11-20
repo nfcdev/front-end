@@ -1,0 +1,115 @@
+<div class="systemManagement">
+
+    <mat-grid-list cols="3" rowHeight="50px">
+        <mat-grid-tile>
+            <h2>Avdelning</h2>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <h2>Rum</h2>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <h2>Hylla</h2>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+
+    <mat-grid-list cols="3" rowHeight="600px">
+        <!-- Manage branches -->
+        <mat-grid-tile>
+            <div>
+                <ul class="system-list">
+                    <li *ngFor="let branch of branches">
+                        {{branch}}
+                        <button mat-button (click)="removeBranchConfirmation(branch);">X</button>
+                    </li>
+                </ul>
+                <input #newBranch class="add-new" placeholder="Ny avdelning"
+                    (keyup.enter)="addBranch(newBranch.value); newBranch.value='' ">
+                <button mat-button (click)="addBranch(newBranch.value); newBranch.value='' ">+</button>
+            </div>
+        </mat-grid-tile>
+
+        <!-- Manage rooms -->
+        <mat-grid-tile>
+            <div>
+                Avdelning
+                <select id="branchSelect" [(ngModel)]="chosenBranchInRoom" placeholder="Välj avdelning">
+                    <option value="" selected style="display:none;">Välj avdelning</option>
+                    <option *ngFor="let br of branches" [value]="br">
+                        {{br}}
+                    </option>
+                </select>
+                <ul class="system-list">
+                    <div *ngFor="let room of rooms">
+                        <div *ngIf="room.branch == chosenBranchInRoom">
+                            <li>
+                                {{room.room}}
+
+                                <button mat-button (click)="removeRoomConfirmation(room.room, chosenBranchInRoom);">X</button>
+                            </li>
+                        </div>
+                    </div>
+                </ul>
+                <input #newRoom class="add-new" placeholder="Nytt rum"
+                    (keyup.enter)="addRoom(newRoom.value); newRoom.value='' ">
+                <button mat-button (click)="addRoom(newRoom.value); newRoom.value='' ">+</button>
+            </div>
+        </mat-grid-tile>
+
+        <!-- Manage shelves -->
+        <mat-grid-tile>
+            <div>
+                Avdelning
+                <select id="branchSelectForShelf" [(ngModel)]="chosenBranchInShelf" placeholder="Välj avdelning"
+                    (ngModelChange)="chosenRoomInShelf='' ">
+                    <option value="" selected style="display:none;">Välj avdelning</option>
+                    <option *ngFor="let br of branches" [value]="br">
+                        {{br}}
+                    </option>
+                </select><br>
+                Rum
+                <select id="roomSelectForShelf" [(ngModel)]="chosenRoomInShelf" placeholder="Välj rum">
+                    <ng-container *ngFor="let rm of rooms">
+                        <ng-container *ngIf="rm.branch == chosenBranchInShelf">
+                            <option value="" selected style="display:none;">Välj rum</option>
+                            <option [value]="rm.room">
+                                {{rm.room}}
+                            </option>
+                        </ng-container>
+                    </ng-container>
+                </select>
+                <ul class="system-list">
+                    <div *ngFor="let shelf of shelves">
+                        <div *ngIf="shelf.branch == chosenBranchInShelf
+                    && shelf.room == chosenRoomInShelf">
+                            <li>
+                                {{shelf.shelf}}
+                                <button mat-button (click)="removeShelfConfirmation(shelf.shelf, chosenRoomInShelf, chosenBranchInShelf);">X</button>
+                            </li>
+                        </div>
+                    </div>
+                </ul>
+                <input #newShelf class="add-new" placeholder="Ny hylla"
+                    (keyup.enter)="addShelf(newShelf.value); newShelf.value='' ">
+                <button mat-button (click)="addShelf(newShelf.value); newShelf.value='' ">+</button>
+            </div>
+        </mat-grid-tile>
+
+    </mat-grid-list>
+    <div class="alerts">
+        <ngb-alert *ngIf="branchConfirmationMessage" type="warning" (close)="branchConfirmationMessage = null">{{ branchConfirmationMessage }}
+            <button style="margin-left: 10px;" mat-raised-button (click)="removeBranch(branchToRemove);">Ta bort</button>
+        </ngb-alert>
+        <ngb-alert *ngIf="roomConfirmationMessage" type="warning" (close)="roomConfirmationMessage = null">{{ roomConfirmationMessage }}
+            <button style="margin-left: 10px;" mat-raised-button (click)="removeRoom(roomToRemove);">Ta bort</button>
+        </ngb-alert>
+        <ngb-alert *ngIf="shelfConfirmationMessage" type="warning" (close)="shelfConfirmationMessage = null">{{ shelfConfirmationMessage }}
+            <button style="margin-left: 10px;" mat-raised-button (click)="removeShelf(shelfToRemove);">Ta bort</button>
+        </ngb-alert>
+
+        <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
+        <ngb-alert *ngIf="failedMessage" type="danger" (close)="failedMessage = null">{{ failedMessage }}</ngb-alert>
+    </div>
+
+
+</div>

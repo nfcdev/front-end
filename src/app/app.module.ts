@@ -49,6 +49,9 @@ import {
   ShelfPageComponent,
   ShelfPageDialogComponent
 } from "./shelf-page/shelf-page.component";
+import { ManageSystemComponent } from "./manage-system/manage-system.component";
+import { NgbAlertModule } from "@ng-bootstrap/ng-bootstrap";
+import { ManageSystemDialogComponent, ManageSystemDialogPopupComponent } from './manage-system/manage-system-dialog/manage-system-dialog.component';
 import { MaterialCheckOutComponent, MaterialCheckOutDialogComponent } from './material-check-out/material-check-out.component';
 import { MaterialCheckBoxService } from './table-article-data/material-check-box.service';
 
@@ -62,6 +65,7 @@ import { MaterialCheckBoxService } from './table-article-data/material-check-box
     CheckInFormDialogComponent,
     LoginComponent,
     MainComponent,
+    ManageSystemComponent,
     CheckInDropDownComponent,
     MaterialPageComponent,
     MaterialPageDialogComponent,
@@ -69,6 +73,8 @@ import { MaterialCheckBoxService } from './table-article-data/material-check-box
     PackagePageDialogComponent,
     ShelfPageComponent,
     ShelfPageDialogComponent,
+    ManageSystemDialogComponent,
+    ManageSystemDialogPopupComponent,
     MaterialCheckOutComponent,
     MaterialCheckOutDialogComponent
   ],
@@ -95,6 +101,9 @@ import { MaterialCheckBoxService } from './table-article-data/material-check-box
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
+    MatCheckboxModule,
+    MatGridListModule,
+    NgbAlertModule,
     MatMenuModule,
     MatGridListModule,
     MatCheckboxModule,
@@ -116,6 +125,7 @@ import { MaterialCheckBoxService } from './table-article-data/material-check-box
     MaterialPageDialogComponent,
     PackagePageDialogComponent,
     ShelfPageDialogComponent,
+    ManageSystemDialogPopupComponent,
     MaterialCheckOutDialogComponent
   ]
 })
