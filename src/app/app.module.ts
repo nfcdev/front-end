@@ -1,26 +1,23 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { AppRoutingModule } from "./app-routing.module";
-import { AppComponent } from "./app.component";
-import {
-  CheckInFormComponent,
-  CheckInFormDialogComponent
-} from "./check-in-form/check-in-form.component";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { TableArticleDataComponent } from "./table-article-data/table-article-data.component";
-import { MatTableModule } from "@angular/material/table";
-import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatSortModule } from "@angular/material/sort";
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatIconModule } from "@angular/material/icon";
-import {
-  StorageEventFormComponent,
-  StorageEventFormDialogComponent
-} from "./storage-event-form/storage-event-form.component";
-import { MatDialogModule } from "@angular/material/dialog";
-import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { CheckInFormComponent, CheckInFormDialogComponent } from './check-in-form/check-in-form.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TableArticleDataComponent } from './table-article-data/table-article-data.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { StorageEventFormComponent, StorageEventFormDialogComponent } from './storage-event-form/storage-event-form.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+
+
 
 import { LoginComponent } from "./login/login.component";
 
@@ -101,6 +98,7 @@ import { MaterialCheckBoxService } from './table-article-data/material-check-box
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
+    MatCardModule,
     MatCheckboxModule,
     MatGridListModule,
     NgbAlertModule,
@@ -129,4 +127,4 @@ import { MaterialCheckBoxService } from './table-article-data/material-check-box
     MaterialCheckOutDialogComponent
   ]
 })
-export class AppModule {}
+export class AppModule { }

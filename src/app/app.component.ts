@@ -17,16 +17,20 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.user.subscribe(user => {
+      console.log("user",user);
       this.user = user;
     });
 
     this.authService.isUserLoggedIn.subscribe(loggedIn => {
+      console.log("loggedIn",loggedIn);
+      
       this.userLoggedIn = loggedIn;
     });
   }
 
   logOut(): void {
     this.authService.logout();
+    // TODO: Do we really have to connect to the backend here? Can't it be enough to just clear the local store from the token?
     this.loginService.logout().subscribe(res => {
       console.log('Res: ', res);
       this.router.navigate(['/']);

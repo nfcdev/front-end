@@ -13,8 +13,7 @@ export class AuthenticationService {
     this.token = localStorage.getItem('token');
     if (this.token) {
       this.isUserLoggedIn.next(true);
-      const user = this.decodeToken();
-      this.user.next({ email: user.email });
+      this.sendShortcode();
     }
   }
 
@@ -29,7 +28,13 @@ export class AuthenticationService {
   login(res): void {
     this.setToken(res.token);
     this.isUserLoggedIn.next(true);
-    this.user.next({ email: this.decodeToken().email });
+    console.log("this.decodeToken()",this.decodeToken());
+    this.sendShortcode()
+    
+  }
+
+  private sendShortcode(){
+    this.user.next({ shortcode: this.decodeToken().shortcode });
   }
 
   logout(): void {
