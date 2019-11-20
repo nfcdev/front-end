@@ -31,7 +31,8 @@ import {
   MatSelectModule,
   MatButtonModule,
   MatGridListModule,
-  MatMenuModule
+  MatMenuModule,
+  MatListModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
 import { UnauthorizedInterceptor } from "./auth/unauthorized.interceptor";
@@ -51,6 +52,8 @@ import {
 import { ManageSystemComponent } from "./manage-system/manage-system.component";
 import { NgbAlertModule } from "@ng-bootstrap/ng-bootstrap";
 import { ManageSystemDialogComponent, ManageSystemDialogPopupComponent } from './manage-system/manage-system-dialog/manage-system-dialog.component';
+import { MaterialCheckOutComponent, MaterialCheckOutDialogComponent } from './material-check-out/material-check-out.component';
+import { MaterialCheckBoxService } from './table-article-data/material-check-box.service';
 
 @NgModule({
   declarations: [
@@ -71,7 +74,9 @@ import { ManageSystemDialogComponent, ManageSystemDialogPopupComponent } from '.
     ShelfPageComponent,
     ShelfPageDialogComponent,
     ManageSystemDialogComponent,
-    ManageSystemDialogPopupComponent
+    ManageSystemDialogPopupComponent,
+    MaterialCheckOutComponent,
+    MaterialCheckOutDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -101,15 +106,17 @@ import { ManageSystemDialogComponent, ManageSystemDialogPopupComponent } from '.
     NgbAlertModule,
     MatMenuModule,
     MatGridListModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatListModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedInterceptor,
-      multi: true
+      multi: true,
     },
-    AuthenticationService
+    AuthenticationService,
+    MaterialCheckBoxService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -118,7 +125,8 @@ import { ManageSystemDialogComponent, ManageSystemDialogPopupComponent } from '.
     MaterialPageDialogComponent,
     PackagePageDialogComponent,
     ShelfPageDialogComponent,
-    ManageSystemDialogPopupComponent
+    ManageSystemDialogPopupComponent,
+    MaterialCheckOutDialogComponent
   ]
 })
 export class AppModule {}
