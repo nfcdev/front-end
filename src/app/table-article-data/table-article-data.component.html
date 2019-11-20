@@ -19,7 +19,7 @@
     <!-- Id Column -->
     <ng-container matColumnDef="article_nr">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Article #</th>
-      <td mat-cell *matCellDef="let row">{{row.material_number}}</td>
+      <td mat-cell *matCellDef="let row"><app-material-page [material_number]='row.material_number'></app-material-page></td>
     </ng-container>
 
     <!-- Name Column -->
@@ -35,7 +35,7 @@
 
     <ng-container matColumnDef="shelf">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Shelf</th>
-      <td mat-cell *matCellDef="let row">{{row.shelf}}</td>
+      <td mat-cell *matCellDef="let row"><app-shelf-page [shelf]='row.shelf'></app-shelf-page></td>
     </ng-container>
 
     <ng-container matColumnDef="status">

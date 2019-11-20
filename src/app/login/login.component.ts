@@ -1,7 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { LoginService } from "./login.service";
 import { AuthenticationService } from "../auth/authService";
 
@@ -12,25 +10,37 @@ import { AuthenticationService } from "../auth/authService";
   providers: [LoginService]
 })
 export class LoginComponent implements OnInit {
-  loginForm = new FormGroup({
-    username: new FormControl("", Validators.required),
-    password: new FormControl("", Validators.required)
-  });
 
-  constructor(private router: Router, private loginService: LoginService, private authService: AuthenticationService) {}
+  constructor(private router: Router, private loginService: LoginService, private authService: AuthenticationService) { }
+
+  u_shortcode: string;
+  // u_password: string;
 
   ngOnInit() {
-    this.loginService.getToken().subscribe(resp => {
-      this.authService.login(resp);
-      this.router.navigate(["/main"]);
+    this.authService.isUserLoggedIn.subscribe(loggedIn => {
+      if (loggedIn) {
+        console.log("User is logged in!");
+        this.router.navigate(["/main"]);
+        return
+      }
+      console.log("User is not logged in!");
     });
   }
 
-  onSubmit() {
+  login() {
     // This just prints the result, remove later.
-    console.log(this.loginForm.value);
+    console.log("Running login function.");
+    console.log("kortkod", this.u_shortcode);
+    let user = {
+      "name": this.u_shortcode
+    }
+    this.loginService.login(user).subscribe(res => {
+      console.log("res", res);
+      this.authService.login(res);
+      this.router.navigate(["/main"]);
+    });
 
-    // TODO: Request authentication/verification from back-end
-    // TODO: Add an action if the verification fails
+    // TODO: Add an action if the login fails. User most be notified
+    // It should be done in unauthorized.interceptor.ts and connected with observable
   }
 }
