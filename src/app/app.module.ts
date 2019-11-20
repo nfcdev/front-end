@@ -50,6 +50,7 @@ import {
 } from "./shelf-page/shelf-page.component";
 import { ManageSystemComponent } from "./manage-system/manage-system.component";
 import { NgbAlertModule } from "@ng-bootstrap/ng-bootstrap";
+import { ManageSystemDialogComponent, ManageSystemDialogPopupComponent } from './manage-system/manage-system-dialog/manage-system-dialog.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,9 @@ import { NgbAlertModule } from "@ng-bootstrap/ng-bootstrap";
     PackagePageComponent,
     PackagePageDialogComponent,
     ShelfPageComponent,
-    ShelfPageDialogComponent
+    ShelfPageDialogComponent,
+    ManageSystemDialogComponent,
+    ManageSystemDialogPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -114,7 +117,8 @@ import { NgbAlertModule } from "@ng-bootstrap/ng-bootstrap";
     StorageEventFormDialogComponent,
     MaterialPageDialogComponent,
     PackagePageDialogComponent,
-    ShelfPageDialogComponent
+    ShelfPageDialogComponent,
+    ManageSystemDialogPopupComponent
   ]
 })
 export class AppModule {}
