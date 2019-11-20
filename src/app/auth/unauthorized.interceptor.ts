@@ -1,5 +1,12 @@
 import { Injectable } from "@angular/core";
-import { HttpRequest, HttpResponse, HttpErrorResponse, HttpHandler, HttpEvent, HttpInterceptor } from "@angular/common/http";
+import {
+  HttpRequest,
+  HttpResponse,
+  HttpErrorResponse,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor
+} from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { Router } from "@angular/router";
 import { tap, catchError, map } from "rxjs/operators";
@@ -7,11 +14,21 @@ import { AuthenticationService } from "./authService";
 
 @Injectable()
 export class UnauthorizedInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private authService: AuthenticationService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthenticationService
+  ) {}
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Check if logged in
-    // TODO: Change to user store
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    // Set token
+    request = request.clone({
+      setHeaders: {
+        Authorization: `JWT ${this.authService.getToken()}`
+      }
+    });
 
     return next.handle(request).pipe(catchError(this.handleError));
   }
@@ -21,7 +38,10 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
       // A client-side or network error occurred. Handle it accordingly.
       console.error("An error occurred:", error.error.message);
     } else {
-      console.error(`Backend returned code ${error.status}, ` + "body was:", error.error);
+      console.error(
+        `Backend returned code ${error.status}, ` + "body was:",
+        error.error
+      );
       if (error.status == 401) {
         this.router.navigateByUrl("/");
         this.authService.logout();
