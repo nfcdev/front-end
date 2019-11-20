@@ -1,10 +1,19 @@
 
-<app-data-visualization></app-data-visualization>
-<app-storage-event-form></app-storage-event-form>
-<div><app-check-in-form></app-check-in-form></div>
-<app-manage-system-dialog></app-manage-system-dialog>
-<app-check-in-drop-down></app-check-in-drop-down>
 <div>
+  <div class="button-row">
+    <div class="button">
+        <app-manage-system-dialog></app-manage-system-dialog>
+    </div>
+    <div class="button">
+      <app-data-visualization></app-data-visualization>
+    </div>
+    <!-- <app-storage-event-form></app-storage-event-form> -->
+    <!-- <div><app-check-in-form></app-check-in-form></div> -->
+    <div class="button">
+      <app-check-in-drop-down></app-check-in-drop-down>
+    </div>
+
+    <div class="button">
     <button mat-raised-button [matMenuTriggerFor]="checkOutMenu">
         Checka Ut
     </button>
@@ -12,6 +21,12 @@
         <app-material-check-out></app-material-check-out>
         <button mat-menu-item>Paket</button>
     </mat-menu>
+    </div>
+  </div>
+  <br>
 </div>
 
-<app-table-article-data> </app-table-article-data>
+<br>
+<div class="table-div">
+  <app-table-article-data> </app-table-article-data>
+</div>
