@@ -19,6 +19,7 @@ import {
   StorageEventFormComponent,
   StorageEventFormDialogComponent
 } from "./storage-event-form/storage-event-form.component";
+import { MaterialCheckInDialogComponent } from "./material-check-in/material-check-in.component"
 import { MatDialogModule } from "@angular/material/dialog";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
@@ -32,7 +33,8 @@ import {
   MatButtonModule,
   MatGridListModule,
   MatMenuModule,
-  MatListModule
+  MatListModule,
+  MatChipsModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
 import { UnauthorizedInterceptor } from "./auth/unauthorized.interceptor";
@@ -54,6 +56,8 @@ import { NgbAlertModule } from "@ng-bootstrap/ng-bootstrap";
 import { ManageSystemDialogComponent, ManageSystemDialogPopupComponent } from './manage-system/manage-system-dialog/manage-system-dialog.component';
 import { MaterialCheckOutComponent, MaterialCheckOutDialogComponent } from './material-check-out/material-check-out.component';
 import { MaterialCheckBoxService } from './table-article-data/material-check-box.service';
+import { MaterialCheckInComponent } from './material-check-in/material-check-in.component';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -76,7 +80,10 @@ import { MaterialCheckBoxService } from './table-article-data/material-check-box
     ManageSystemDialogComponent,
     ManageSystemDialogPopupComponent,
     MaterialCheckOutComponent,
-    MaterialCheckOutDialogComponent
+    MaterialCheckOutDialogComponent,
+    MaterialCheckInComponent,
+    MaterialCheckInComponent,
+    MaterialCheckInDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -107,7 +114,8 @@ import { MaterialCheckBoxService } from './table-article-data/material-check-box
     MatMenuModule,
     MatGridListModule,
     MatCheckboxModule,
-    MatListModule
+    MatListModule,
+    MatChipsModule
   ],
   providers: [
     {
@@ -126,7 +134,8 @@ import { MaterialCheckBoxService } from './table-article-data/material-check-box
     PackagePageDialogComponent,
     ShelfPageDialogComponent,
     ManageSystemDialogPopupComponent,
-    MaterialCheckOutDialogComponent
+    MaterialCheckOutDialogComponent,
+    MaterialCheckInDialogComponent
   ]
 })
 export class AppModule {}
