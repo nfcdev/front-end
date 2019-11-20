@@ -1,0 +1,75 @@
+
+<h1 mat-dialog-title>Check-in</h1>
+
+
+<div mat-dialog-content [formGroup]="checkInForm">
+
+
+  <mat-form-field>
+    <input class="form-control"
+    formControlName="reference_number" matInput
+    [(ngModel)]="data.reference_number" placeholder="Diarienummer">
+  </mat-form-field>
+  <br>
+
+  <mat-form-field>
+    <input class="form-control"  name="material_number"
+    formControlName="material_number" matInput
+    [(ngModel)]="data.material_number" placeholder="Materialnummer" 
+    (keyup.enter)="addMaterial(data.material_number)">
+  </mat-form-field>
+
+  <mat-chip-list #chipList>
+    <mat-chip *ngFor="let material of data.selectedMaterials">
+      {{material}}
+      <mat-icon matChipRemove (click)="removeMaterial(material)">cancel</mat-icon>
+      <br>
+    </mat-chip>
+  </mat-chip-list>
+  <br>
+
+  <mat-form-field>
+    <input class="form-control" type="text"
+     matInput required formControlName="area"
+      [(ngModel)]="data.area" placeholder="Avdelning">
+  </mat-form-field>
+  <br>
+
+  <mat-form-field>
+    <input class="form-control" type="text"
+    matInput required formControlName="storage_room"
+    [(ngModel)]="data.storage_room" placeholder="Rum">
+  </mat-form-field>
+  <br>
+
+
+  <mat-form-field>
+    <mat-select formControlName="shelf"
+   [(ngModel)]="data.shelf" name="shelf" placeholder="Hylla">
+      <mat-option *ngFor="let sh of shelves" [value]="sh">
+        {{sh}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+
+  <mat-form-field>
+    <input class="form-control" type="text"
+    matInput formControlName="package"
+    [(ngModel)]="data.placement" placeholder="Paket">
+  </mat-form-field>
+  <br>
+
+  <mat-form-field>
+    <textarea matInput class="form-control"
+    placeholder="Lämna en anteckning"></textarea>
+  </mat-form-field>
+  <br>
+
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="onNoClick()">Avbryt</button>
+  <button class="btn" mat-raised-button
+   [disabled]="checkInForm.pristine || checkInForm.invalid"
+   [mat-dialog-close]="data" cdkFocusInitial>Skicka</button>
+    <br>
+</div>

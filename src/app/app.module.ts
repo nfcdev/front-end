@@ -19,7 +19,9 @@ import {
   StorageEventFormComponent,
   StorageEventFormDialogComponent
 } from "./storage-event-form/storage-event-form.component";
-import { MaterialCheckInDialogComponent } from "./material-check-in/material-check-in.component"
+import {
+  MaterialCheckInComponent,
+  MaterialCheckInDialogComponent } from "./material-check-in/material-check-in.component"
 import { MatDialogModule } from "@angular/material/dialog";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
@@ -56,7 +58,6 @@ import { NgbAlertModule } from "@ng-bootstrap/ng-bootstrap";
 import { ManageSystemDialogComponent, ManageSystemDialogPopupComponent } from './manage-system/manage-system-dialog/manage-system-dialog.component';
 import { MaterialCheckOutComponent, MaterialCheckOutDialogComponent } from './material-check-out/material-check-out.component';
 import { MaterialCheckBoxService } from './table-article-data/material-check-box.service';
-import { MaterialCheckInComponent } from './material-check-in/material-check-in.component';
 
 @NgModule({
   declarations: [
