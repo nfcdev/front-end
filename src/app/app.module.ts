@@ -31,7 +31,8 @@ import {
   MatSelectModule,
   MatButtonModule,
   MatGridListModule,
-  MatMenuModule
+  MatMenuModule,
+  MatListModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
 import { UnauthorizedInterceptor } from "./auth/unauthorized.interceptor";
@@ -48,6 +49,11 @@ import {
   ShelfPageComponent,
   ShelfPageDialogComponent
 } from "./shelf-page/shelf-page.component";
+import { ManageSystemComponent } from "./manage-system/manage-system.component";
+import { NgbAlertModule } from "@ng-bootstrap/ng-bootstrap";
+import { ManageSystemDialogComponent, ManageSystemDialogPopupComponent } from './manage-system/manage-system-dialog/manage-system-dialog.component';
+import { MaterialCheckOutComponent, MaterialCheckOutDialogComponent } from './material-check-out/material-check-out.component';
+import { MaterialCheckBoxService } from './table-article-data/material-check-box.service';
 
 @NgModule({
   declarations: [
@@ -59,13 +65,18 @@ import {
     CheckInFormDialogComponent,
     LoginComponent,
     MainComponent,
+    ManageSystemComponent,
     CheckInDropDownComponent,
     MaterialPageComponent,
     MaterialPageDialogComponent,
     PackagePageComponent,
     PackagePageDialogComponent,
     ShelfPageComponent,
-    ShelfPageDialogComponent
+    ShelfPageDialogComponent,
+    ManageSystemDialogComponent,
+    ManageSystemDialogPopupComponent,
+    MaterialCheckOutComponent,
+    MaterialCheckOutDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -90,17 +101,22 @@ import {
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
+    MatCheckboxModule,
+    MatGridListModule,
+    NgbAlertModule,
     MatMenuModule,
     MatGridListModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatListModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedInterceptor,
-      multi: true
+      multi: true,
     },
-    AuthenticationService
+    AuthenticationService,
+    MaterialCheckBoxService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -108,7 +124,9 @@ import {
     StorageEventFormDialogComponent,
     MaterialPageDialogComponent,
     PackagePageDialogComponent,
-    ShelfPageDialogComponent
+    ShelfPageDialogComponent,
+    ManageSystemDialogPopupComponent,
+    MaterialCheckOutDialogComponent
   ]
 })
 export class AppModule {}
