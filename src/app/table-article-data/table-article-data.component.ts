@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { TableArticleDataDataSource, TableArticleDataItem } from './table-article-data-datasource';
+import { MaterialCheckBoxService } from './material-check-box.service';
 
 @Component({
   selector: 'app-table-article-data',
@@ -22,7 +23,9 @@ export class TableArticleDataComponent implements AfterViewInit, OnInit {
   displayedColumns = ['select','article_nr', 'case_nr', 'storage_room', 'shelf',
                       'status', 'timestamp', 'last_modified'];
 
-                      
+  constructor(
+    private materialCheckOutService: MaterialCheckBoxService
+  ) { }
 /** Whether the number of selected elements matches the total number of rows. */
 isAllSelected() {
   const numSelected = this.selection.selected.length;
@@ -40,6 +43,9 @@ masterToggle() {
 
   ngOnInit() {
     this.dataSource = new TableArticleDataDataSource();
+    this.selection.changed.subscribe(newSelection => {
+      this.materialCheckOutService.update(this.selection);
+    });
   }
 
   ngAfterViewInit() {

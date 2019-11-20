@@ -31,7 +31,8 @@ import {
   MatSelectModule,
   MatButtonModule,
   MatGridListModule,
-  MatMenuModule
+  MatMenuModule,
+  MatListModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
 import { UnauthorizedInterceptor } from "./auth/unauthorized.interceptor";
@@ -48,6 +49,8 @@ import {
   ShelfPageComponent,
   ShelfPageDialogComponent
 } from "./shelf-page/shelf-page.component";
+import { MaterialCheckOutComponent, MaterialCheckOutDialogComponent } from './material-check-out/material-check-out.component';
+import { MaterialCheckBoxService } from './table-article-data/material-check-box.service';
 
 @NgModule({
   declarations: [
@@ -65,7 +68,9 @@ import {
     PackagePageComponent,
     PackagePageDialogComponent,
     ShelfPageComponent,
-    ShelfPageDialogComponent
+    ShelfPageDialogComponent,
+    MaterialCheckOutComponent,
+    MaterialCheckOutDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -92,15 +97,17 @@ import {
     MatIconModule,
     MatMenuModule,
     MatGridListModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatListModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedInterceptor,
-      multi: true
+      multi: true,
     },
-    AuthenticationService
+    AuthenticationService,
+    MaterialCheckBoxService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -108,7 +115,8 @@ import {
     StorageEventFormDialogComponent,
     MaterialPageDialogComponent,
     PackagePageDialogComponent,
-    ShelfPageDialogComponent
+    ShelfPageDialogComponent,
+    MaterialCheckOutDialogComponent
   ]
 })
 export class AppModule {}
