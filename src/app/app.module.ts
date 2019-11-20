@@ -29,12 +29,11 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatSelectModule,
-  MatButtonModule,
   MatGridListModule,
   MatMenuModule,
   MatCardModule
 } from "@angular/material";
-
+import {MatButtonModule} from '@angular/material/button';
 import { MainComponent } from "./main/main.component";
 import { UnauthorizedInterceptor } from "./auth/unauthorized.interceptor";
 import { AuthenticationService } from "./auth/authService";
@@ -101,6 +100,7 @@ import { CheckInDublcateComponent, CheckInDublcateComponentDialog } from './chec
     MatCheckboxModule,
     MatDialogModule
   ],
+  
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
