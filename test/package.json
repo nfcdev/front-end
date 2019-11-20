@@ -1,0 +1,14 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "mocha e2e.test.js --timeout 30000 --exit"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mocha": "^6.2.2",
+    "puppeteer": "^2.0.0"
+  }
+}
