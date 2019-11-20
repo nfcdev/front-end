@@ -22,6 +22,9 @@ import {
 import { DataVisualizationDialogComponent } from "./data-visualization/data-visualization.component";
 import { MatDialogModule } from "@angular/material";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { MatCardModule } from "@angular/material/card";
+
+import { StorageRoomStore } from "./storage-room/storage-room-store";
 
 import { LoginComponent } from "./login/login.component";
 
@@ -52,10 +55,16 @@ import {
 } from "./shelf-page/shelf-page.component";
 import { ManageSystemComponent } from "./manage-system/manage-system.component";
 import { NgbAlertModule } from "@ng-bootstrap/ng-bootstrap";
-import { ManageSystemDialogComponent, ManageSystemDialogPopupComponent } from './manage-system/manage-system-dialog/manage-system-dialog.component';
-import { MaterialCheckOutComponent, MaterialCheckOutDialogComponent } from './material-check-out/material-check-out.component';
-import { MaterialCheckBoxService } from './table-article-data/material-check-box.service';
-import { DataVisualizationComponent } from './data-visualization/data-visualization.component';
+import { DataVisualizationComponent } from "./data-visualization/data-visualization.component";
+import {
+  ManageSystemDialogComponent,
+  ManageSystemDialogPopupComponent
+} from "./manage-system/manage-system-dialog/manage-system-dialog.component";
+import {
+  MaterialCheckOutComponent,
+  MaterialCheckOutDialogComponent
+} from "./material-check-out/material-check-out.component";
+import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
 
 @NgModule({
   declarations: [
@@ -105,6 +114,7 @@ import { DataVisualizationComponent } from './data-visualization/data-visualizat
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
+    MatCardModule,
     MatCheckboxModule,
     MatGridListModule,
     NgbAlertModule,
@@ -117,9 +127,10 @@ import { DataVisualizationComponent } from './data-visualization/data-visualizat
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedInterceptor,
-      multi: true,
+      multi: true
     },
     AuthenticationService,
+    StorageRoomStore,
     MaterialCheckBoxService
   ],
   bootstrap: [AppComponent],
