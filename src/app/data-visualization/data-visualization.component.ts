@@ -18,7 +18,7 @@ export class DataVisualizationComponent implements OnInit {
     const dialogRef = this.dialog.open(DataVisualizationDialogComponent, {
       height: '400px',
       width: '600px',
-      data: {text: "Här kommer visualisering av data att presenteras" }
+      data: {text: "Här kommer visualisering av data att presenteras, exempelvis:" }
     });
 
     dialogRef.afterClosed().subscribe(result => {

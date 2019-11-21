@@ -119,7 +119,6 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     MatSortModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule,
     MatSelectModule,
     BrowserAnimationsModule,
     MatButtonModule,
