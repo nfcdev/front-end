@@ -7,7 +7,7 @@
     </mat-grid-list>
 </div> -->
 <div *ngIf="!checkOutConfirmed">
-    <h1 mat-dialog-title>Check-out</h1>
+    <h1 mat-dialog-title>Checka ut material</h1>
 </div>
 <div mat-dialog-content [formGroup]="checkInForm">
         <!-- Content to display before confirmation -->
@@ -24,6 +24,7 @@
             [(ngModel)]="data.material_number" placeholder="Materialnummer" 
             (keyup.enter)="addMaterial(data.material_number); data.material_number =''">
         </mat-form-field>
+        <button mat-button (click)="addMaterial(data.material_number); data.material_number=''">+</button>
     </div>
 
     <mat-chip-list #chipList>
@@ -60,8 +61,8 @@
     </div>-->
     <div *ngIf="!checkOutConfirmed">
     <mat-form-field>
-    <textarea matInput class="form-control"
-    placeholder="Lämna en anteckning"></textarea>
+        <textarea matInput class="form-control" name="comment"
+        formControlName="comment" [(ngModel)]="comment" placeholder="Lämna en anteckning"></textarea>
     </mat-form-field>
     </div>
     <br>

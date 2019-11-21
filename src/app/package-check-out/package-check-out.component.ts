@@ -6,8 +6,8 @@ import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 
 
 export interface DialogData{
-  selectedPackages: string[];
- // preChosen: boolean;
+  selectedPackage: string;
+  preChosen: boolean;
 }
 
 @Component({
@@ -18,7 +18,7 @@ export interface DialogData{
 export class PackageCheckOutComponent implements OnInit {
 
   selection : any[];
-  packages: string[];
+  package: string;
   preChosen = false;
 
   constructor(
@@ -29,18 +29,18 @@ export class PackageCheckOutComponent implements OnInit {
   openDialog(): void {
     // TODO: Get information about the package from the back end here and then send it to the dialog
 
-    if((this.packages && this.packages.length > 0)){
+    if((this.package && this.package.length > 0)){
       this.preChosen= true;
     } else {
       this.preChosen = false;
-      this.packages = [] as string[];
+      this.package = '';
     }
     const dialogRef = this.dialog.open(PackageCheckOutDialogComponent, {
       width: '400px',
       height: '500px',
       data:
-      {selectedPackages: this.packages,
-        // preChosen: this.preChosen
+      {selectedPackage: this.package,
+        preChosen: this.preChosen
       }
     });
 
@@ -50,14 +50,12 @@ export class PackageCheckOutComponent implements OnInit {
       console.log('The dialog was closed');
 
       if(result != null ){ // if user presses cancel the result is null. TODO: better solution for checking this
-      console.log(result);
+      //console.log(result);
 
       
 
-      // TODO: Jsonify data and send to back-end
-
       // resets the package list
-      this.packages = [];
+      this.package = '';
 
       } else {
         console.log('Empty result');
@@ -70,10 +68,7 @@ export class PackageCheckOutComponent implements OnInit {
   
 
   ngOnInit() {
-    // this.PackageCheckBoxService.checkBoxChange.subscribe(newSelection => {
-    //   this.selection = newSelection.selected;
-    //   this.packages = this.selection.reduce((a, {package}) => a.concat(package), []);
-    // });
+
   }
 
 }
@@ -86,7 +81,7 @@ export class PackageCheckOutDialogComponent implements OnInit{
   checkOutConfirmed : boolean = false;
   preChosen : boolean = false;
   comment: string;
-  packages: string[];
+  package: string;
 
   packageCheckOutForm: FormGroup;
 
@@ -102,7 +97,7 @@ export class PackageCheckOutDialogComponent implements OnInit{
     createForm() {
       // create variables and validators for form fields
       this.packageCheckOutForm = this.fb.group({
-        package: [''],
+        package: ['', Validators.required],
         comment: ['']
       });
     }
@@ -119,24 +114,9 @@ export class PackageCheckOutDialogComponent implements OnInit{
   onConfirm() : void {
     this.checkOutConfirmed = true;
     console.log(this.comment);
-    // TODO: check-out the packages in this.data.selection in the back-end here together with this.comment
+    // TODO: check out this.data.package to the back-end here
   }
 
-  addPackage(newPackage : string) : void {
-    if (!this.data.selectedPackages.includes(newPackage)) { 
-      if(newPackage.length > 0) {
-        this.data.selectedPackages.push(newPackage);
-      }
-    } else {
-      // duplicate
-    }
-  }
-
-  removePackage(newPackage : string ) : void {
-    this.data.selectedPackages.forEach((item, index) => {
-      if (item === newPackage) this.data.selectedPackages.splice(index, 1);
-    });
-  }
   ngOnInit() : void {
     
   }

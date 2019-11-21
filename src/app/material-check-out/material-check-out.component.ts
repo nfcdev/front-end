@@ -50,7 +50,7 @@ export class MaterialCheckOutComponent implements OnInit {
       console.log('The dialog was closed');
 
       if(result != null ){ // if user presses cancel the result is null. TODO: better solution for checking this
-      console.log(result);
+      //console.log(result);
 
       // reset material list if we press the "tillbaka-button"
       this.materials = [];
@@ -124,7 +124,7 @@ export class MaterialCheckOutDialogComponent implements OnInit{
 
   addMaterial(newMaterial : string) : void {
     if (!this.data.selectedMaterials.includes(newMaterial)) { 
-      if(newMaterial.length > 0) {
+      if(newMaterial && newMaterial.length > 0) {
         this.data.selectedMaterials.push(newMaterial);
       }
     } else {

@@ -165,7 +165,7 @@ export class MaterialCheckInDialogComponent {
 
   addMaterial(newMaterial : string) : void {
     if (!this.data.selectedMaterials.includes(newMaterial)) { 
-      if(newMaterial.length > 0) {
+      if(newMaterial && newMaterial.length > 0) {
         this.data.selectedMaterials.push(newMaterial);
         this.checkInForm.controls['material_number'].reset()
       }
