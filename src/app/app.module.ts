@@ -21,8 +21,13 @@ import {
   StorageEventFormComponent,
   StorageEventFormDialogComponent
 } from "./storage-event-form/storage-event-form.component";
+import {
+  MaterialCheckInComponent,
+  MaterialCheckInDialogComponent } from "./material-check-in/material-check-in.component"
+
 import { DataVisualizationDialogComponent } from "./data-visualization/data-visualization.component";
 import { MatDialogModule } from "@angular/material";
+
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { MatCardModule } from "@angular/material/card";
 
@@ -93,6 +98,8 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     ManageSystemDialogPopupComponent,
     MaterialCheckOutComponent,
     MaterialCheckOutDialogComponent,
+    MaterialCheckInComponent,
+    MaterialCheckInDialogComponent,
     DataVisualizationComponent,
     DataVisualizationDialogComponent
   ],
@@ -128,7 +135,8 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     MatMenuModule,
     MatGridListModule,
     MatCheckboxModule,
-    MatListModule
+    MatListModule,
+    MatChipsModule
   ],
   providers: [
     {
@@ -149,6 +157,7 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     ShelfPageDialogComponent,
     ManageSystemDialogPopupComponent,
     MaterialCheckOutDialogComponent,
+    MaterialCheckInDialogComponent,
     DataVisualizationDialogComponent
   ]
 })

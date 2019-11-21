@@ -105,7 +105,7 @@ export class MaterialCheckOutDialogComponent implements OnInit{
   onNoClick(): void {
     this.allDialogRef.closeAll();
   }
-    // Runs when the back arrow button is clicked
+  // Runs when the back arrow button is clicked
   onBackButton() : void {
     this.dialogRef.close();
   }
