@@ -1,0 +1,40 @@
+<form  (ngSubmit)="onSubmit()">
+    <!-- Creates the search-bar component as well as the chip list -->
+   <div class="search-field">
+    <mat-form-field class="search-component">
+        <!-- <mat-chip-list #chipList>
+            <mat-chip *ngFor="let option of options" [selectable] = "selectable"
+                    [removable]="removable" (removed)="remove(option)">
+                {{option.name}} ({{option.category}})
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip> -->
+            <input matInput placeholder="Sök..."
+                    [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)">
+        <!-- </mat-chip-list> -->
+    </mat-form-field>
+    <button mat-raised-button class="search-component" id="search">
+        Sök
+    </button>
+
+    <mat-checkbox class="search-component" [(ngModel)]="activeMaterials" [ngModelOptions]="{standalone: true}">
+        Aktiva material
+    </mat-checkbox>
+    <mat-checkbox class="search-component" [(ngModel)]="inactiveMaterials" [ngModelOptions]="{standalone: true}">
+        Inaktiva material
+    </mat-checkbox>
+    </div>
+
+
+    <mat-chip-list #chipList>
+            <mat-chip *ngFor="let option of options" [selectable] = "selectable"
+                    [removable]="removable" (removed)="remove(option)">
+                {{option.name}} ({{option.category}})
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+</mat-chip-list>
+
+
+</form>

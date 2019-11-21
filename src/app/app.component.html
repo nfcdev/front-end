@@ -1,6 +1,20 @@
 <mat-toolbar *ngIf="userLoggedIn">
   <span>NFC Storage Tracker</span>
   <span class="spacer"></span>
+  <div class="current-location">
+    <span style="margin-right: 5px;">Nuvarande materialrum: </span>
+      <mat-form-field *ngIf="isAdmin" style="width: 250px;">
+        <mat-select [(value)]="selectedStorageRoomId" [disabled]="!isAdmin" (selectionChange)="onStorageRoomSelected($event.value)">
+          <mat-option *ngFor="let room of storageRooms" [value]="room.id">
+            {{ room.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    <span *ngIf="!isAdmin">
+      {{ selectedStorageName }}
+    </span>
+  </div>
+  <span class="spacer"></span>
   <span class="user-label">Inloggad som: {{ this.user?.shortcode }}</span>
   <mat-icon class="log-out-icon" (click)="logOut()" aria-hidden="false" aria-label="Logga ut användare">exit_to_app</mat-icon>
 </mat-toolbar>
