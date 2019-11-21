@@ -2,6 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MaterialCheckBoxService } from '../table-article-data/material-check-box.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { SelectionModel, DataSource } from '@angular/cdk/collections';
+import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
+
 
 export interface DialogData{
   selectedMaterials: string[];
@@ -34,7 +36,7 @@ export class MaterialCheckOutComponent implements OnInit {
       this.materials = [] as string[];
     }
     const dialogRef = this.dialog.open(MaterialCheckOutDialogComponent, {
-      width: '1000px',
+      width: '400px',
       height: '500px',
       data:
       {selectedMaterials: this.materials,
@@ -42,7 +44,24 @@ export class MaterialCheckOutComponent implements OnInit {
       }
     });
 
+    // runs every time we close the Modal or submit
+    dialogRef.afterClosed().subscribe(result => {
+
+      console.log('The dialog was closed');
+
+      if(result != null ){ // if user presses cancel the result is null. TODO: better solution for checking this
+      console.log(result);
+
+      // TODO: Jsonify data and send to back-end
+
+      } else {
+        console.log('Empty result');
+      }
+    });
+
   }
+
+  
 
   ngOnInit() {
     this.materialCheckBoxService.checkBoxChange.subscribe(newSelection => {
@@ -62,11 +81,24 @@ export class MaterialCheckOutDialogComponent implements OnInit{
   preChosen : boolean = false;
   comment: string;
   materials: string[];
+
+  checkInForm: FormGroup;
+
+
   constructor(
     public dialogRef: MatDialogRef<MaterialCheckOutDialogComponent>,
     private allDialogRef: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    ) {
+    private fb: FormBuilder) {
+      this.createForm();
+    }
+
+    createForm() {
+      // create variables and validators for form fields
+      this.checkInForm = this.fb.group({
+        material_number: ['', Validators.required],
+        comment: ['']
+      });
     }
 
     // Runs when X-button is clicked
