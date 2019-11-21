@@ -52,11 +52,13 @@ export class MaterialCheckOutComponent implements OnInit {
       if(result != null ){ // if user presses cancel the result is null. TODO: better solution for checking this
       console.log(result);
 
-      // TODO: Jsonify data and send to back-end
+      // reset material list if we press the "tillbaka-button"
+      this.materials = [];
 
       } else {
         console.log('Empty result');
       }
+      
     });
 
   }
@@ -96,7 +98,7 @@ export class MaterialCheckOutDialogComponent implements OnInit{
     createForm() {
       // create variables and validators for form fields
       this.checkInForm = this.fb.group({
-        material_number: ['', Validators.required],
+        material_number: [''],
         comment: ['']
       });
     }
@@ -111,9 +113,13 @@ export class MaterialCheckOutDialogComponent implements OnInit{
   }
 // Runs when "Checka Ut" button is pressed
   onConfirm() : void {
+    
     this.checkOutConfirmed = true;
-    console.log(this.comment);
-    // TODO: check-out the materials in this.data.selection in the back-end here together with this.comment
+    //console.log(this.comment);
+    // TODO: check-out the materials in this.data.selectedMaterials in the back-end here together with this.comment
+
+    // clears the selected materials so that they don't stay when check-out is clicked again
+    
   }
 
   addMaterial(newMaterial : string) : void {

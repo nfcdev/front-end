@@ -1,0 +1,52 @@
+
+<div *ngIf="!checkOutConfirmed">
+    <h1 mat-dialog-title>Check-out</h1>
+</div>
+<div mat-dialog-content [formGroup]="packageCheckOutForm">
+
+    <div *ngIf="checkOutConfirmed">
+            <div style="text-align: center;">Följande material har checkats ut:</div>
+    </div>
+    <div *ngIf="!checkOutConfirmed">
+        <mat-form-field>
+            <input class="form-control"  name="package"
+            formControlName="package" matInput
+            [(ngModel)]="data.package" placeholder="Paket" 
+            (keyup.enter)="addPackage(data.package); data.package = ''">
+        </mat-form-field>
+    </div>
+
+    <mat-chip-list #chipList>
+        <mat-chip *ngFor="let package of data.selectedPackages">
+            <app-package-page [package]='package'></app-package-page>
+            <div *ngIf="!checkOutConfirmed">
+                <mat-icon matChipRemove (click)="removePackage(package)">cancel</mat-icon>
+            </div>
+            <br>
+    </mat-chip>
+    </mat-chip-list>
+    <br>
+
+    <div *ngIf="!checkOutConfirmed">
+    <mat-form-field>
+    <textarea matInput class="form-control"
+    placeholder="Lämna en anteckning"></textarea>
+    </mat-form-field>
+    </div>
+    <br>
+
+ 
+    <div mat-dialog-actions>
+         <div *ngIf="!checkOutConfirmed">
+            <button mat-raised-button (click)="onNoClick()">Avbryt</button>
+        </div>
+        <div *ngIf="!checkOutConfirmed">
+                <button [disabled]='data.selectedPackages.length == 0' mat-raised-button (click)="onConfirm()">Checka Ut</button>
+        </div>
+        <div *ngIf="checkOutConfirmed">
+            <button mat-raised-button [mat-dialog-close]="data" >Tillbaka</button>
+    </div>
+    </div>
+
+    <br>
+</div>

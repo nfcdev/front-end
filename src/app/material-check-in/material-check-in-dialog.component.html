@@ -21,7 +21,7 @@
 
   <mat-chip-list #chipList>
     <mat-chip *ngFor="let material of data.selectedMaterials">
-      {{material}}
+      <app-material-page [material_number]='material'></app-material-page>
       <mat-icon matChipRemove (click)="removeMaterial(material)">cancel</mat-icon>
       <br>
     </mat-chip>
@@ -69,7 +69,7 @@
 <div mat-dialog-actions>
   <button mat-raised-button (click)="onNoClick()">Avbryt</button>
   <button class="btn" mat-raised-button
-   [disabled]="checkInForm.pristine || checkInForm.invalid"
-   [mat-dialog-close]="data" cdkFocusInitial>Skicka</button>
+   [disabled]="checkInForm.pristine || checkInForm.invalid || data.selectedMaterials.length == 0"
+   [mat-dialog-close]="data" cdkFocusInitial (click)="onConfirm()">Skicka</button>
     <br>
 </div>

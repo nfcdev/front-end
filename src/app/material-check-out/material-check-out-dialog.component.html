@@ -22,13 +22,13 @@
             <input class="form-control"  name="material_number"
             formControlName="material_number" matInput
             [(ngModel)]="data.material_number" placeholder="Materialnummer" 
-            (keyup.enter)="addMaterial(data.material_number)">
+            (keyup.enter)="addMaterial(data.material_number); data.material_number =''">
         </mat-form-field>
     </div>
 
     <mat-chip-list #chipList>
         <mat-chip *ngFor="let material of data.selectedMaterials">
-            {{material}}
+            <app-material-page [material_number]="material"></app-material-page>
             <div *ngIf="!checkOutConfirmed">
                 <mat-icon matChipRemove (click)="removeMaterial(material)">cancel</mat-icon>
             </div>
@@ -72,8 +72,11 @@
             <button mat-raised-button (click)="onNoClick()">Avbryt</button>
         </div>
         <div *ngIf="!checkOutConfirmed">
-                <button mat-raised-button (click)="onConfirm()">Checka Ut</button>
+                <button [disabled]='data.selectedMaterials.length == 0' mat-raised-button (click)="onConfirm()">Checka Ut</button>
         </div>
+        <div *ngIf="checkOutConfirmed">
+            <button mat-raised-button [mat-dialog-close]="data">Tillbaka</button>
+    </div>
     </div>
 
     <br>
