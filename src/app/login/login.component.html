@@ -1,25 +1,33 @@
 <!-- The classes "login-body" and "login-div" are specified in the login.component.less
      This creates the login form with the button-->
+
 <div class="login-body">
-  <div class="login-div">
-    <h1>Logga in</h1>
-    <!-- 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="outline">
-        <mat-label>Användarnamn:</mat-label>
-        <input class="form-control" type="text" matInput required formControlName="username" />
-      </mat-form-field>
-      <br />
-      <mat-form-field appearance="outline">
-        <mat-label>Lösenord:</mat-label>
-        <input class="form-control" type="password" matInput required formControlName="password" />
-      </mat-form-field>
-      <br />
-      <button mat-raised-button href="https://stackoverflow.com/" [disabled]="!loginForm.valid">
-        Logga in
-      </button>
-    </form> 
-    -->
-    <a mat-raised-button href="http://localhost:9000/login">Klicka här för att logga in</a>
-  </div>
+  <mat-card class="login-div">
+    <mat-card-header>
+      <mat-card-title>NED Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form class="my-form">
+        <mat-form-field appearance="outline">
+          <mat-label class="label">Kortkod</mat-label>
+          <input
+            matInput
+            placeholder="kortkod"
+            name="kortkod"
+            [(ngModel)]="u_shortcode"
+          />
+        </mat-form-field>
+
+        <!-- <br>
+                <mat-form-field class="full-width">
+                  <mat-label>Lösenord</mat-label>
+                  <input matInput placeholder="Password" name="password" type="password" [(ngModel)]="u_password">
+                </mat-form-field>
+                 -->
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="login()" color="primary">LOGIN</button>
+    </mat-card-actions>
+  </mat-card>
 </div>

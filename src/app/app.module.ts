@@ -1,5 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import { CdkTableModule } from "@angular/cdk/table";
+import { CdkTreeModule } from "@angular/cdk/tree";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -19,8 +21,17 @@ import {
   StorageEventFormComponent,
   StorageEventFormDialogComponent
 } from "./storage-event-form/storage-event-form.component";
-import { MatDialogModule } from "@angular/material/dialog";
+import {
+  MaterialCheckInComponent,
+  MaterialCheckInDialogComponent } from "./material-check-in/material-check-in.component"
+
+import { DataVisualizationDialogComponent } from "./data-visualization/data-visualization.component";
+import { MatDialogModule } from "@angular/material";
+
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { MatCardModule } from "@angular/material/card";
+
+import { StorageRoomStore } from "./storage-room/storage-room-store";
 
 import { LoginComponent } from "./login/login.component";
 
@@ -32,9 +43,11 @@ import {
   MatButtonModule,
   MatGridListModule,
   MatMenuModule,
-  MatListModule
+  MatListModule,
+  MatChipsModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
+import { SearchBarComponent } from "./search-bar/search-bar.component";
 import { UnauthorizedInterceptor } from "./auth/unauthorized.interceptor";
 import { AuthenticationService } from "./auth/authService";
 import {
@@ -51,9 +64,16 @@ import {
 } from "./shelf-page/shelf-page.component";
 import { ManageSystemComponent } from "./manage-system/manage-system.component";
 import { NgbAlertModule } from "@ng-bootstrap/ng-bootstrap";
-import { ManageSystemDialogComponent, ManageSystemDialogPopupComponent } from './manage-system/manage-system-dialog/manage-system-dialog.component';
-import { MaterialCheckOutComponent, MaterialCheckOutDialogComponent } from './material-check-out/material-check-out.component';
-import { MaterialCheckBoxService } from './table-article-data/material-check-box.service';
+import { DataVisualizationComponent } from "./data-visualization/data-visualization.component";
+import {
+  ManageSystemDialogComponent,
+  ManageSystemDialogPopupComponent
+} from "./manage-system/manage-system-dialog/manage-system-dialog.component";
+import {
+  MaterialCheckOutComponent,
+  MaterialCheckOutDialogComponent
+} from "./material-check-out/material-check-out.component";
+import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
 
 @NgModule({
   declarations: [
@@ -65,6 +85,7 @@ import { MaterialCheckBoxService } from './table-article-data/material-check-box
     CheckInFormDialogComponent,
     LoginComponent,
     MainComponent,
+    SearchBarComponent,
     ManageSystemComponent,
     CheckInDropDownComponent,
     MaterialPageComponent,
@@ -76,7 +97,11 @@ import { MaterialCheckBoxService } from './table-article-data/material-check-box
     ManageSystemDialogComponent,
     ManageSystemDialogPopupComponent,
     MaterialCheckOutComponent,
-    MaterialCheckOutDialogComponent
+    MaterialCheckOutDialogComponent,
+    MaterialCheckInComponent,
+    MaterialCheckInDialogComponent,
+    DataVisualizationComponent,
+    DataVisualizationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -94,28 +119,33 @@ import { MaterialCheckBoxService } from './table-article-data/material-check-box
     MatSortModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule,
     MatSelectModule,
     BrowserAnimationsModule,
     MatButtonModule,
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
+    MatChipsModule,
+    CdkTableModule,
+    CdkTreeModule,
+    MatCardModule,
     MatCheckboxModule,
     MatGridListModule,
     NgbAlertModule,
     MatMenuModule,
     MatGridListModule,
     MatCheckboxModule,
-    MatListModule
+    MatListModule,
+    MatChipsModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedInterceptor,
-      multi: true,
+      multi: true
     },
     AuthenticationService,
+    StorageRoomStore,
     MaterialCheckBoxService
   ],
   bootstrap: [AppComponent],
@@ -126,7 +156,9 @@ import { MaterialCheckBoxService } from './table-article-data/material-check-box
     PackagePageDialogComponent,
     ShelfPageDialogComponent,
     ManageSystemDialogPopupComponent,
-    MaterialCheckOutDialogComponent
+    MaterialCheckOutDialogComponent,
+    MaterialCheckInDialogComponent,
+    DataVisualizationDialogComponent
   ]
 })
 export class AppModule {}

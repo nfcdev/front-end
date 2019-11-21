@@ -6,6 +6,7 @@
   border-radius: 18px;
   text-align: center;
   background-color: white;
+  color: black;
   top: 0;
   bottom: 0;
   right: 0;
@@ -20,7 +21,7 @@
   height: 100%;
   margin: 0;
   position: relative;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 // The following css connected to the angular-material-forms and might need to be moved to the global less.
@@ -35,16 +36,20 @@
 //input outline color
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
   color: black;
-  // opacity: 1!important;
+  opacity: 1 !important;
 }
 
 //mat-input focused color
-::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+::ng-deep
+  .mat-form-field-appearance-outline.mat-focused
+  .mat-form-field-outline-thick {
   color: green;
 }
 
 // mat-input error outline color
-::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick {
+::ng-deep
+  .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid
+  .mat-form-field-outline-thick {
   color: red !important;
   opacity: 0.8 !important;
 }
