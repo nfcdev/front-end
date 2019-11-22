@@ -1,0 +1,80 @@
+<!-- <div class="packPageHeader" style="width:100%;">
+    <mat-grid-list cols="7" rowHeight="50px">
+        <mat-grid-tile [colspan]='1'></mat-grid-tile>
+        <mat-grid-tile [colspan]='5' style="font-size: 22px;
+      text-decoration: underline; "></mat-grid-tile>
+        <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
+    </mat-grid-list>
+</div> -->
+<div *ngIf="!checkOutConfirmed">
+    <h1 mat-dialog-title>Check-out</h1>
+</div>
+<div mat-dialog-content [formGroup]="checkInForm">
+        <!-- Content to display before confirmation -->
+    <!-- <div *ngIf="!checkOutConfirmed && data.preChosen">
+        <div style="text-align: center;">Vill du checka ut följande material?</div>
+    </div> -->
+    <div *ngIf="checkOutConfirmed">
+            <div style="text-align: center;">Följande material har checkats ut:</div>
+    </div>
+    <div *ngIf="!checkOutConfirmed">
+        <mat-form-field>
+            <input class="form-control"  name="material_number"
+            formControlName="material_number" matInput
+            [(ngModel)]="data.material_number" placeholder="Materialnummer" 
+            (keyup.enter)="addMaterial(data.material_number)">
+        </mat-form-field>
+    </div>
+
+    <mat-chip-list #chipList>
+        <mat-chip *ngFor="let material of data.selectedMaterials">
+            {{material}}
+            <div *ngIf="!checkOutConfirmed">
+                <mat-icon matChipRemove (click)="removeMaterial(material)">cancel</mat-icon>
+            </div>
+            <br>
+    </mat-chip>
+    </mat-chip-list>
+    <br>
+
+
+<!--    <div class="addNewField" *ngIf="!data.preChosen && !checkOutConfirmed">
+        Scanna/fyll i nytt material:
+        <input #newMaterial class="add-new" placeholder="Fyll i.."
+            (keyup.enter)="addMaterial(newMaterial.value); newMaterial.value='' ">
+        <button mat-raised-button (click)="addMaterial(newMaterial.value); newMaterial.value='' ">
+            +
+        </button>
+    </div> -->
+    <!-- Content to display after confirmation -->
+
+
+    <!--<div class="materialCheckOutTable">
+        <mat-list dense role="list"></mat-list>
+        <ng-container *ngFor="let sel of data.selectedMaterials">
+            <mat-list-item role="listitem">
+                <app-material-page [material_number]='sel'></app-material-page>
+                <button *ngIf="!checkOutConfirmed && !data.preChosen" mat-button (click)="removeMaterial(sel);">X</button>
+            </mat-list-item>
+        </ng-container>
+    </div>-->
+    <div *ngIf="!checkOutConfirmed">
+    <mat-form-field>
+    <textarea matInput class="form-control"
+    placeholder="Lämna en anteckning"></textarea>
+    </mat-form-field>
+    </div>
+    <br>
+
+ 
+    <div mat-dialog-actions>
+         <div *ngIf="!checkOutConfirmed">
+            <button mat-raised-button (click)="onNoClick()">Avbryt</button>
+        </div>
+        <div *ngIf="!checkOutConfirmed">
+                <button mat-raised-button (click)="onConfirm()">Checka Ut</button>
+        </div>
+    </div>
+
+    <br>
+</div>
