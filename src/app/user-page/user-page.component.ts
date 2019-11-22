@@ -35,6 +35,7 @@ export class UserPageComponent implements OnInit {
   openDialog(): void {
 
     // TODO: Get unnacounted time from back-end
+    // TODO: Get materials related to this.user here
     this.unaccountedTime = '21d 2h 3m';
 
 
@@ -70,7 +71,7 @@ export class UserPageComponent implements OnInit {
       this.user = user;
 
     });
-    // TODO: Get materials related to this.user here
+    
   }
 
 }
