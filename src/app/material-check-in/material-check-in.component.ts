@@ -3,7 +3,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { SelectionModel, DataSource } from '@angular/cdk/collections';
 import { MaterialCheckBoxService } from '../table-article-data/material-check-box.service';
-
+import{CheckInDublcateComponent} from '../check-in-dublcate/check-in-dublcate.component';
 
 export interface DialogData {
   material_number: number;
@@ -109,12 +109,12 @@ export class MaterialCheckInComponent implements OnInit {
 }
 
 @Component({
+  providers:[CheckInDublcateComponent],
   selector: 'app-material-check-in-dialog',
   templateUrl: './material-check-in-dialog.component.html',
 })
 export class MaterialCheckInDialogComponent {
   checkOutConfirmed : boolean = false;
-
   checkInForm: FormGroup;
 
   shelves: string[] = [ //TODO: Get shelves from database here instead
@@ -125,6 +125,7 @@ export class MaterialCheckInDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<MaterialCheckInDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private duplicateComp: CheckInDublcateComponent,
     private fb: FormBuilder) {
       this.createForm();
     }
@@ -149,9 +150,12 @@ export class MaterialCheckInDialogComponent {
   // Runs when the back arrow button is clicked
   onBackButton() : void {
     this.dialogRef.close();
+    
   }
 
   onConfirm() : void {
+    this.addMaterial(this.data.material_number.toString());
+    
     this.checkOutConfirmed = true;
     //console.log(this.comment);
     // TODO: check-out the materials in this.data.selection in the back-end here together with this.comment
@@ -164,7 +168,7 @@ export class MaterialCheckInDialogComponent {
         this.checkInForm.controls['material_number'].reset()
       }
     } else {
-      // duplicate
+      this.duplicateComp.openDialog();
     }
   }
 

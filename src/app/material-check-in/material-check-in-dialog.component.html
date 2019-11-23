@@ -68,7 +68,7 @@
 
 <div mat-dialog-actions>
   <button mat-raised-button (click)="onNoClick()">Avbryt</button>
-  <button class="btn" mat-raised-button
+  <button class="btn" mat-raised-button (click)="onConfirm()"
    [disabled]="checkInForm.pristine || checkInForm.invalid"
    [mat-dialog-close]="data" cdkFocusInitial>Skicka</button>
     <br>
