@@ -1,72 +1,81 @@
-<h1 mat-dialog-title>Checka in material</h1>
+<h1 mat-dialog-title *ngIf="!checkOutConfirmed">Checka in paket</h1>
 
 
 <div mat-dialog-content [formGroup]="checkInPackageForm">
+    <div class="packageCheckInForm" style="height:100%; overflow:auto;" *ngIf="!checkOutConfirmed">
+
+        <mat-form-field>
+            <input class="form-control" name="package" formControlName="package" matInput [(ngModel)]="data.package"
+                placeholder="Paket" [matAutocomplete]="auto" (ngModelChange)="updateFields();">
+            <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
+                <mat-option *ngFor="let package of filteredOptions | async" [value]="package.name">
+                    {{package.name}}
+                </mat-option>
+            </mat-autocomplete>    
+        </mat-form-field>
+        <div *ngIf="data.packageMaterials && !data.packageMaterials.length > 0">Paket {{data.package}} hittades inte</div>
+        <br>
 
 
+        <mat-form-field>
+            <input class="form-control" formControlName="reference_number" matInput [(ngModel)]="data.reference_number"
+                placeholder="Diarienummer" readonly>
+        </mat-form-field>
+        <br>
+
+        <mat-form-field>
+            <input matInput placeholder="Materialnummer" readonly>
+            <mat-chip-list #chipList>
+                <mat-chip *ngFor="let material of data.packageMaterials">
+                    <app-material-page [material_number]='material'></app-material-page>
+                    <br>
+                </mat-chip>
+            </mat-chip-list>
+        </mat-form-field>
+        <br>
+
+        <mat-form-field>
+            <input class="form-control" type="text" matInput required formControlName="area" [(ngModel)]="data.area"
+                placeholder="Avdelning">
+        </mat-form-field>
+        <br>
+
+        <mat-form-field>
+            <input class="form-control" type="text" matInput required formControlName="storage_room"
+                [(ngModel)]="data.storage_room" placeholder="Rum">
+        </mat-form-field>
+        <br>
 
 
-    <mat-form-field>
-        <input class="form-control" name="package" formControlName="package" matInput [(ngModel)]="data.package"
-            placeholder="Paket" [matAutocomplete]="auto" (ngModelChange)="updateFields();">
-        <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
-            <mat-option *ngFor="let package of filteredOptions | async" [value]="package.name">
-                {{package.name}}
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
-    <br>
+        <mat-form-field>
+            <mat-select formControlName="shelf" [(ngModel)]="data.shelf" name="shelf" placeholder="Hylla">
+                <mat-option *ngFor="let sh of shelves" [value]="sh">
+                    {{sh}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
 
 
-    <mat-form-field>
-        <input class="form-control" formControlName="reference_number" matInput [(ngModel)]="data.reference_number"
-            placeholder="Diarienummer" readonly>
-    </mat-form-field>
-    <br>
+        <mat-form-field>
+            <textarea matInput class="form-control" placeholder="Lämna en anteckning"></textarea>
+        </mat-form-field>
+        <br>
 
-    <mat-form-field>
-            <input matInput
-            placeholder="Materialnummer" readonly>
-        <mat-chip-list #chipList>
-            <mat-chip *ngFor="let material of data.packageMaterials">
-                <app-material-page [material_number]='material'></app-material-page>
-                <br>
-            </mat-chip>
-        </mat-chip-list>
-    </mat-form-field>
-    <br>
+    </div>
+    <div class="packageConfirmation" *ngIf="checkOutConfirmed">
+        Paket {{data.package}} har checkats in på hylla {{data.shelf}} i {{data.storage_room}}.
+    </div>
+</div>
 
-    <mat-form-field>
-        <input class="form-control" type="text" matInput required formControlName="area" [(ngModel)]="data.area"
-            placeholder="Avdelning">
-    </mat-form-field>
-    <br>
-
-    <mat-form-field>
-        <input class="form-control" type="text" matInput required formControlName="storage_room"
-            [(ngModel)]="data.storage_room" placeholder="Rum">
-    </mat-form-field>
-    <br>
-
-
-    <mat-form-field>
-        <mat-select formControlName="shelf" [(ngModel)]="data.shelf" name="shelf" placeholder="Hylla">
-            <mat-option *ngFor="let sh of shelves" [value]="sh">
-                {{sh}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <br>
-
-
-    <mat-form-field>
-        <textarea matInput class="form-control" placeholder="Lämna en anteckning"></textarea>
-    </mat-form-field>
-    <br>
-
-    <div mat-dialog-actions>
+<div mat-dialog-actions>
+    <div class="packageCheckInButtons" *ngIf="!checkOutConfirmed">
         <button mat-raised-button (click)="onNoClick()">Avbryt</button>
         <button class="btn" mat-raised-button [disabled]="checkInPackageForm.pristine || checkInPackageForm.invalid"
-            [mat-dialog-close]="data" cdkFocusInitial (click)="onConfirm()">Skicka</button>
+            cdkFocusInitial (click)="onConfirm()">Checka in</button>
         <br>
     </div>
+    <div class="confirmationButtons" *ngIf="checkOutConfirmed">
+        <button mat-raised-button style="float: right;" [mat-dialog-close]="data">Tillbaka</button>
+    </div>
+</div>

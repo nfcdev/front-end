@@ -110,12 +110,9 @@ export class PackageCheckInComponent implements OnInit {
 
       console.log('The dialog was closed');
 
-      if (result != null) { // if user presses cancel the result is null. TODO: better solution for checking this
-        console.log(result);
+      if (result != null) { // if user presses cancel the result is null. We get here from the 'Tillbaka' button
+        //console.log(result);
 
-
-        // reset material list
-        // this.materials = [];
       } else {
         console.log('Empty result');
       }
@@ -125,10 +122,6 @@ export class PackageCheckInComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.materialCheckBoxService.checkBoxChange.subscribe(newSelection => {
-    //   this.selection = newSelection.selected;
-    //   this.materials = this.selection.reduce((a, {material_number}) => a.concat(material_number), []);
-    // });
   }
 }
 
@@ -138,7 +131,7 @@ export class PackageCheckInComponent implements OnInit {
 })
 export class PackageCheckInDialogComponent implements OnInit {
   checkOutConfirmed: boolean = false;
-
+  packageNotFound : boolean = false;
   checkInPackageForm: FormGroup;
 
   shelves: string[] = [ //TODO: Get shelves from database here instead
@@ -196,9 +189,9 @@ export class PackageCheckInDialogComponent implements OnInit {
 
   onConfirm(): void {
     this.checkOutConfirmed = true;
-
-    //console.log(this.comment);
-    // TODO: check-out the materials in this.data.selection in the back-end here together with this.comment
+    
+    // TODO: check out the package to the back end here.
+    // fields: data.package, data.storage_room, data.area (branch), data.shelf, data.comment
   }
   // runs when package is changed
   updateFields(): void {
