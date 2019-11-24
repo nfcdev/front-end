@@ -74,6 +74,7 @@ import {
   MaterialCheckOutDialogComponent
 } from "./material-check-out/material-check-out.component";
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
+import { CheckOutPreselectedComponent, CheckOutPreselectedDialogComponent } from './check-out-preselected/check-out-preselected.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +102,9 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     MaterialCheckInComponent,
     MaterialCheckInDialogComponent,
     DataVisualizationComponent,
-    DataVisualizationDialogComponent
+    DataVisualizationDialogComponent,
+    CheckOutPreselectedComponent,
+    CheckOutPreselectedDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -158,7 +161,8 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     ManageSystemDialogPopupComponent,
     MaterialCheckOutDialogComponent,
     MaterialCheckInDialogComponent,
-    DataVisualizationDialogComponent
+    DataVisualizationDialogComponent,
+    CheckOutPreselectedDialogComponent
   ]
 })
 export class AppModule {}
