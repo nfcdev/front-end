@@ -38,6 +38,23 @@ export function applyFilter(filter: Option) {
     }
     dataSource.data = tempData;
   }
+  if (filter.category=="Status") {
+    for (let j = 0; j < dataSource.data.length; j++) {
+      if (dataSource.data[j].status == filter.name) {
+        tempData.push(dataSource.data[j]);
+      }
+    }
+    dataSource.data = tempData;
+  }
+  if (filter.category=="Hylla") {
+    for (let j = 0; j < dataSource.data.length; j++) {
+      if (dataSource.data[j].shelf == filter.name) {
+        tempData.push(dataSource.data[j]);
+      }
+    }
+    dataSource.data = tempData;
+  }
+
   console.log(dataSource.data);
   // TODO: Some way to refresh the table.
 }

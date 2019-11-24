@@ -4,6 +4,7 @@ import { MatChipInputEvent } from '@angular/material';
 import { applyFilter, removeFilter } from '../table-article-data/table-article-data.component';
 import { TableArticleDataItem } from '../table-article-data/table-article-data-datasource';
 import EXAMPLE_DATA from '../table-article-data/example_data.json';
+import { isNumber } from 'util';
 
 
 // This creates the type "option" which collects the data from the search
@@ -29,12 +30,20 @@ export class SearchBarComponent implements OnInit {
   inactiveMaterials: Boolean = false;
   tableData: TableArticleDataItem [] = EXAMPLE_DATA; // TODO: adjust for actual data
   storageRooms: String [] = [];
+  statuses: String [] = ["check_out", "check_in", "discarded", "processed"];
+  shelves: String [] = [];
 
   ngOnInit() {
     // Adds all of the storage storageRooms
     for (let i = 0; i < this.tableData.length; i++) {
       if ((this.storageRooms.includes(this.tableData[i].storage_room))==false) {
         this.storageRooms.push(this.tableData[i].storage_room)
+      }
+    }
+    // Adds all of the shelves
+    for (let i = 0; i < this.tableData.length; i++) {
+      if ((this.shelves.includes(this.tableData[i].shelf))==false) {
+        this.shelves.push(this.tableData[i].shelf)
       }
     }
   }
@@ -51,17 +60,22 @@ export class SearchBarComponent implements OnInit {
       /** IMPORTANT! The name of the tempCategories created below are used in "table-article-data.component.ts" as well,
        *  so if they are changed here they need to altered in that file also*/ 
 
-      // Reference number
       if ((value || '').trim().length == 6) {
         tempCategory = "Fall";
       }
-      // Material number
       if ((value || '').trim().length == 2) {
         tempCategory = "Material";
       }
       if (this.storageRooms.includes((value || '').trim())) {
         tempCategory = "Avdelning"
       }
+      if (this.statuses.includes((value || '').trim())) {
+        tempCategory = "Status"
+      }
+      if (this.shelves.includes((value || '').trim())) {
+        tempCategory = "Hylla"
+      }
+
       var tempOption: Option =  { name: value.trim(), category: tempCategory }
       this.options.push({ name: value.trim(), category: tempCategory });
       applyFilter(tempOption);
