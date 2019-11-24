@@ -74,6 +74,7 @@ import {
   MaterialCheckOutDialogComponent
 } from "./material-check-out/material-check-out.component";
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
+import { RoomAndBranchNameComponent } from './room-and-branch-name/room-and-branch-name.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +102,8 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     MaterialCheckInComponent,
     MaterialCheckInDialogComponent,
     DataVisualizationComponent,
-    DataVisualizationDialogComponent
+    DataVisualizationDialogComponent,
+    RoomAndBranchNameComponent
   ],
   imports: [
     BrowserModule,
