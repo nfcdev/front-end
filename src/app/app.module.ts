@@ -44,7 +44,8 @@ import {
   MatGridListModule,
   MatMenuModule,
   MatListModule,
-  MatChipsModule
+  MatChipsModule,
+  MatAutocompleteModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
 import { SearchBarComponent } from "./search-bar/search-bar.component";
@@ -74,6 +75,7 @@ import {
   MaterialCheckOutDialogComponent
 } from "./material-check-out/material-check-out.component";
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
+import { PackageCheckInComponent, PackageCheckInDialogComponent } from './package-check-in/package-check-in.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +103,9 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     MaterialCheckInComponent,
     MaterialCheckInDialogComponent,
     DataVisualizationComponent,
-    DataVisualizationDialogComponent
+    DataVisualizationDialogComponent,
+    PackageCheckInComponent,
+    PackageCheckInDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -136,7 +140,8 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     MatGridListModule,
     MatCheckboxModule,
     MatListModule,
-    MatChipsModule
+    MatChipsModule,
+    MatAutocompleteModule
   ],
   providers: [
     {
@@ -158,7 +163,8 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     ManageSystemDialogPopupComponent,
     MaterialCheckOutDialogComponent,
     MaterialCheckInDialogComponent,
-    DataVisualizationDialogComponent
+    DataVisualizationDialogComponent,
+    PackageCheckInDialogComponent
   ]
 })
 export class AppModule {}
