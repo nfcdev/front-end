@@ -15,7 +15,7 @@
     </span>
   </div>
   <span class="spacer"></span>
-  <span class="user-label">Inloggad som: {{ this.user?.shortcode }}</span>
+  <span class="user-label">Inloggad som: <app-user-page></app-user-page></span>
   <mat-icon class="log-out-icon" (click)="logOut()" aria-hidden="false" aria-label="Logga ut användare">exit_to_app</mat-icon>
 </mat-toolbar>
 <router-outlet> </router-outlet>

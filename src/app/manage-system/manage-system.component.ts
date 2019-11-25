@@ -50,7 +50,7 @@ export class ManageSystemComponent implements OnInit {
   shelfToRemoveRoom: string;
   shelfToRemoveBranch: string;
 
- 
+
   constructor() { }
 
   ngOnInit() {
@@ -146,13 +146,14 @@ export class ManageSystemComponent implements OnInit {
     this.branchConfirmationMessage = null;
     this.shelfConfirmationMessage = null;
     this.roomConfirmationMessage = null;
-    if (!this.branches.includes(newBranch)) {
-      if (newBranch.length > 0) {
+    if (newBranch.length > 0) {
+      if (!this.branches.includes(newBranch)) {
         this.branches.push(newBranch);
         this.changeSuccessMessage('Du har lagt till avdelning ' + newBranch + '.');
+
+      } else {
+        this.changeFailedMessage('Avdelning ' + newBranch + ' finns redan.')
       }
-    } else {
-      this.changeFailedMessage('Avdelning ' + newBranch + ' finns redan.')
     }
     // TODO: save new branch in back-end
   }
@@ -199,17 +200,20 @@ export class ManageSystemComponent implements OnInit {
     this.roomConfirmationMessage = null;
 
     var temp: Room = { room: newRoom, branch: this.chosenBranchInRoom };
-    if (this.chosenBranchInRoom) {
-      if (!this.roomAlreadyExists(newRoom, this.chosenBranchInRoom)) {
-        if (newRoom.length > 0) {
+    if (newRoom.length > 0) {
+      if (this.chosenBranchInRoom) {
+
+        if (!this.roomAlreadyExists(newRoom, this.chosenBranchInRoom)) {
+
           this.rooms.push(temp);
           this.changeSuccessMessage('Du har lagt till rum ' + newRoom + '.');
+
+        } else {
+          this.changeFailedMessage('Rum ' + newRoom + ' finns redan i denna avdelning.');
         }
       } else {
-        this.changeFailedMessage('Rum ' + newRoom + ' finns redan i denna avdelning.');
+        this.changeFailedMessage('Välj en avdelning att skapa rummet i först.');
       }
-    } else {
-      this.changeFailedMessage('Välj en avdelning att skapa rummet i först.');
     }
     // TODO: save new room in back-end
   }
@@ -262,17 +266,19 @@ export class ManageSystemComponent implements OnInit {
     this.roomConfirmationMessage = null;
 
     var temp: Shelf = { shelf: newShelf, room: this.chosenRoomInShelf, branch: this.chosenBranchInShelf };
-    if (this.chosenBranchInShelf && this.chosenRoomInShelf) {
-      if (!this.shelfAlreadyExists(newShelf, this.chosenRoomInShelf, this.chosenBranchInShelf)) {
-        if (newShelf.length > 0) {
+    if (newShelf.length > 0) {
+      if (this.chosenBranchInShelf && this.chosenRoomInShelf) {
+        if (!this.shelfAlreadyExists(newShelf, this.chosenRoomInShelf, this.chosenBranchInShelf)) {
+
           this.shelves.push(temp);
           this.changeSuccessMessage('Du har lagt till hylla ' + newShelf + '.');
+
+        } else {
+          this.changeFailedMessage('Hylla ' + newShelf + ' finns redan i detta rum');
         }
       } else {
-        this.changeFailedMessage('Hylla ' + newShelf + ' finns redan i detta rum');
+        this.changeFailedMessage('Välj avdelning och rum att skapa hyllan i först.');
       }
-    } else {
-      this.changeFailedMessage('Välj avdelning och rum att skapa hyllan i först.');
     }
     // TODO: save new shelf in back-end
   }
@@ -307,9 +313,9 @@ export class ManageSystemComponent implements OnInit {
       if (item.shelf === shelf) this.shelves.splice(index, 1);
     });
     this.changeSuccessMessage('Hylla ' + shelf + ' borttagen från rum ' +
-        this.shelfToRemoveRoom + '.');
-      this.shelfConfirmationMessage = null;
-      // TODO: remove shelf from back-end too
+      this.shelfToRemoveRoom + '.');
+    this.shelfConfirmationMessage = null;
+    // TODO: remove shelf from back-end too
   }
   // TEMPORARY: Returns true if shelf is empty. TODO: check in back-end if shelf is empty
   isEmptyShelf(shelf: string): boolean {
