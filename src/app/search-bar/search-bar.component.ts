@@ -1,10 +1,15 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material';
-import { applyFilter, removeFilter } from '../table-article-data/table-article-data.component';
+import { MatChipInputEvent, MatCheckboxModule, MatCheckbox } from '@angular/material';
+import { 
+  applyFilter, 
+  updateFilters, 
+  includeActiveMaterials, 
+  includeAllMaterials, 
+  includeInactiveMaterials 
+} from '../table-article-data/table-article-data.component';
 import { TableArticleDataItem } from '../table-article-data/table-article-data-datasource';
 import EXAMPLE_DATA from '../table-article-data/example_data.json';
-import { isNumber } from 'util';
 
 
 // This creates the type "option" which collects the data from the search
@@ -12,6 +17,9 @@ export interface Option {
   name: string;
   category: string; // Will represent a post in the table: {reference_number, material_number, storage_room, shelf, package, status}
 }
+
+export const activeStatuses: String [] = ["check_out", "check_in"];
+export const inactiveStatuses: String [] = ["discarded", "processed"];
 
 @Component({
   selector: 'app-search-bar',
@@ -28,11 +36,32 @@ export class SearchBarComponent implements OnInit {
   options: Option[] = [];
   activeMaterials: Boolean = true;
   inactiveMaterials: Boolean = false;
+  
   tableData: TableArticleDataItem [] = EXAMPLE_DATA; // TODO: adjust for actual data
   storageRooms: String [] = [];
-  statuses: String [] = ["check_out", "check_in", "discarded", "processed"];
+  statuses: String [] = activeStatuses.concat(inactiveStatuses);
   shelves: String [] = [];
 
+  // Triggers each time checkbox "activeMaterials" is changed
+  changeActive() {
+    if (this.activeMaterials) {
+      includeAllMaterials(this.options);
+    }else {
+      this.inactiveMaterials = true;
+      includeInactiveMaterials(this.options);
+    }
+  }
+
+    // Triggers each time checkbox "inactiveMaterials" is changed
+  changeInactive() {
+    if (this.inactiveMaterials) {
+      includeAllMaterials(this.options);
+    }else {
+      this.activeMaterials = true;
+      includeActiveMaterials(this.options);
+    }
+  }
+  
   ngOnInit() {
     // Adds all of the storage storageRooms
     for (let i = 0; i < this.tableData.length; i++) {
@@ -90,7 +119,7 @@ export class SearchBarComponent implements OnInit {
     const index = this.options.indexOf(option);
     if (index >=0) {
       this.options.splice(index, 1);
-      removeFilter(this.options)
+      updateFilters(this.options)
     }
   }
 }

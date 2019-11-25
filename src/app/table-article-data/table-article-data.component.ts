@@ -6,10 +6,13 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { TableArticleDataDataSource, TableArticleDataItem } from './table-article-data-datasource';
 import { MaterialCheckBoxService } from './material-check-box.service';
-import { Option } from '../search-bar/search-bar.component';
+import { Option, activeStatuses, inactiveStatuses } from '../search-bar/search-bar.component';
+
 
 var dataSource: TableArticleDataDataSource;
 var dataConstant: TableArticleDataItem [];
+var activeMaterials: TableArticleDataItem [] = [];
+var inactiveMaterials: TableArticleDataItem [] = [];
 export function applyFilter(filter: Option) {
   var tempData: TableArticleDataItem[] = [];
   if (filter.category=="Fall") {
@@ -59,11 +62,24 @@ export function applyFilter(filter: Option) {
   // TODO: Some way to refresh the table.
 }
 
-export function removeFilter(filters: Option []) {
+export function updateFilters(filters: Option []) {
   dataSource.data = dataConstant;
   for (let i = 0; i < filters.length; i++) {
     applyFilter(filters[i]);
   }
+}
+
+export function includeActiveMaterials(filters: Option []) {
+  dataConstant = activeMaterials;
+  updateFilters(filters);
+}
+export function includeInactiveMaterials(filters: Option []) {
+  dataConstant = inactiveMaterials;
+  updateFilters(filters);
+}
+export function includeAllMaterials(filters: Option []) {
+  dataConstant = inactiveMaterials.concat(activeMaterials);
+  updateFilters(filters);
 }
 
 
@@ -92,6 +108,7 @@ export class TableArticleDataComponent implements AfterViewInit, OnInit {
     const numRows = dataSource.data.length;
     return numSelected == numRows;
     
+
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
@@ -103,11 +120,27 @@ export class TableArticleDataComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
     dataSource = new TableArticleDataDataSource();
-    dataConstant = dataSource.data;
+    // Get all of the active materials
+    for (let i = 0; i < activeStatuses.length ; i ++) {
+      for (let j = 0; j < dataSource.data.length ; j ++) {
+        if (dataSource.data[j].status == activeStatuses[i]) {
+          activeMaterials.push(dataSource.data[j]);
+        }
+      }
+    }
+    // Get all of the inactive materials
+    for (let i = 0; i < inactiveStatuses.length ; i ++) {
+      for (let j = 0; j < dataSource.data.length ; j ++) {
+        if (dataSource.data[j].status == inactiveStatuses[i]) {
+          inactiveMaterials.push(dataSource.data[j]);
+        }
+      }
+    }
+    dataConstant = activeMaterials;
+    dataSource.data = dataConstant;
     this.selection.changed.subscribe(newSelection => {
       this.materialCheckOutService.update(this.selection);
     });
-    console.log(dataSource.data);
   }
 
   ngAfterViewInit() {

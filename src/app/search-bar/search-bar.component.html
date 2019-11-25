@@ -19,10 +19,16 @@
         Sök
     </button>
 
-    <mat-checkbox class="search-component" [(ngModel)]="activeMaterials" [ngModelOptions]="{standalone: true}">
+    <mat-checkbox class="search-component" 
+            [(ngModel)]="activeMaterials" 
+            [ngModelOptions]="{standalone: true}"
+            (change)="changeActive($event)">
         Aktiva material
     </mat-checkbox>
-    <mat-checkbox class="search-component" [(ngModel)]="inactiveMaterials" [ngModelOptions]="{standalone: true}">
+    <mat-checkbox class="search-component" 
+            [(ngModel)]="inactiveMaterials" 
+            [ngModelOptions]="{standalone: true}"
+            (change)="changeInactive($event)">
         Inaktiva material
     </mat-checkbox>
     </div>
