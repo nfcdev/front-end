@@ -1,8 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MaterialCheckBoxService } from '../table-article-data/material-check-box.service';
+
 
 export interface DialogData{
-  selectedMaterials: string[];
+  selectedPackages: string[];
   preSelected: boolean;
 }
 @Component({
@@ -10,15 +12,27 @@ export interface DialogData{
   templateUrl: './check-out-preselected.component.html',
   styleUrls: ['./check-out-preselected.component.less']
 })
-export class CheckOutPreselectedComponent {
-  constructor(public dialog: MatDialog) {}
+export class CheckOutPreselectedComponent implements OnInit{
 
+  selection : any[];
+  packages: string[];
+  preChosen = false;
+  constructor(private materialCheckBoxService: MaterialCheckBoxService,
+    public dialog: MatDialog) {}
+    
   openDialog(): void {
+    this.preChosen= true;
     const dialogRef = this.dialog.open(CheckOutPreselectedDialogComponent,{
-      width:'750px',
-      height:'375px'
+      width:'800px',
+      height:'400px'
     })
 
+  }
+  ngOnInit() {
+    this.materialCheckBoxService.checkBoxChange.subscribe(newSelection => {
+      this.selection = newSelection.selected;
+      this.packages = this.selection.reduce((a, {package_number}) => a.concat(package_number), []);
+    });
   }
   
 }
