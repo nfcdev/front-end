@@ -18,12 +18,29 @@ export interface TableArticleDataItem {
 const EXAMPLE_DATA: TableArticleDataItem[] = articleData;
 
 export class TableArticleDataDataSource extends DataSource<TableArticleDataItem> {
-  data: TableArticleDataItem[] = EXAMPLE_DATA;
+  data: TableArticleDataItem[] = []; //= EXAMPLE_DATA;
   paginator: MatPaginator;
   sort: MatSort;
 
-  constructor() {
+  constructor(requestData) {
     super();
+    console.log("inside constructor")
+    for (const d of requestData) {
+      var tmp: TableArticleDataItem = {"material_number": d["material_number"],
+                                        "reference_number": d["reference_number"],
+                                        "storage_room": d["storage_room"],
+                                        "shelf": d["shelf"],
+                                        "status": d["status"],
+                                        "timestamp": d["timestamp"],
+                                        "last_modified": d["last modified"]
+                                       };
+
+      //console.log(tmp);
+      this.data.push(tmp);
+      //console.log(d["material_number"]);
+    }
+    console.log(this.data);
+   // console.log(requestData.at(0).material_number);
   }
 
   /**

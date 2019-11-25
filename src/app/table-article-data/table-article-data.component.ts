@@ -6,6 +6,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { TableArticleDataDataSource, TableArticleDataItem } from './table-article-data-datasource';
 import { MaterialCheckBoxService } from './material-check-box.service';
+import { DataService } from '../data.service';
+
+
 
 @Component({
   selector: 'app-table-article-data',
@@ -24,14 +27,14 @@ export class TableArticleDataComponent implements AfterViewInit, OnInit {
                       'status', 'timestamp', 'last_modified'];
 
   constructor(
-    private materialCheckOutService: MaterialCheckBoxService
+    private materialCheckOutService: MaterialCheckBoxService,
+    private dataService: DataService
   ) { }
 /** Whether the number of selected elements matches the total number of rows. */
 isAllSelected() {
   const numSelected = this.selection.selected.length;
   const numRows = this.dataSource.data.length;
   return numSelected == numRows;
-  
 }
 
 /** Selects all rows if they are not all selected; otherwise clear selection. */
@@ -42,15 +45,22 @@ masterToggle() {
 }
 
   ngOnInit() {
-    this.dataSource = new TableArticleDataDataSource();
+    console.log("test")
+    this.dataService.sendGetRequest("/article").subscribe((data: any[])=>{
+      console.log(data);
+      //lös med en map-funktion
+      this.dataSource = new TableArticleDataDataSource(data);
+      //console.log(this.dataSource);
+    })
+    //this.dataSource = new TableArticleDataDataSource(data);
     this.selection.changed.subscribe(newSelection => {
       this.materialCheckOutService.update(this.selection);
     });
   }
 
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    //this.dataSource.sort = this.sort;
+    //this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
   }
 }
