@@ -44,7 +44,8 @@ import {
   MatGridListModule,
   MatMenuModule,
   MatListModule,
-  MatChipsModule
+  MatChipsModule,
+  MatExpansionModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
 import { SearchBarComponent } from "./search-bar/search-bar.component";
@@ -136,7 +137,8 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     MatGridListModule,
     MatCheckboxModule,
     MatListModule,
-    MatChipsModule
+    MatChipsModule,
+    MatExpansionModule
   ],
   providers: [
     {
