@@ -74,6 +74,7 @@ import {
   MaterialCheckOutDialogComponent
 } from "./material-check-out/material-check-out.component";
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
+import { UserPageComponent, UserPageDialogComponent } from './user-page/user-page.component';
 import { PackageCheckOutComponent, PackageCheckOutDialogComponent } from './package-check-out/package-check-out.component';
 
 @NgModule({
@@ -103,6 +104,8 @@ import { PackageCheckOutComponent, PackageCheckOutDialogComponent } from './pack
     MaterialCheckInDialogComponent,
     DataVisualizationComponent,
     DataVisualizationDialogComponent,
+    UserPageComponent,
+    UserPageDialogComponent,
     PackageCheckOutComponent,
     PackageCheckOutDialogComponent
   ],
@@ -162,6 +165,7 @@ import { PackageCheckOutComponent, PackageCheckOutDialogComponent } from './pack
     MaterialCheckOutDialogComponent,
     MaterialCheckInDialogComponent,
     DataVisualizationDialogComponent,
+    UserPageDialogComponent,
     PackageCheckOutDialogComponent
   ]
 })
