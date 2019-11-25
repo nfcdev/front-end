@@ -45,13 +45,18 @@ masterToggle() {
 }
 
   ngOnInit() {
-    console.log("test")
+    console.log("test");
     this.dataService.sendGetRequest("/article").subscribe((data: any[])=>{
       console.log(data);
       //lös med en map-funktion
       this.dataSource = new TableArticleDataDataSource(data);
-      //console.log(this.dataSource);
+      console.log("TEST")
+      console.log(this.dataSource);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.table.dataSource = this.dataSource;
     })
+
     //this.dataSource = new TableArticleDataDataSource(data);
     this.selection.changed.subscribe(newSelection => {
       this.materialCheckOutService.update(this.selection);
@@ -59,8 +64,6 @@ masterToggle() {
   }
 
   ngAfterViewInit() {
-    //this.dataSource.sort = this.sort;
-    //this.dataSource.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
+
   }
 }
