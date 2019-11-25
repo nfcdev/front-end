@@ -10,6 +10,7 @@ export interface DialogData {
   storage_room: string;
   shelf: string;
   package: string;
+  placement: string;
 }
 
 export interface Room {

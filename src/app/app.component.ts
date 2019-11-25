@@ -22,10 +22,10 @@ export class AppComponent implements OnInit {
     private storageRoomService: StorageRoomService,
     private storageRoomStore: StorageRoomStore
   ) {}
-  userLoggedIn = false;
-  user = {};
-  title = "front-end";
-  storageRooms = [];
+  userLoggedIn: boolean = false;
+  user: any = {};
+  title: string = "front-end";
+  storageRooms: any = [];
   selectedStorageRoomId = this.storageRoomStore.getStorageRoom().id;
   selectedStorageName = this.storageRoomStore.getStorageRoom().name;
 

@@ -34,6 +34,7 @@ export class ManageSystemComponent implements OnInit {
   private _branchConfirmation = new Subject<string>();
   private _roomConfirmation = new Subject<string>();
   private _shelfConfirmation = new Subject<string>();
+  _dataLoading: any;
   successMessage: string;
   failedMessage: string;
 

@@ -8,6 +8,7 @@ import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 export interface DialogData{
   selectedMaterials: string[];
   preChosen: boolean;
+  material_number: any;
 }
 
 @Component({
