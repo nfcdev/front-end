@@ -35,12 +35,9 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
                                         "last_modified": d["last modified"]
                                        };
 
-      //console.log(tmp);
       this.data.push(tmp);
-      //console.log(d["material_number"]);
     }
     console.log(this.data);
-   // console.log(requestData.at(0).material_number);
   }
 
   /**
