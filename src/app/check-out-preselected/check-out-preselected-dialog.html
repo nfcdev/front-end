@@ -9,7 +9,7 @@
         {{material}}{{isLast ? '' : ', '}}</b>?</b> </div>
 <div class="notes"><b> Anteckningar</b> </div>
 <div mat-form-field class='formField'>
-        <textarea matInput class="form-control"
+        <textarea matInput [(ngModel)]="comment" class="form-control"
         placeholder="Lämna en anteckning"></textarea>
        
     </div>

@@ -28,7 +28,7 @@ export class PackageCheckOutComponent implements OnInit {
 
   openDialog(): void {
     // TODO: Get information about the package from the back end here and then send it to the dialog
-
+    
     if((this.package && this.package.length > 0)){
       this.preChosen= true;
     } else {

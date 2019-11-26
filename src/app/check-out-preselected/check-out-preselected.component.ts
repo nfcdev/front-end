@@ -22,9 +22,8 @@ export class CheckOutPreselectedComponent implements OnInit{
     public dialog: MatDialog) {}
     
   openDialog(): void {
-
     
-    this.preChosen= true;
+   
     const dialogRef = this.dialog.open(CheckOutPreselectedDialogComponent,{
       width:'800px',
       height:'400px',
@@ -41,6 +40,10 @@ export class CheckOutPreselectedComponent implements OnInit{
       this.selection = newSelection.selected;
       this.packages = this.selection.reduce((a, {material_number}) => a.concat(material_number), []);
     });
+    if((this.packages && this.packages.length > 0)){
+      this.preChosen= true;
+     
+    } 
   }
   
 }
@@ -51,8 +54,7 @@ export class CheckOutPreselectedComponent implements OnInit{
 export class CheckOutPreselectedDialogComponent implements OnInit {
   checkOutConfirmed : boolean = false;
   preChosen : boolean = false;
-  
-  checkInForm: FormGroup;
+  comment :String;
   constructor(
     public dialogRef: MatDialogRef<CheckOutPreselectedDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData){}
@@ -64,7 +66,7 @@ export class CheckOutPreselectedDialogComponent implements OnInit {
 
   onConfirm() : void {
     this.checkOutConfirmed = true;
- 
+    console.log(this.comment);
     // TODO: check-out the materials in this.data.selection in the back-end here together with this.comment
   }
 
