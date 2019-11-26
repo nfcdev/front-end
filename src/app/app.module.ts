@@ -75,6 +75,8 @@ import {
 } from "./material-check-out/material-check-out.component";
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
 import { CheckOutPreselectedComponent, CheckOutPreselectedDialogComponent } from './check-out-preselected/check-out-preselected.component';
+import { UserPageComponent, UserPageDialogComponent } from './user-page/user-page.component';
+import { PackageCheckOutComponent, PackageCheckOutDialogComponent } from './package-check-out/package-check-out.component';
 
 @NgModule({
   declarations: [
@@ -104,7 +106,11 @@ import { CheckOutPreselectedComponent, CheckOutPreselectedDialogComponent } from
     DataVisualizationComponent,
     DataVisualizationDialogComponent,
     CheckOutPreselectedComponent,
-    CheckOutPreselectedDialogComponent
+    CheckOutPreselectedDialogComponent,
+    UserPageComponent,
+    UserPageDialogComponent,
+    PackageCheckOutComponent,
+    PackageCheckOutDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -162,7 +168,9 @@ import { CheckOutPreselectedComponent, CheckOutPreselectedDialogComponent } from
     MaterialCheckOutDialogComponent,
     MaterialCheckInDialogComponent,
     DataVisualizationDialogComponent,
-    CheckOutPreselectedDialogComponent
+    CheckOutPreselectedDialogComponent,
+    UserPageDialogComponent,
+    PackageCheckOutDialogComponent
   ]
 })
 export class AppModule {}
