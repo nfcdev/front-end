@@ -29,7 +29,7 @@
                  <form class="example-form">
                  <mat-form-field class="example-full-width">
 
-                    <input #newBranch class="add-new" [hidden]="_dataLoading" matInput placeholder="Ny avdelning"
+                    <input #newBranch class="add-new" matInput placeholder="Ny avdelning"
                     (keyup.enter)="addBranch(newBranch.value); newBranch.value='' ">
                 </mat-form-field>
                 <button mat-button (click)="addBranch(newBranch.value); newBranch.value='' ">+</button>
@@ -66,7 +66,7 @@
                 <form class="example-form">
                 <mat-form-field class="example-full-width">
 
-                <input #newRoom class="add-new" [hidden]="_dataLoading" matInput placeholder="Nytt rum"
+                <input #newRoom class="add-new" matInput placeholder="Nytt rum"
                     (keyup.enter)="addRoom(newRoom.value); newRoom.value='' ">
                 </mat-form-field>
                 <button mat-button (click)="addRoom(newRoom.value); newRoom.value='' ">+</button>
