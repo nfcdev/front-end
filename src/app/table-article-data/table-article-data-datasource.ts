@@ -3,7 +3,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
-import articleData from './example_data.json';
 
 export interface TableArticleDataItem {
   material_number: string;
@@ -17,10 +16,9 @@ export interface TableArticleDataItem {
   last_modified: number;
 }
 
-const EXAMPLE_DATA: TableArticleDataItem[] = articleData;
 
 export class TableArticleDataDataSource extends DataSource<TableArticleDataItem> {
-  data: TableArticleDataItem[] = []; //= EXAMPLE_DATA;
+  data: TableArticleDataItem[] = [];
   paginator: MatPaginator;
   sort: MatSort;
 
