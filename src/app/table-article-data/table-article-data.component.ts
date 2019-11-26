@@ -44,14 +44,30 @@ masterToggle() {
       this.dataSource.data.forEach(row => this.selection.select(row));
 }
 
+transformData(requestData) {
+  var data = [];
+  for (const d of requestData) {
+    var tmp = {"material_number": d["material_number"],
+               "reference_number": d["reference_number"],
+               "branch": d["branch"],
+               "storage_room": d["storage_room"],
+               "shelf": d["shelf"],
+               "package": d["package"],
+               "status": d["status"],
+               "timestamp": d["timestamp"],
+               "last_modified": d["last modified"]
+               };
+
+    data.push(tmp);
+  }
+  return data;
+}
+
   ngOnInit() {
     console.log("test");
     this.dataService.sendGetRequest("/article").subscribe((data: any[])=>{
       console.log(data);
-      //lös med en map-funktion
-      this.dataSource = new TableArticleDataDataSource(data);
-      console.log("TEST")
-      console.log(this.dataSource);
+      this.dataSource = new TableArticleDataDataSource(this.transformData(data));
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.table.dataSource = this.dataSource;

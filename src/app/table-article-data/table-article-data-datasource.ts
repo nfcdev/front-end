@@ -8,8 +8,10 @@ import articleData from './example_data.json';
 export interface TableArticleDataItem {
   material_number: string;
   reference_number: string;
+  branch: string;
   storage_room: string;
   shelf: string;
+  package: string;
   status: string;
   timestamp: number;
   last_modified: number;
@@ -22,9 +24,10 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
   paginator: MatPaginator;
   sort: MatSort;
 
-  constructor(requestData) {
+  constructor(data) {
     super();
-    console.log("inside constructor")
+    this.data = data;
+    /*console.log("inside constructor")
     for (const d of requestData) {
       var tmp: TableArticleDataItem = {"material_number": d["material_number"],
                                         "reference_number": d["reference_number"],
@@ -37,7 +40,7 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
 
       this.data.push(tmp);
     }
-    console.log(this.data);
+    console.log(this.data);*/
   }
 
   /**

@@ -20,26 +20,37 @@
           </td>
         </ng-container>
 
-    <!-- Id Column -->
-    <ng-container matColumnDef="article_nr">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Article #</th>
-      <td mat-cell *matCellDef="let row"><app-material-page [material_number]='row.material_number'></app-material-page></td>
-    </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="case_nr">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Case #</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Diarienummer</th>
       <td mat-cell *matCellDef="let row">{{row.reference_number}}</td>
     </ng-container>
 
+    <!-- Id Column -->
+    <ng-container matColumnDef="article_nr">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Materialnummer</th>
+      <td mat-cell *matCellDef="let row"><app-material-page [material_number]='row.material_number'></app-material-page></td>
+    </ng-container>
+
+    <ng-container matColumnDef="branch">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Avdelning</th>
+      <td mat-cell *matCellDef="let row">{{row.branch}}</td>
+    </ng-container>
+
     <ng-container matColumnDef="storage_room">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Room</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Rum</th>
       <td mat-cell *matCellDef="let row">{{row.storage_room}}</td>
     </ng-container>
 
     <ng-container matColumnDef="shelf">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Shelf</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Hylla</th>
       <td mat-cell *matCellDef="let row"><app-shelf-page [shelf]='row.shelf'></app-shelf-page></td>
+    </ng-container>
+
+    <ng-container matColumnDef="package_nr">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Paket</th>
+      <td mat-cell *matCellDef="let row">{{row.package}}</td>
     </ng-container>
 
     <ng-container matColumnDef="status">
@@ -47,15 +58,16 @@
       <td mat-cell *matCellDef="let row">{{row.status}}</td>
     </ng-container>
 
+    <ng-container matColumnDef="last_modified">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Senast ändrad</th>
+      <td mat-cell *matCellDef="let row">{{row.last_modified}}</td>
+    </ng-container>
+
     <ng-container matColumnDef="timestamp">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Time Stamp</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Skapad</th>
       <td mat-cell *matCellDef="let row">{{row.timestamp}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="last_modified">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Last modified</th>
-      <td mat-cell *matCellDef="let row">{{row.last_modified}}</td>
-    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
