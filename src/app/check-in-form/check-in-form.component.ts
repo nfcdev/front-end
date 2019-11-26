@@ -4,13 +4,17 @@ import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 
 
 export interface DialogData {
-  material_number: number;
+  material_number: any;
   reference_number: number;
   area: string;
   storage_room: string;
   shelf: string;
   package: string;
+<<<<<<< HEAD
   placement: string;
+=======
+  placement: any;
+>>>>>>> 9766a9e6cc45bea65efc710abb61478d83ae106d
 }
 
 export interface Room {
