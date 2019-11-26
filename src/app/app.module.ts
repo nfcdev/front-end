@@ -23,7 +23,8 @@ import {
 } from "./storage-event-form/storage-event-form.component";
 import {
   MaterialCheckInComponent,
-  MaterialCheckInDialogComponent } from "./material-check-in/material-check-in.component"
+  MaterialCheckInDialogComponent
+} from "./material-check-in/material-check-in.component";
 
 import { DataVisualizationDialogComponent } from "./data-visualization/data-visualization.component";
 import { MatDialogModule } from "@angular/material";
@@ -74,7 +75,15 @@ import {
   MaterialCheckOutDialogComponent
 } from "./material-check-out/material-check-out.component";
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
-import { RoomAndBranchNameComponent } from './room-and-branch-name/room-and-branch-name.component';
+import { RoomAndBranchNameComponent } from "./room-and-branch-name/room-and-branch-name.component";
+import {
+  UserPageComponent,
+  UserPageDialogComponent
+} from "./user-page/user-page.component";
+import {
+  PackageCheckOutComponent,
+  PackageCheckOutDialogComponent
+} from "./package-check-out/package-check-out.component";
 
 @NgModule({
   declarations: [
@@ -103,7 +112,11 @@ import { RoomAndBranchNameComponent } from './room-and-branch-name/room-and-bran
     MaterialCheckInDialogComponent,
     DataVisualizationComponent,
     DataVisualizationDialogComponent,
-    RoomAndBranchNameComponent
+    RoomAndBranchNameComponent,
+    UserPageComponent,
+    UserPageDialogComponent,
+    PackageCheckOutComponent,
+    PackageCheckOutDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -119,11 +132,6 @@ import { RoomAndBranchNameComponent } from './room-and-branch-name/room-and-bran
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
@@ -135,10 +143,7 @@ import { RoomAndBranchNameComponent } from './room-and-branch-name/room-and-bran
     MatGridListModule,
     NgbAlertModule,
     MatMenuModule,
-    MatGridListModule,
-    MatCheckboxModule,
-    MatListModule,
-    MatChipsModule
+    MatListModule
   ],
   providers: [
     {
@@ -160,7 +165,9 @@ import { RoomAndBranchNameComponent } from './room-and-branch-name/room-and-bran
     ManageSystemDialogPopupComponent,
     MaterialCheckOutDialogComponent,
     MaterialCheckInDialogComponent,
-    DataVisualizationDialogComponent
+    DataVisualizationDialogComponent,
+    UserPageDialogComponent,
+    PackageCheckOutDialogComponent
   ]
 })
 export class AppModule {}

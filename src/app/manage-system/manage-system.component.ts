@@ -14,6 +14,7 @@ export interface Shelf {
   shelf: string;
 }
 
+
 @Component({
   selector: 'app-manage-system',
   templateUrl: './manage-system.component.html',
@@ -23,6 +24,8 @@ export class ManageSystemComponent implements OnInit {
   branches: string[];
   rooms: Room[];
   shelves: Shelf[];
+  users: string[];
+  admins: string[];
 
   chosenBranchInRoom: string;
   chosenBranchInShelf: string;
@@ -34,6 +37,9 @@ export class ManageSystemComponent implements OnInit {
   private _branchConfirmation = new Subject<string>();
   private _roomConfirmation = new Subject<string>();
   private _shelfConfirmation = new Subject<string>();
+  private _userConfirmation = new Subject<string>();
+  private _adminConfirmation = new Subject<string>();
+
   successMessage: string;
   failedMessage: string;
 
@@ -50,7 +56,13 @@ export class ManageSystemComponent implements OnInit {
   shelfToRemoveRoom: string;
   shelfToRemoveBranch: string;
 
- 
+  userConfirmationMessage: string;
+  adminConfirmationMessage: string;
+  userToRemove: string;
+  adminToRemove: string;
+
+
+
   constructor() { }
 
   ngOnInit() {
@@ -87,6 +99,10 @@ export class ManageSystemComponent implements OnInit {
     { branch: 'Finger', room: 'Finger Uppack', shelf: 'B14' }];
 
 
+    this.users = ['user1', 'user2', 'user3', 'user4'];
+    this.admins = ['user1'];
+
+
 
     // Sets up the alert system subscriptions. Debounce time sets how long the message stays before it disappears.
     this._success.subscribe((message) => this.successMessage = message);
@@ -114,50 +130,87 @@ export class ManageSystemComponent implements OnInit {
       debounceTime(10000)
     ).subscribe(() => this.shelfConfirmationMessage = null);
 
+    this._userConfirmation.subscribe((message) => this.userConfirmationMessage = message);
+    this._userConfirmation.pipe(
+      debounceTime(10000)
+    ).subscribe(() => this.userConfirmationMessage = null);
+
+    this._adminConfirmation.subscribe((message) => this.adminConfirmationMessage = message);
+    this._adminConfirmation.pipe(
+      debounceTime(10000)
+    ).subscribe(() => this.adminConfirmationMessage = null);
+
 
   }
   // Alert system methods
   public changeSuccessMessage(message: string) {
     this._success.next(message);
+    this.failedMessage = null;
   }
 
   public changeFailedMessage(message: string) {
     this._failed.next(message);
+    this.successMessage = null;
   }
 
   public changeBranchConfirmationMessage(message: string) {
     this._branchConfirmation.next(message);
+    this.failedMessage = null;
+    this.successMessage = null;
   }
 
   public changeRoomConfirmationMessage(message: string) {
     this._roomConfirmation.next(message);
+    this.failedMessage = null;
+    this.successMessage = null;
   }
 
   public changeShelfConfirmationMessage(message: string) {
     this._shelfConfirmation.next(message);
+    this.failedMessage = null;
+    this.successMessage = null;
   }
 
+  public changeUserConfirmationMessage(message: string) {
+    this._userConfirmation.next(message);
+    this.failedMessage = null;
+    this.successMessage = null;
+  }
+
+  public changeAdminConfirmationMessage(message: string) {
+    this._adminConfirmation.next(message);
+    this.failedMessage = null;
+    this.successMessage = null;
+  }
+
+  public clearConfirmations(): void {
+    this.branchConfirmationMessage = null;
+    this.shelfConfirmationMessage = null;
+    this.roomConfirmationMessage = null;
+    this.userConfirmationMessage = null;
+    this.adminConfirmationMessage = null;
+  }
 
 
   // --------------- MANAGE BRANCHES -----------------------
 
   // Adds a new branch
   addBranch(newBranch: string): void {
-    this.branchConfirmationMessage = null;
-    this.shelfConfirmationMessage = null;
-    this.roomConfirmationMessage = null;
+    this.clearConfirmations();
     if (!this.branches.includes(newBranch)) {
       if (newBranch.length > 0) {
         this.branches.push(newBranch);
         this.changeSuccessMessage('Du har lagt till avdelning ' + newBranch + '.');
+
+      } else {
+        this.changeFailedMessage('Avdelning ' + newBranch + ' finns redan.')
       }
-    } else {
-      this.changeFailedMessage('Avdelning ' + newBranch + ' finns redan.')
     }
     // TODO: save new branch in back-end
   }
   // Sends the confirmation message to remove a branch
   removeBranchConfirmation(branch: string): void {
+    this.clearConfirmations();
     this.successMessage = null;
     this.failedMessage = null;
     if (this.isEmptyBranch(branch)) {
@@ -165,9 +218,7 @@ export class ManageSystemComponent implements OnInit {
       this.branchToRemove = branch;
     } else {
       this.changeFailedMessage('Kan inte ta bort avdelning som innehåller incheckade material.');
-      this.branchConfirmationMessage = null;
-      this.shelfConfirmationMessage = null;
-      this.roomConfirmationMessage = null;
+      this.clearConfirmations();
     }
   }
 
@@ -179,9 +230,7 @@ export class ManageSystemComponent implements OnInit {
       // TODO: remove branch from back-end too
     });
     this.changeSuccessMessage('Avdelning ' + branch + ' borttagen.');
-    this.branchConfirmationMessage = null;
-    this.chosenBranchInRoom = null;
-    this.chosenBranchInShelf = null;
+    this.clearConfirmations();
   }
   // TEMPORARY: Returns true if branch is empty. TODO: check in back-end if branch is empty
   isEmptyBranch(branch: string): boolean {
@@ -194,22 +243,18 @@ export class ManageSystemComponent implements OnInit {
 
   // ----------------- MANAGE ROOMS -------------------------
   addRoom(newRoom: string): void {
-    this.branchConfirmationMessage = null;
-    this.shelfConfirmationMessage = null;
-    this.roomConfirmationMessage = null;
+    this.clearConfirmations();
 
     var temp: Room = { room: newRoom, branch: this.chosenBranchInRoom };
-    if (this.chosenBranchInRoom) {
-      if (!this.roomAlreadyExists(newRoom, this.chosenBranchInRoom)) {
-        if (newRoom.length > 0) {
+    if (newRoom.length > 0) {
+      if (this.chosenBranchInRoom) {
+        if (!this.roomAlreadyExists(newRoom, this.chosenBranchInRoom)) {
           this.rooms.push(temp);
           this.changeSuccessMessage('Du har lagt till rum ' + newRoom + '.');
+        } else {
+          this.changeFailedMessage('Rum ' + newRoom + ' finns redan i denna avdelning.');
         }
-      } else {
-        this.changeFailedMessage('Rum ' + newRoom + ' finns redan i denna avdelning.');
       }
-    } else {
-      this.changeFailedMessage('Välj en avdelning att skapa rummet i först.');
     }
     // TODO: save new room in back-end
   }
@@ -223,6 +268,7 @@ export class ManageSystemComponent implements OnInit {
     return exists;
   }
   removeRoomConfirmation(room: string, branch: string): void {
+    this.clearConfirmations();
     this.successMessage = null;
     this.failedMessage = null;
     if (this.isEmptyRoom(room)) {
@@ -231,9 +277,7 @@ export class ManageSystemComponent implements OnInit {
       this.roomToRemoveBranch = branch;
     } else {
       this.changeFailedMessage('Kan inte ta bort rum som innehåller incheckade material');
-      this.branchConfirmationMessage = null;
-      this.shelfConfirmationMessage = null;
-      this.roomConfirmationMessage = null;
+      this.clearConfirmations();
     }
 
   }
@@ -242,7 +286,7 @@ export class ManageSystemComponent implements OnInit {
       if (item.room === room) this.rooms.splice(index, 1);
     });
     this.changeSuccessMessage('Rum ' + room + ' borttagen från avdelning ' + this.roomToRemoveBranch);
-    this.roomConfirmationMessage = null;
+    this.clearConfirmations();
     this.chosenRoomInShelf = null;
     // TODO: remove room from back-end too
   }
@@ -257,22 +301,18 @@ export class ManageSystemComponent implements OnInit {
 
   // ------------------------ MANAGE SHELVES ---------------------------------
   addShelf(newShelf: string): void {
-    this.branchConfirmationMessage = null;
-    this.shelfConfirmationMessage = null;
-    this.roomConfirmationMessage = null;
+    this.clearConfirmations();
 
     var temp: Shelf = { shelf: newShelf, room: this.chosenRoomInShelf, branch: this.chosenBranchInShelf };
     if (this.chosenBranchInShelf && this.chosenRoomInShelf) {
-      if (!this.shelfAlreadyExists(newShelf, this.chosenRoomInShelf, this.chosenBranchInShelf)) {
-        if (newShelf.length > 0) {
+      if (newShelf.length > 0) {
+        if (!this.shelfAlreadyExists(newShelf, this.chosenRoomInShelf, this.chosenBranchInShelf)) {
           this.shelves.push(temp);
           this.changeSuccessMessage('Du har lagt till hylla ' + newShelf + '.');
+        } else {
+          this.changeFailedMessage('Hylla ' + newShelf + ' finns redan i detta rum');
         }
-      } else {
-        this.changeFailedMessage('Hylla ' + newShelf + ' finns redan i detta rum');
       }
-    } else {
-      this.changeFailedMessage('Välj avdelning och rum att skapa hyllan i först.');
     }
     // TODO: save new shelf in back-end
   }
@@ -287,6 +327,7 @@ export class ManageSystemComponent implements OnInit {
   }
 
   removeShelfConfirmation(shelf: string, room: string, branch: string): void {
+    this.clearConfirmations();
     this.successMessage = null;
     this.failedMessage = null;
     if (this.isEmptyShelf(shelf)) {
@@ -296,9 +337,7 @@ export class ManageSystemComponent implements OnInit {
       this.shelfToRemoveBranch = branch;
     } else {
       this.changeFailedMessage('Kan inte ta bort hylla som innehåller incheckade material');
-      this.branchConfirmationMessage = null;
-      this.shelfConfirmationMessage = null;
-      this.roomConfirmationMessage = null;
+      this.clearConfirmations();
     }
 
   }
@@ -307,9 +346,9 @@ export class ManageSystemComponent implements OnInit {
       if (item.shelf === shelf) this.shelves.splice(index, 1);
     });
     this.changeSuccessMessage('Hylla ' + shelf + ' borttagen från rum ' +
-        this.shelfToRemoveRoom + '.');
-      this.shelfConfirmationMessage = null;
-      // TODO: remove shelf from back-end too
+      this.shelfToRemoveRoom + '.');
+    this.clearConfirmations();
+    // TODO: remove shelf from back-end too
   }
   // TEMPORARY: Returns true if shelf is empty. TODO: check in back-end if shelf is empty
   isEmptyShelf(shelf: string): boolean {
@@ -319,5 +358,103 @@ export class ManageSystemComponent implements OnInit {
       return true;
     }
   }
+
+  // --------------- MANAGE USERS -----------------------
+
+  // Adds a new user
+  addUser(newUser: string): void {
+    this.clearConfirmations();
+    if (!this.users.includes(newUser)) {
+      if (newUser.length > 0) {
+        this.users.push(newUser);
+        this.changeSuccessMessage('Du har lagt till användare ' + newUser + '.');
+        // TODO: save new user in back-end
+      }
+    } else {
+      this.changeFailedMessage('Användare ' + newUser + ' finns redan.')
+    }
+
+  }
+  // Sends the confirmation message to remove a user
+  removeUserConfirmation(user: string): void {
+    this.clearConfirmations();
+    this.successMessage = null;
+    this.failedMessage = null;
+
+    if (this.isEmptyUser(user)) {
+      if (!this.admins.includes(user)) {
+        this.changeUserConfirmationMessage('Vill du verkligen ta bort användare ' + user + '?');
+        this.userToRemove = user;
+      } else {
+        this.changeFailedMessage('Kan inte ta bort en användare som är admin.');
+        this.clearConfirmations();
+      }
+    } else {
+      this.changeFailedMessage('Kan inte ta bort en användare som har utcheckade material.');
+      this.clearConfirmations();
+    }
+  }
+
+  // Removes the user when the confirm button is pressed
+  removeUser(user: string): void {
+    this.users.forEach((item, index) => {
+      if (item === user) this.users.splice(index, 1);
+
+      // TODO: remove user from back-end too
+    });
+    this.changeSuccessMessage('Användare ' + user + ' borttagen.');
+    this.clearConfirmations();
+  }
+  // TEMPORARY: Returns true if user doesnt have any checked-out materials . TODO: check in back-end if user is "empty"
+  isEmptyUser(user: string): boolean {
+    if (user == 'user2') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  // --------------- MANAGE ADMINS -----------------------
+
+  // Adds a new admin
+  addAdmin(newAdmin: string): void {
+    this.clearConfirmations();
+    if (this.users.includes(newAdmin)) {
+      if (!this.admins.includes(newAdmin)) {
+        if (newAdmin.length > 0) {
+          this.admins.push(newAdmin);
+          this.changeSuccessMessage('Du har lagt till användare ' + newAdmin + ' som admin.');
+          // TODO: save new admin status in back-end
+        }
+      } else {
+        this.changeFailedMessage('Användare ' + newAdmin + ' är redan admin.');
+      }
+    } else {
+      if (newAdmin.length > 0) {
+        this.changeFailedMessage('Användare ' + newAdmin + ' finns inte.');
+      }
+    }
+
+  }
+  // Sends the confirmation message to remove an admin
+  removeAdminConfirmation(admin: string): void {
+    this.clearConfirmations();
+    this.successMessage = null;
+    this.failedMessage = null;
+    this.changeAdminConfirmationMessage('Vill du verkligen ta bort användare ' + admin + ' som admin?');
+    this.adminToRemove = admin;
+  }
+
+  // Removes the admin when the confirm button is pressed
+  removeAdmin(admin: string): void {
+    this.admins.forEach((item, index) => {
+      if (item === admin) this.admins.splice(index, 1);
+
+      // TODO: remove admin from back-end too
+    });
+    this.changeSuccessMessage('Användare ' + admin + ' är nu inte längre admin.');
+    this.clearConfirmations();
+  }
+
 
 }
