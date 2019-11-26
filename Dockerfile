@@ -6,4 +6,4 @@ RUN npm install -g @angular/cli
 RUN npm audit fix
 COPY . ./
 EXPOSE 3001
-CMD npm run start:ci
+CMD npm run start
