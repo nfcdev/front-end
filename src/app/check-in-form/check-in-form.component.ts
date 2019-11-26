@@ -10,11 +10,7 @@ export interface DialogData {
   storage_room: string;
   shelf: string;
   package: string;
-<<<<<<< HEAD
-  placement: string;
-=======
   placement: any;
->>>>>>> 9766a9e6cc45bea65efc710abb61478d83ae106d
 }
 
 export interface Room {
