@@ -44,7 +44,8 @@ import {
   MatGridListModule,
   MatMenuModule,
   MatListModule,
-  MatChipsModule
+  MatChipsModule,
+  MatExpansionModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
 import { SearchBarComponent } from "./search-bar/search-bar.component";
@@ -76,7 +77,7 @@ import {
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
 import { UserPageComponent, UserPageDialogComponent } from './user-page/user-page.component';
 import { PackageCheckOutComponent, PackageCheckOutDialogComponent } from './package-check-out/package-check-out.component';
-import { CasePageComponent } from './case-page/case-page.component';
+import { CasePageComponent, CasePageDialogComponent } from './case-page/case-page.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +110,8 @@ import { CasePageComponent } from './case-page/case-page.component';
     UserPageDialogComponent,
     PackageCheckOutComponent,
     PackageCheckOutDialogComponent,
-    CasePageComponent
+    CasePageComponent,
+    CasePageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -144,7 +146,8 @@ import { CasePageComponent } from './case-page/case-page.component';
     MatGridListModule,
     MatCheckboxModule,
     MatListModule,
-    MatChipsModule
+    MatChipsModule,
+    MatExpansionModule
   ],
   providers: [
     {
@@ -168,7 +171,8 @@ import { CasePageComponent } from './case-page/case-page.component';
     MaterialCheckInDialogComponent,
     DataVisualizationDialogComponent,
     UserPageDialogComponent,
-    PackageCheckOutDialogComponent
+    PackageCheckOutDialogComponent,
+    CasePageDialogComponent
   ]
 })
 export class AppModule {}
