@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
     private storageRoomStore: StorageRoomStore
   ) {}
   userLoggedIn = false;
-  user = {};
+  user:any = {};
   title = "front-end";
   storageRooms = [];
   selectedStorageRoomId = this.storageRoomStore.getStorageRoom().id;
