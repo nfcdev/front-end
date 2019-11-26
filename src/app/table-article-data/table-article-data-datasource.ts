@@ -27,20 +27,6 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
   constructor(data) {
     super();
     this.data = data;
-    /*console.log("inside constructor")
-    for (const d of requestData) {
-      var tmp: TableArticleDataItem = {"material_number": d["material_number"],
-                                        "reference_number": d["reference_number"],
-                                        "storage_room": d["storage_room"],
-                                        "shelf": d["shelf"],
-                                        "status": d["status"],
-                                        "timestamp": d["timestamp"],
-                                        "last_modified": d["last modified"]
-                                       };
-
-      this.data.push(tmp);
-    }
-    console.log(this.data);*/
   }
 
   /**
@@ -82,12 +68,12 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
     return data.sort((a, b) => {
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
-        case 'article_nr': return compare(a.material_number, b.material_number, isAsc);
         case 'case_nr': return compare(+a.reference_number, +b.reference_number, isAsc);
+        case 'article_nr': return compare(a.material_number, b.material_number, isAsc);
+        case 'package_nr': return compare(a.package, b.package, isAsc);
+        case 'branch': return compare(a.branch, b.branch, isAsc);
         case 'storage_room': return compare(a.storage_room, b.storage_room, isAsc);
         case 'shelf': return compare(a.shelf, b.shelf, isAsc);
-        case 'status': return compare(a.status, b.status, isAsc);
-        case 'timestamp': return compare(+a.timestamp, +b.timestamp, isAsc);
         case 'last_modified': return compare(+a.last_modified, +b.last_modified, isAsc);
 
         default: return 0;
