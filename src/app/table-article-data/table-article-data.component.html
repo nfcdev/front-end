@@ -29,7 +29,7 @@
     <!-- Name Column -->
     <ng-container matColumnDef="case_nr">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Case #</th>
-      <td mat-cell *matCellDef="let row">{{row.reference_number}}</td>
+      <td mat-cell *matCellDef="let row"><app-case-page [reference_number]='row.reference_number'></app-case-page></td>
     </ng-container>
 
     <ng-container matColumnDef="storage_room">

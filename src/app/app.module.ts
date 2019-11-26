@@ -76,6 +76,7 @@ import {
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
 import { UserPageComponent, UserPageDialogComponent } from './user-page/user-page.component';
 import { PackageCheckOutComponent, PackageCheckOutDialogComponent } from './package-check-out/package-check-out.component';
+import { CasePageComponent } from './case-page/case-page.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +108,8 @@ import { PackageCheckOutComponent, PackageCheckOutDialogComponent } from './pack
     UserPageComponent,
     UserPageDialogComponent,
     PackageCheckOutComponent,
-    PackageCheckOutDialogComponent
+    PackageCheckOutDialogComponent,
+    CasePageComponent
   ],
   imports: [
     BrowserModule,
