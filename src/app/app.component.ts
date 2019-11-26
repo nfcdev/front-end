@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
     private branchStore: BranchStore
   ) {}
   userLoggedIn = false;
-  user = {};
+  user:any = {};
   title = "front-end";
   storageRooms = [];
   selectedStorageRoomId = this.storageRoomStore.getStorageRoom().id;
@@ -40,13 +40,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.user.subscribe(user => {
-      console.log("user", user);
       this.user = user;
       this.isAdmin = this.authService.isUserAdmin();
     });
     this.authService.isUserLoggedIn.subscribe(loggedIn => {
-      console.log("loggedIn", loggedIn);
-
       this.userLoggedIn = loggedIn;
     });
     this.storageRoomStore.currentStorageRoom.subscribe(room => {

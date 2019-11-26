@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 export interface DialogData{
   materials: string[];
-  user: {};
+  user: any;
   unaccountedTime: string;
 }
 
@@ -24,7 +24,7 @@ const MATERIALS: string[] = ['55123123', '42123123', '33123123', '42123123', '77
 })
 export class UserPageComponent implements OnInit {
   materials: string[] = MATERIALS;
-  user : {};
+  user : any;
   unaccountedTime: string;
   constructor(public dialog: MatDialog,
     private authService: AuthenticationService,

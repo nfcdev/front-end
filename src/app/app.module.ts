@@ -23,7 +23,8 @@ import {
 } from "./storage-event-form/storage-event-form.component";
 import {
   MaterialCheckInComponent,
-  MaterialCheckInDialogComponent } from "./material-check-in/material-check-in.component"
+  MaterialCheckInDialogComponent
+} from "./material-check-in/material-check-in.component";
 
 import { DataVisualizationDialogComponent } from "./data-visualization/data-visualization.component";
 import { MatDialogModule } from "@angular/material";
@@ -76,8 +77,15 @@ import {
   MaterialCheckOutDialogComponent
 } from "./material-check-out/material-check-out.component";
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
-import { UserPageComponent, UserPageDialogComponent } from './user-page/user-page.component';
-import { PackageCheckOutComponent, PackageCheckOutDialogComponent } from './package-check-out/package-check-out.component';
+import { RoomAndBranchNameComponent } from "./room-and-branch-name/room-and-branch-name.component";
+import {
+  UserPageComponent,
+  UserPageDialogComponent
+} from "./user-page/user-page.component";
+import {
+  PackageCheckOutComponent,
+  PackageCheckOutDialogComponent
+} from "./package-check-out/package-check-out.component";
 
 @NgModule({
   declarations: [
@@ -106,6 +114,7 @@ import { PackageCheckOutComponent, PackageCheckOutDialogComponent } from './pack
     MaterialCheckInDialogComponent,
     DataVisualizationComponent,
     DataVisualizationDialogComponent,
+    RoomAndBranchNameComponent,
     UserPageComponent,
     UserPageDialogComponent,
     PackageCheckOutComponent,
@@ -125,11 +134,6 @@ import { PackageCheckOutComponent, PackageCheckOutDialogComponent } from './pack
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
@@ -141,10 +145,7 @@ import { PackageCheckOutComponent, PackageCheckOutDialogComponent } from './pack
     MatGridListModule,
     NgbAlertModule,
     MatMenuModule,
-    MatGridListModule,
-    MatCheckboxModule,
-    MatListModule,
-    MatChipsModule
+    MatListModule
   ],
   providers: [
     {
