@@ -33,6 +33,8 @@ import { MatCardModule } from "@angular/material/card";
 
 import { StorageRoomStore } from "./storage-room/storage-room-store";
 
+import { BranchStore } from './branch/branch-store';
+
 import { LoginComponent } from "./login/login.component";
 
 import { CheckInDropDownComponent } from "./check-in-drop-down/check-in-drop-down.component";
@@ -152,6 +154,7 @@ import { PackageCheckOutComponent, PackageCheckOutDialogComponent } from './pack
     },
     AuthenticationService,
     StorageRoomStore,
+    BranchStore,
     MaterialCheckBoxService
   ],
   bootstrap: [AppComponent],
