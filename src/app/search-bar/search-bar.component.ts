@@ -18,7 +18,7 @@ export interface Option {
   category: string; // Will represent a post in the table: {reference_number, material_number, storage_room, shelf, package, status}
 }
 
-export const activeStatuses: String [] = ["check_out", "check_in"];
+export const activeStatuses: String [] = ["check_in", "check_out"];
 export const inactiveStatuses: String [] = ["discarded", "processed"];
 
 @Component({
@@ -36,7 +36,6 @@ export class SearchBarComponent implements OnInit {
   options: Option[] = [];
   activeMaterials: Boolean = true;
   inactiveMaterials: Boolean = false;
-  
   tableData: TableArticleDataItem [] = EXAMPLE_DATA; // TODO: adjust for actual data
   storageRooms: String [] = [];
   statuses: String [] = activeStatuses.concat(inactiveStatuses);
