@@ -56,7 +56,7 @@ transformData(requestData) {
                "package": d["package"],
                "status": d["status"],
                "timestamp": d["timestamp"],
-               "last_modified": d["last modified"]
+               "last_modified": d["last_modified"]
                };
 
     data.push(tmp);
