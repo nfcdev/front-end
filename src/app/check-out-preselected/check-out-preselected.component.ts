@@ -1,6 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MaterialCheckBoxService } from '../table-article-data/material-check-box.service';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 
 export interface DialogData{
@@ -21,17 +22,24 @@ export class CheckOutPreselectedComponent implements OnInit{
     public dialog: MatDialog) {}
     
   openDialog(): void {
+
+    
     this.preChosen= true;
     const dialogRef = this.dialog.open(CheckOutPreselectedDialogComponent,{
       width:'800px',
-      height:'400px'
+      height:'400px',
+      data:
+      {selectedPackages: this.packages,
+        preChosen: this.preChosen
+      }
+      
     })
 
   }
   ngOnInit() {
     this.materialCheckBoxService.checkBoxChange.subscribe(newSelection => {
       this.selection = newSelection.selected;
-      this.packages = this.selection.reduce((a, {package_number}) => a.concat(package_number), []);
+      this.packages = this.selection.reduce((a, {material_number}) => a.concat(material_number), []);
     });
   }
   
@@ -40,13 +48,27 @@ export class CheckOutPreselectedComponent implements OnInit{
   selector: 'app-check-out-preselected-dialog',
   templateUrl: 'check-out-preselected-dialog.html',
 })
-export class CheckOutPreselectedDialogComponent {
-
+export class CheckOutPreselectedDialogComponent implements OnInit {
+  checkOutConfirmed : boolean = false;
+  preChosen : boolean = false;
+  
+  checkInForm: FormGroup;
   constructor(
     public dialogRef: MatDialogRef<CheckOutPreselectedDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
+    @Inject(MAT_DIALOG_DATA) public data: DialogData){}
+  
+    
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  onConfirm() : void {
+    this.checkOutConfirmed = true;
+ 
+    // TODO: check-out the materials in this.data.selection in the back-end here together with this.comment
+  }
+
+  ngOnInit() : void {
+    
   }
 }
