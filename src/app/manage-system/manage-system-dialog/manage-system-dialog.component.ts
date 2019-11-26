@@ -34,7 +34,6 @@ export class ManageSystemDialogComponent implements OnInit {
 
   ngOnInit() {
     this.isAdmin = this.authenticationService.isUserAdmin();
-    console.log(this.isAdmin);
   }
 }
 
