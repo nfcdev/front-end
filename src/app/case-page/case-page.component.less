@@ -9,11 +9,13 @@
 }
 
 ::ng-deep .casePageContent {
-    height: 80%;
+    height: 450px;
+    overflow-y: auto;
 }
 
 ::ng-deep .caseInfoTable {
-    width:400px;
+    width:300px;
+    margin-bottom: 75%;
 }
 ::ng-deep .caseInfoText {
     white-space: pre;
@@ -21,8 +23,17 @@
 }
 
 ::ng-deep .caseMatList {
-    height: 90%;
-    width: 90%;
+    height: 80%;
+    width: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
+    padding-left: 10px;
+    padding-right:10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+::ng-deep .casePageFull {
+    overflow-y:hidden;
+    height:500px;
 }
