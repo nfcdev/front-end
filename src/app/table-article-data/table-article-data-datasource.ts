@@ -22,6 +22,7 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
   paginator: MatPaginator;
   sort: MatSort;
 
+  //Expected parameter data adheres to TableArticleDataItem content
   constructor(data) {
     super();
     this.data = data;
