@@ -82,6 +82,7 @@ export class MaterialCheckInComponent implements OnInit {
       storage_room: this.rooms.find(x => x.roomId === this.given_storage_room_id ).roomName, //finds the room name from the given id
       selectedMaterials: this.materials,
       preChosen: this.preChosen
+      
       }
     });
 
@@ -95,9 +96,13 @@ export class MaterialCheckInComponent implements OnInit {
 
       // TODO: Jsonify data and send to back-end
 
+       // reset material list
+      this.materials = [];
       } else {
         console.log('Empty result');
       }
+     
+      
     });
   }
 
@@ -132,7 +137,7 @@ export class MaterialCheckInDialogComponent {
   createForm() {
     // create variables and validators for form fields
     this.checkInForm = this.fb.group({
-      material_number: ['', Validators.required],
+      material_number: [''],
       reference_number: ['', Validators.required],
       area: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
@@ -154,13 +159,14 @@ export class MaterialCheckInDialogComponent {
 
   onConfirm() : void {
     this.checkOutConfirmed = true;
+    
     //console.log(this.comment);
     // TODO: check-out the materials in this.data.selection in the back-end here together with this.comment
   }
 
   addMaterial(newMaterial : string) : void {
     if (!this.data.selectedMaterials.includes(newMaterial)) { 
-      if(newMaterial.length > 0) {
+      if(newMaterial && newMaterial.length > 0) {
         this.data.selectedMaterials.push(newMaterial);
         this.checkInForm.controls['material_number'].reset()
       }
