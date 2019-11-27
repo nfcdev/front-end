@@ -8,7 +8,6 @@ import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 export interface DialogData{
   selectedMaterials: string[];
   preChosen: boolean;
-  material_number: any;
 }
 
 @Component({
@@ -51,15 +50,13 @@ export class MaterialCheckOutComponent implements OnInit {
       console.log('The dialog was closed');
 
       if(result != null ){ // if user presses cancel the result is null. TODO: better solution for checking this
-      //console.log(result);
+      console.log(result);
 
-      // reset material list if we press the "tillbaka-button"
-      this.materials = [];
+      // TODO: Jsonify data and send to back-end
 
       } else {
         console.log('Empty result');
       }
-      
     });
 
   }
@@ -99,7 +96,7 @@ export class MaterialCheckOutDialogComponent implements OnInit{
     createForm() {
       // create variables and validators for form fields
       this.checkInForm = this.fb.group({
-        material_number: [''],
+        material_number: ['', Validators.required],
         comment: ['']
       });
     }
@@ -114,18 +111,14 @@ export class MaterialCheckOutDialogComponent implements OnInit{
   }
 // Runs when "Checka Ut" button is pressed
   onConfirm() : void {
-    
     this.checkOutConfirmed = true;
-    //console.log(this.comment);
-    // TODO: check-out the materials in this.data.selectedMaterials in the back-end here together with this.comment
-
-    // clears the selected materials so that they don't stay when check-out is clicked again
-    
+    console.log(this.comment);
+    // TODO: check-out the materials in this.data.selection in the back-end here together with this.comment
   }
 
   addMaterial(newMaterial : string) : void {
     if (!this.data.selectedMaterials.includes(newMaterial)) { 
-      if(newMaterial && newMaterial.length > 0) {
+      if(newMaterial.length > 0) {
         this.data.selectedMaterials.push(newMaterial);
       }
     } else {

@@ -1,6 +1,7 @@
 <div class="dialogContainer">
-        <div *ngIf="checkOutConfirmed">
-                <div style="text-align: center;">Följande paket har checkats ut:</div>
+    <div *ngIf="checkOutConfirmed">
+        <div style="text-align: center;">Följande paket har checkats ut:  <b *ngFor="let material of data.selectedPackages;let isLast=last">
+            {{material}}{{isLast ? '' : ', '}}</b></div>
         </div>
         
 <div class="closeButton"><button mat-raised-button (click)="onNoClick()">X</button></div>
