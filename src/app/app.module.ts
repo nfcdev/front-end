@@ -47,7 +47,8 @@ import {
   MatGridListModule,
   MatMenuModule,
   MatListModule,
-  MatChipsModule
+  MatChipsModule,
+  MatTooltipModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
 import { SearchBarComponent } from "./search-bar/search-bar.component";
@@ -145,7 +146,8 @@ import {
     MatGridListModule,
     NgbAlertModule,
     MatMenuModule,
-    MatListModule
+    MatListModule,
+    MatTooltipModule
   ],
   providers: [
     {
