@@ -1,4 +1,4 @@
-<div >
+<div>
     <div mat-dialog-header class="casePageHeader">
         <mat-grid-list cols="7" rowHeight="50px">
             <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onBackButton()">←</button></mat-grid-tile>
@@ -45,10 +45,11 @@
                             <mat-expansion-panel closed>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        {{branch.name}}
+                                        <b> {{branch.name}} </b> 
                                     </mat-panel-title>
                                     <mat-panel-description>
-                                        {{branch.storage_rooms?.lenght}}
+                                        
+                                        
                                     </mat-panel-description>
                                 </mat-expansion-panel-header>
                                 <ng-template matExpansionPanelContent>
@@ -58,10 +59,10 @@
                                             <mat-expansion-panel closed>
                                                 <mat-expansion-panel-header>
                                                     <mat-panel-title>
-                                                        {{storage_room.name}}
+                                                        <i>{{storage_room.name}}</i>
                                                     </mat-panel-title>
                                                     <mat-panel-description>
-                                                        {{storage_room.shelves?.lenght}}
+                                                        
                                                     </mat-panel-description>
                                                 </mat-expansion-panel-header>
                                                 <ng-template matExpansionPanelContent>
@@ -70,10 +71,11 @@
                                                             <mat-expansion-panel closed>
                                                                 <mat-expansion-panel-header>
                                                                     <mat-panel-title>
-                                                                        {{shelf.name}}
+                                                                        Hylla &nbsp; <app-shelf-page [shelf]="shelf.name">
+                                                                        </app-shelf-page>
                                                                     </mat-panel-title>
                                                                     <mat-panel-description>
-                                                                        {{shelf.packages?.lenght}}
+                                                                        
                                                                     </mat-panel-description>
                                                                 </mat-expansion-panel-header>
                                                                 <ng-template matExpansionPanelContent>
@@ -84,13 +86,18 @@
                                                                             <mat-expansion-panel closed>
                                                                                 <mat-expansion-panel-header>
                                                                                     <mat-panel-title>
-                                                                                        {{package.name}}
+                                                                                        <div
+                                                                                            *ngIf="!(package.name == null)">
+                                                                                            Paket &nbsp; </div>
+                                                                                        <app-package-page
+                                                                                            [package]="package.name">
+                                                                                        </app-package-page>
                                                                                         <div
                                                                                             *ngIf="package.name == null">
                                                                                             Löst</div>
                                                                                     </mat-panel-title>
                                                                                     <mat-panel-description>
-                                                                                        {{package.materials?.lenght}}
+                                                                                        
                                                                                     </mat-panel-description>
                                                                                 </mat-expansion-panel-header>
                                                                                 <ng-template matExpansionPanelContent>

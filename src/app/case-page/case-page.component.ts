@@ -84,28 +84,53 @@ export class CasePageComponent implements OnInit {
       time_active: '21d 2h 3min', last_modified: '21d 2h 3min'
     };
     this.materials = [{
-      material_number: '12', reference_number: '12', branch: 'Bio',
+      material_number: '10', reference_number: '12', branch: 'Bio',
       storage_room: 'Bio Uppack', shelf: 'B15', package: 'P2'
     },
     {
-      material_number: '13', reference_number: '12', branch: 'Vapen',
+      material_number: '11', reference_number: '12', branch: 'Vapen',
       storage_room: 'Vapen Uppack', shelf: 'A15', package: null
     },
     {
-      material_number: '27', reference_number: '12', branch: 'Vapen',
+      material_number: '12', reference_number: '12', branch: 'Vapen',
       storage_room: 'Vapen Labb', shelf: 'C15', package: 'K2'
     },
     {
-      material_number: '30', reference_number: '12', branch: 'Vapen',
+      material_number: '13', reference_number: '12', branch: 'Finger',
+      storage_room: 'Finger Labb', shelf: 'H2', package: null
+    },
+    {
+      material_number: '14', reference_number: '12', branch: 'Vapen',
       storage_room: 'Vapen Labb', shelf: 'C15', package: 'K2'
     },
     {
-      material_number: '35', reference_number: '12', branch: 'Vapen',
-      storage_room: 'Vapen Labb', shelf: 'C15', package: 'K1'
-    },
-    {
-      material_number: '29', reference_number: '12', branch: 'Vapen',
+      material_number: '15', reference_number: '12', branch: 'Vapen',
       storage_room: 'Vapen Labb', shelf: 'E15', package: 'K3'
+    },
+
+    {
+      material_number: '16', reference_number: '12', branch: 'Bio',
+      storage_room: 'Bio Uppack', shelf: 'B15', package: 'P2'
+    },
+    {
+      material_number: '17', reference_number: '12', branch: 'Vapen',
+      storage_room: 'Vapen Uppack', shelf: 'A15', package: null
+    },
+    {
+      material_number: '18', reference_number: '12', branch: 'Vapen',
+      storage_room: 'Vapen Labb', shelf: 'D15', package: 'K2'
+    },
+    {
+      material_number: '19', reference_number: '12', branch: 'Finger',
+      storage_room: 'Finger Labb', shelf: 'F15', package: 'K2'
+    },
+    {
+      material_number: '20', reference_number: '12', branch: 'Finger',
+      storage_room: 'Finger Uppack', shelf: 'F15', package: 'P7'
+    },
+    {
+      material_number: '30', reference_number: '12', branch: 'Finger',
+      storage_room: 'Finger Uppack', shelf: 'K15', package: 'P17'
     }
     ];
 
@@ -126,52 +151,35 @@ export class CasePageComponent implements OnInit {
       .map(item => item.package)
       .filter((value, index, self) => self.indexOf(value) === index);
 
-    // Determines which materials go in which branch etc.
-    this.branches.forEach((branch) => {
-      this.storage_rooms.forEach((storage_room) => {
-        this.shelves.forEach((shelf) => {
-          this.packages.forEach((pack) => {
-            this.materials.forEach((material) => {
-              if (material.branch === branch && material.storage_room === storage_room
-                && material.shelf === shelf && material.package === pack) {
-                var temp: MaterialBox = { branch: branch, storage_room: storage_room, shelf: shelf, package: pack, material: material.material_number };
-                this.materialBoxes.push(temp);
-              }
-            })
-          })
-        })
-      })
-    });
-
     //Loops through, for each branch determines which rooms belong there, then which shelves belong in that rooms etc.
     this.branches.forEach((branch) => {
       var tempBranch: Branch = { name: branch, storage_rooms: [] };
       var uniqueRooms: string[] = [];
-      this.materialBoxes.forEach((box) => {
+      this.materials.forEach((box) => {
         if (box.branch === branch) {
           var tempRoom: StorageRoom = { name: box.storage_room, shelves: [] };
           if (!uniqueRooms.includes(box.storage_room)) {
             // Find rooms in that branch
             this.storage_rooms.forEach((storage_room) => {
               var uniqueShelves: string[] = [];
-              this.materialBoxes.forEach((box1) => {
+              this.materials.forEach((box1) => {
                 if (box1.branch === branch && box1.storage_room === storage_room && box.storage_room == storage_room) {
                   var tempShelf: Shelf = { name: box1.shelf, packages: [] };
                   if (!uniqueShelves.includes(box1.shelf)) {
                     //Find packages in that shelf
                     this.shelves.forEach((shelf) => {
                       var uniquePackages: string[] = [];
-                      this.materialBoxes.forEach((box2) => {
+                      this.materials.forEach((box2) => {
                         if (box2.branch === branch && box2.storage_room === storage_room && box2.shelf === shelf
                           && box1.shelf == shelf) {
                           var tempPackage: Package = { name: box2.package, materials: [] };
                           if (!uniquePackages.includes(box2.package)) {
                             //Find materials in that package
                             this.packages.forEach((pack) => {
-                              this.materialBoxes.forEach((box3) => {
+                              this.materials.forEach((box3) => {
                                 if (box3.branch === branch && box3.storage_room === storage_room && box3.shelf === shelf && box3.package == pack
                                   && box2.package == pack) {
-                                  tempPackage.materials.push(box3.material);
+                                  tempPackage.materials.push(box3.material_number);
                                 }
                               });
                             });
@@ -199,9 +207,6 @@ export class CasePageComponent implements OnInit {
     });
 
     // -------------------------------------------------------------------------------------------------------------
-
-
-
 
 
     const dialogRef = this.dialog.open(CasePageDialogComponent, {
