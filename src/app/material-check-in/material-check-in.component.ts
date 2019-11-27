@@ -5,6 +5,8 @@ import { SelectionModel, DataSource } from '@angular/cdk/collections';
 import { MaterialCheckBoxService } from '../table-article-data/material-check-box.service';
 import { StorageRoomStore } from "../storage-room/storage-room-store";
 import { StorageRoomService } from "../storage-room/storage-room.service";
+import { DataService } from "../data.service"
+import { variable } from '@angular/compiler/src/output/output_ast';
 
 export interface DialogData {
   material_number: any;
@@ -52,7 +54,8 @@ export class MaterialCheckInComponent implements OnInit {
     private materialCheckBoxService: MaterialCheckBoxService,
     public dialog: MatDialog,
     private storageRoomStore: StorageRoomStore,
-    private storageRoomService: StorageRoomService) { }
+    private storageRoomService: StorageRoomService,
+    ) { }
 
   openDialog(): void {
 
@@ -89,8 +92,7 @@ export class MaterialCheckInComponent implements OnInit {
       } else {
         console.log('Empty result');
       }
-     
-      
+
     });
   }
 
@@ -127,6 +129,7 @@ export class MaterialCheckInDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<MaterialCheckInDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private dataService: DataService,
     private fb: FormBuilder) {
       this.createForm();
     }
@@ -134,7 +137,7 @@ export class MaterialCheckInDialogComponent {
     // create variables and validators for form fields
     this.checkInForm = this.fb.group({
       material_number: [''],
-      reference_number: ['', Validators.required],
+      //reference_number: ['', Validators.required], //Should always be pre-filled?
       branch: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
       shelf: ['', Validators.required],
@@ -155,11 +158,55 @@ export class MaterialCheckInDialogComponent {
 
   onConfirm() : void {
     this.checkOutConfirmed = true;
-    //console.log(this.comment);
-    // TODO: check-out the materials in this.data.selection in the back-end here together with this.comment
+
+  //TODO: If item(s) does not exist, add case number and do different back-end call
+
+
+  //For check in of existing items
+   for (var mat of this.data.selectedMaterials) {
+    var post_data = {"material_number": mat,
+                    "storage_room": this.data.storage_room,
+                    "shelf": this.data.shelf
+                    };
+                    console.log(typeof(post_data))
+    //TODO: Add optional items to post_data
+   
+    console.log(this.data.comment);
+    console.log(this.data.comment !== "");
+    console.log(this.data.package !== null);
+
+    if (this.data.comment !== "" && this.data.package !== null) {
+      console.log("TEST")
+      post_data["comment"] = this.data.comment;
+    }
+
+    if (this.data.package !== "" && this.data.package !== undefined) {
+      post_data["package"] = this.data.package;
+    }
+
+    console.log(post_data);
+    this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[])=>{
+      console.log(data);
+    })
+
+    }
+
+
+   }
+
+
+  addCase(currentMaterial : string) : boolean {
+    this.dataService.sendGetRequest("/article/" + currentMaterial).subscribe((data: any[])=>{
+      console.log(data);
+    })
+    //Get case for the chosen material
+    //If case is empty, then add case.
+    //If the case is same as previous case, then return true.
+    return true;
   }
 
   addMaterial(newMaterial : string) : void {
+    //this.addCase(newMaterial); TODO: FIX THIS WHEN YOU CAN EITHER GET ID OR REQUEST WITH MATERIAL_NO
     if (!this.data.selectedMaterials.includes(newMaterial)) { 
       if(newMaterial && newMaterial.length > 0) {
         this.data.selectedMaterials.push(newMaterial);

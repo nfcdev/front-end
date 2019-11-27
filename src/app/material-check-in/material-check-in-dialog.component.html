@@ -5,12 +5,12 @@
 <div mat-dialog-content [formGroup]="checkInForm">
 
 
-  <mat-form-field>
+  <!-- <mat-form-field>
     <input class="form-control"
     formControlName="reference_number" matInput
     [(ngModel)]="data.reference_number" placeholder="Diarienummer">
   </mat-form-field>
-  <br>
+  <br> -->
 
   <mat-form-field>
     <input class="form-control"  name="material_number"
@@ -65,7 +65,7 @@
 
 
   <mat-form-field>
-    <textarea matInput class="form-control"
+    <textarea matInput class="form-control" formControlName="comment" [(ngModel)]="data.comment" name="comment"
     placeholder="Lämna en anteckning"></textarea>
   </mat-form-field>
   <br>
