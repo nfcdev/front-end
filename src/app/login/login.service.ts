@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-const BACKEND_URL = `${environment.URL}:${environment.PORT}${environment.APIVERISON}`
+const BACKEND_URL = `${environment.URL}`;
 
 @Injectable()
 export class LoginService {

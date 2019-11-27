@@ -15,7 +15,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class DataService {
-  private REST_API_SERVER = `${environment.URL}${environment.APIVERISON}`;
+  private REST_API_SERVER = `${environment.URL}`;
 
   constructor(private httpClient: HttpClient) { }
 

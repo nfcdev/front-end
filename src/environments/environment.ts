@@ -4,9 +4,7 @@
 
 export const environment = {
   production: false,
-  URL: 'http://localhost',
-  APIVERISON: '/api/v1',
-  PORT: '9000'
+  URL: 'http://localhost:9000/api/v1',
 };
 
 /*
