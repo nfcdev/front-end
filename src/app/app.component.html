@@ -3,7 +3,7 @@
   <span class="spacer"></span>
   <div class="current-location">
     <span style="margin-right: 5px;">Nuvarande avdelning: </span>
-      <mat-form-field *ngIf="isAdmin" style="width: 150px;">
+      <mat-form-field *ngIf="isAdmin" style="width: 250px;">
         <mat-select [(value)]="selectedBranchId" [disabled]="!isAdmin" (selectionChange)="onBranchSelected($event.value)">
           <mat-option *ngFor="let branch of branches" [value]="branch.id">
             {{ branch.name }}
@@ -17,9 +17,9 @@
   <span class="spacer"></span>
   <div class="current-location">
     <span style="margin-right: 5px;">Nuvarande materialrum: </span>
-      <mat-form-field *ngIf="isAdmin" style="width: 150px;">
+      <mat-form-field *ngIf="isAdmin" style="width: 250px;">
         <mat-select [(value)]="selectedStorageRoomId" [disabled]="!isAdmin" (selectionChange)="onStorageRoomSelected($event.value)">
-          <mat-option *ngFor="let room of storageRooms" [value]="room.id">
+          <mat-option *ngFor="let room of storageRoomsInCurrentBranch" [value]="room.id">
             {{ room.name }}
           </mat-option>
         </mat-select>
