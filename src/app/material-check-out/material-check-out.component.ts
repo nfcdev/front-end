@@ -9,6 +9,7 @@ export interface DialogData{
   selectedMaterials: string[];
   preChosen: boolean;
   material_number: any;
+  status: string;
 }
 
 @Component({
@@ -87,6 +88,9 @@ export class MaterialCheckOutDialogComponent implements OnInit{
 
   checkInForm: FormGroup;
 
+  status: string[] = [ //TODO: Get status from database here instead
+    'Utcheckat', 'Införlivat', 'Kasserat', 'Åter'
+  ];
 
   constructor(
     public dialogRef: MatDialogRef<MaterialCheckOutDialogComponent>,
@@ -100,6 +104,7 @@ export class MaterialCheckOutDialogComponent implements OnInit{
       // create variables and validators for form fields
       this.checkInForm = this.fb.group({
         material_number: [''],
+        status: ['', Validators.required],
         comment: ['']
       });
     }
