@@ -3,7 +3,6 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 
-
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json',
@@ -15,7 +14,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class DataService {
-  private REST_API_SERVER = "http://localhost:9000";
+  private REST_API_SERVER = "http://localhost:9000/api/v1";
 
   constructor(private httpClient: HttpClient) { }
 
