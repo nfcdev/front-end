@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -14,7 +15,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class DataService {
-  private REST_API_SERVER = "http://localhost:9000/api/v1";
+  private REST_API_SERVER = `${environment.URL}${environment.APIVERISON}`;
 
   constructor(private httpClient: HttpClient) { }
 
