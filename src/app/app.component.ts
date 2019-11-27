@@ -8,7 +8,7 @@ import {
   StorageRoom
 } from "./storage-room/storage-room-store";
 import { BranchService } from './branch/branch.service';
-import { BranchStore } from './branch/branch-store';
+import { BranchStore, Branch } from './branch/branch-store';
 
 @Component({
   selector: "app-root",
@@ -32,9 +32,9 @@ export class AppComponent implements OnInit {
   storageRooms = [];
   selectedStorageRoomId = this.storageRoomStore.getStorageRoom().id;
   selectedStorageName = this.storageRoomStore.getStorageRoom().name;
-  branches = [];
-  selectedBranchId = this.branchStore.getBranch().id;
-  selectedBranchName = this.branchStore.getBranch().name;
+  branches: Branch [] = [];
+  selectedBranchId: Number;
+  selectedBranchName: String;
 
   isAdmin: boolean = false;
 
@@ -49,17 +49,19 @@ export class AppComponent implements OnInit {
     this.storageRoomStore.currentStorageRoom.subscribe(room => {
       this.selectedStorageRoomId = room.id;
       this.selectedStorageName = room.name;
+      this.selectedBranchId = room.branch;
     });
     this.storageRoomService.getStorageRooms().subscribe(res => {
       this.storageRooms = res;
     });
-    this.branchStore.currentBranch.subscribe(branch => {
-      this.selectedBranchId = branch.id;
-      this.selectedBranchName = branch.name;
-    });
     this.branchService.getBranches().subscribe(res => {
       this.branches = res;
     });
+    for (let i=0; i<this.branches.length; i++) {
+      if (this.branches[i].id == this.selectedBranchId) {
+        this.selectedBranchName = this.branches[i].name;
+      }
+    }
   }
 
   logOut(): void {
@@ -82,6 +84,9 @@ export class AppComponent implements OnInit {
       if (res) {
         this.branchStore.setBranch(
           this.branches.find(it => it.id == branchId)
+        );
+        this.storageRoomStore.setStorageRoom(
+          this.storageRooms[0]
         );
       }
     });
