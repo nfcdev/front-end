@@ -68,12 +68,15 @@ export class CheckOutPreselectedDialogComponent implements OnInit {
   preChosen : boolean = false;
   comment :String;
  storage_room_id: number;
-  dataService: DataService;
+
   constructor(
     public dialogRef: MatDialogRef<CheckOutPreselectedDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private storageRoomService: StorageRoomService){}
+    private storageRoomService: StorageRoomService,
+    private storageRoomStore: StorageRoomStore,
+    private dataService: DataService){}
 
+    selectedStorageRoomId = this.storageRoomStore.getStorageRoom().id;
  
     
   onNoClick(): void {
@@ -88,11 +91,12 @@ export class CheckOutPreselectedDialogComponent implements OnInit {
 for (var package_nr of this.data.selectedPackages) {
   var post_data = {"package_number": package_nr,
                   "comment":this.comment,
-                  "storage_room": this.storage_room_id
+                  "storage_room": this.selectedStorageRoomId
                   };
     //If comment is added then add it to data for post-request
     if (this.comment !== "" && this.data.selectedPackages !== null) {
-      post_data["comment"] = this.comment;
+      post_data["comment"] = this.comment;}else{
+        post_data["comment"] = ""
     }
     //If package is added then add it to data for post-request
     if (this.data.selectedPackages !== undefined) {
@@ -109,7 +113,8 @@ for (var package_nr of this.data.selectedPackages) {
   }
 
   ngOnInit() : void {
-    
+    this.storageRoomStore.currentStorageRoom.subscribe(room => {
+      this.selectedStorageRoomId = room.id});
   }
 
   
