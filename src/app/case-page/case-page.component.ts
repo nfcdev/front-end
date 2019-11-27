@@ -135,6 +135,11 @@ export class CasePageComponent implements OnInit {
     ];
 
 
+    this.branches = [];
+    this.storage_rooms = [];
+    this.shelves = [];
+    this.packages = [];
+    this.branchData = [];
     // ---------- This very long code allows us to draw the accordion ------------------------------------------------
     
     // Finds the unique branches, rooms etc.
