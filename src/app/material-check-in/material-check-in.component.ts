@@ -3,30 +3,31 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { SelectionModel, DataSource } from '@angular/cdk/collections';
 import { MaterialCheckBoxService } from '../table-article-data/material-check-box.service';
-
+import { StorageRoomStore } from "../storage-room/storage-room-store";
+import { StorageRoomService } from "../storage-room/storage-room.service";
 
 export interface DialogData {
   material_number: any;
   reference_number: number;
-  area: string;
-  storage_room: string;
-  shelf: string;
-  package: string;
-  comment: string;
+  branch: String;
+  storage_room: String;
+  shelf: String;
+  package: String;
+  comment: String;
   placement: any;
 }
 
 export interface Room {
-  roomName: string;
+  roomName: String;
   roomId: number;
 }
 export interface Area {
-  areaName: string;
+  areaName: String;
   areaId: number;
 }
 
 export interface DialogData{
-  selectedMaterials: string[];
+  selectedMaterials: String[];
   preChosen: boolean;
 }
 
@@ -38,51 +39,38 @@ export interface DialogData{
 })
 export class MaterialCheckInComponent implements OnInit {
 
-  given_storage_room_id : number;
-  given_area_id: number;
 
   selection : any[];
-  materials: string[];
+  materials: String[];
   preChosen = false;
 
-  // TODO: Get rooms from database instead of hard-coding them
-  rooms: Room[] = [
-    {roomName: 'Rum 1', roomId : 1},
-    {roomName: 'Rum 2', roomId : 2}
-  ];
-
-  areas: Area[] = [
-    {areaName: 'Område 1', areaId: 1},
-    {areaName: 'Område 2', areaId: 1}
-  ];
+  storage_room: String;
+  branch: String;
 
 
   constructor(
     private materialCheckBoxService: MaterialCheckBoxService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private storageRoomStore: StorageRoomStore,
+    private storageRoomService: StorageRoomService) { }
 
   openDialog(): void {
-
-    // TODO: Get information about the material from the back end here and then send it to the dialog
-    this.given_storage_room_id = 1; //TODO: Get storage room ID here
-    this.given_area_id = 1; //TODO: Get area id here
 
     if((this.materials && this.materials.length > 0)){
       this.preChosen= true;
     } else {
       this.preChosen = false;
-      this.materials = [] as string[];
+      this.materials = [] as String[];
     }
 
     const dialogRef = this.dialog.open(MaterialCheckInDialogComponent, {
       width: '500px',
-      // send in data to form to be filled automatically TODO: send in room computer is in
+
       data:
-      {area: this.areas.find(x => x.areaId === this.given_area_id ).areaName, //finds the room name from the given id
-      storage_room: this.rooms.find(x => x.roomId === this.given_storage_room_id ).roomName, //finds the room name from the given id
+      {branch: this.branch,
+      storage_room: this.storage_room,
       selectedMaterials: this.materials,
       preChosen: this.preChosen
-      
       }
     });
 
@@ -107,6 +95,14 @@ export class MaterialCheckInComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.storageRoomStore.currentStorageRoom.subscribe(currentRoom => {
+      this.storageRoomService
+        .getBranchNameForStorageRoom(currentRoom)
+        .subscribe(branchName => {
+          this.branch = branchName;
+          this.storage_room = currentRoom.name;
+        });
+    });
     this.materialCheckBoxService.checkBoxChange.subscribe(newSelection => {
       this.selection = newSelection.selected;
       this.materials = this.selection.reduce((a, {material_number}) => a.concat(material_number), []);
@@ -139,7 +135,7 @@ export class MaterialCheckInDialogComponent {
     this.checkInForm = this.fb.group({
       material_number: [''],
       reference_number: ['', Validators.required],
-      area: [{value: '', disabled: true}, Validators.required],
+      branch: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
       shelf: ['', Validators.required],
       package: [''],
@@ -159,7 +155,6 @@ export class MaterialCheckInDialogComponent {
 
   onConfirm() : void {
     this.checkOutConfirmed = true;
-    
     //console.log(this.comment);
     // TODO: check-out the materials in this.data.selection in the back-end here together with this.comment
   }
@@ -169,6 +164,7 @@ export class MaterialCheckInDialogComponent {
       if(newMaterial && newMaterial.length > 0) {
         this.data.selectedMaterials.push(newMaterial);
         this.checkInForm.controls['material_number'].reset()
+
       }
     } else {
       // duplicate

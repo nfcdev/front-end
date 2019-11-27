@@ -31,8 +31,8 @@
 
   <mat-form-field>
     <input class="form-control" type="text"
-     matInput required formControlName="area"
-      [(ngModel)]="data.area" placeholder="Avdelning">
+     matInput required formControlName="branch"
+      [(ngModel)]="data.branch" placeholder="Avdelning">
   </mat-form-field>
   <br>
 
@@ -43,6 +43,15 @@
   </mat-form-field>
   <br>
 
+  <mat-form-field>
+    <mat-select formControlName="package"
+   [(ngModel)]="data.package" name="package" placeholder="Paket">
+      <mat-option *ngFor="let pg of packages" [value]="pg">
+        {{pg}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
 
   <mat-form-field>
     <mat-select formControlName="shelf"
@@ -54,12 +63,6 @@
   </mat-form-field>
   <br>
 
-  <mat-form-field>
-    <input class="form-control" type="text"
-    matInput formControlName="package"
-    [(ngModel)]="data.placement" placeholder="Paket">
-  </mat-form-field>
-  <br>
 
   <mat-form-field>
     <textarea matInput class="form-control"
