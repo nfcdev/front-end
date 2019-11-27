@@ -34,7 +34,7 @@ import { MatCardModule } from "@angular/material/card";
 
 import { StorageRoomStore } from "./storage-room/storage-room-store";
 
-import { BranchStore } from './branch/branch-store';
+import { BranchStore } from "./branch/branch-store";
 
 import { LoginComponent } from "./login/login.component";
 
@@ -47,7 +47,8 @@ import {
   MatGridListModule,
   MatMenuModule,
   MatListModule,
-  MatChipsModule
+  MatChipsModule,
+  MatAutocompleteModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
 import { SearchBarComponent } from "./search-bar/search-bar.component";
@@ -79,6 +80,10 @@ import {
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
 import { CheckOutPreselectedComponent, CheckOutPreselectedDialogComponent } from './check-out-preselected/check-out-preselected.component';
 
+import {
+  PackageCheckInComponent,
+  PackageCheckInDialogComponent
+} from "./package-check-in/package-check-in.component";
 import { RoomAndBranchNameComponent } from "./room-and-branch-name/room-and-branch-name.component";
 import {
   UserPageComponent,
@@ -118,6 +123,8 @@ import {
     DataVisualizationDialogComponent,
     CheckOutPreselectedComponent,
     CheckOutPreselectedDialogComponent,
+    PackageCheckInComponent,
+    PackageCheckInDialogComponent,
     RoomAndBranchNameComponent,
     UserPageComponent,
     UserPageDialogComponent,
@@ -149,7 +156,8 @@ import {
     MatGridListModule,
     NgbAlertModule,
     MatMenuModule,
-    MatListModule
+    MatListModule,
+    MatAutocompleteModule
   ],
   providers: [
     {
@@ -174,6 +182,7 @@ import {
     MaterialCheckInDialogComponent,
     DataVisualizationDialogComponent,
     CheckOutPreselectedDialogComponent,
+    PackageCheckInDialogComponent,
     UserPageDialogComponent,
     PackageCheckOutDialogComponent
   ]
