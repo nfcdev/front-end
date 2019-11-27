@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 
+
+
 // Event table fields
 export interface EventTable {
   date: string;
@@ -21,7 +23,9 @@ export interface MaterialInfo {
   status: string;
   current_placement: string;
   last_modified: string;
+  description: string;
 }
+
 
 // Temporary test data. TODO: Get this data from the back-end using the provided material_number
 const EVENT_DATA: EventTable[] = [
@@ -39,7 +43,7 @@ const EVENT_DATA: EventTable[] = [
 
 // Temporary test data.
 const MATERIAL_DATA: MaterialInfo = {created_by: 'user1', created_date: '20190123',
-  status: 'Incheckat', current_placement: 'Bio; Bio Uppack; A15; P1', last_modified: '20190211 11.03'};
+  status: 'Incheckat', current_placement: 'Bio; Bio Uppack; A15; P1', last_modified: '20190211 11.03', description: 'Ruta för beskrivning. Inte kopplat till back-end ännu.'};
 
 export interface DialogData{
   material_number: number;

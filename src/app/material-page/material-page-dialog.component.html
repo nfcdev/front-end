@@ -15,6 +15,7 @@
               <tr><b class="matInfoLabel">Status          </b></tr>
               <tr><b class="matInfoLabel">Nuvarande plats </b></tr>
               <tr><b class="matInfoLabel">Senast ändrad   </b></tr>
+              <tr><b class="matInfoLabel">Beskrivning     </b></tr>
             </td>
             <td>
               <tr>{{data.material_data.created_by}}</tr>
@@ -28,6 +29,10 @@
               </tr>
               <tr>{{data.material_data.current_placement}}</tr>
               <tr>{{data.material_data.last_modified}}</tr>
+              <tr>
+                  <textarea rows="3" placeholder="Beskriv artikeln här" matNativeControl [(ngModel)]="data.material_data.description" name="description" (ngModelChange)="changeStatus()" [value]='data.material_data.description'>
+                  </textarea>
+              </tr>
             </td>
     </table>
 </div>
