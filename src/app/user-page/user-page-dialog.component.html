@@ -1,0 +1,19 @@
+<h1 mat-dialog-title style="text-align:center; text-decoration: underline;">Användare: {{data.user?.shortcode}} <button style="float: right;" mat-raised-button (click)="onNoClick()">X</button></h1>
+
+
+<p><b>Oförklarlig tid</b> {{data.unaccountedTime}}</p>
+<b>Utcheckade material</b><br>
+<div mat-dialog-content>
+    <div class="userMaterialList">
+        <mat-chip-list #chipList>
+            <mat-chip *ngFor="let material of data.materials">
+                <app-material-page [material_number]="material"></app-material-page>
+                <br>
+            </mat-chip>
+        </mat-chip-list>
+    </div>
+    
+</div>
+<div mat-dialog-actions style="float: right;">
+        <button style="float: right;" mat-raised-button [mat-dialog-close]="data">Logga ut</button>
+</div>

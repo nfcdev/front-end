@@ -24,8 +24,8 @@ export class ManageSystemDialogComponent implements OnInit {
 
 
     const dialogRef = this.dialog.open(ManageSystemDialogPopupComponent, {
-      width: '1500px',
-      height: '900px',
+      width: '1800px',
+      height: '800px',
       data:
       {
       }
