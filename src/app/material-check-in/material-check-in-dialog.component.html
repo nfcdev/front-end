@@ -45,9 +45,9 @@
 
   <mat-form-field>
     <mat-select formControlName="package"
-   [(ngModel)]="data.package" name="package" placeholder="Paket">
-      <mat-option *ngFor="let pg of packages" [value]="pg">
-        {{pg}}
+   [(ngModel)]="data.package" name="package" placeholder="Paket" (focusout)="updateShelf(this.data.package)">
+      <mat-option *ngFor="let pg of packages" [value]="pg.packageName">
+        {{pg.packageName}}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -55,9 +55,9 @@
 
   <mat-form-field>
     <mat-select formControlName="shelf"
-   [(ngModel)]="data.shelf" name="shelf" placeholder="Hylla">
-      <mat-option *ngFor="let sh of shelves" [value]="sh">
-        {{sh}}
+   [(ngModel)]="data.shelf" name="shelf" placeholder="Hylla" (focusout)="updatePackages()">
+      <mat-option *ngFor="let sh of shelves" [value]="sh.shelfName">
+        {{sh.shelfName}}
       </mat-option>
     </mat-select>
   </mat-form-field>
