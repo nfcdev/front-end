@@ -52,6 +52,63 @@ export interface Package {
   materials: string[];
 }
 
+// Temporary test data
+const MATERIALS: MaterialInfo[] = [{
+  material_number: '10', reference_number: '12', branch: 'Bio',
+  storage_room: 'Bio Uppack', shelf: 'B15', package: 'P2'
+},
+{
+  material_number: '11', reference_number: '12', branch: 'Vapen',
+  storage_room: 'Vapen Uppack', shelf: 'A15', package: null
+},
+{
+  material_number: '12', reference_number: '12', branch: 'Vapen',
+  storage_room: 'Vapen Labb', shelf: 'C15', package: 'K2'
+},
+{
+  material_number: '13', reference_number: '12', branch: 'Finger',
+  storage_room: 'Finger Labb', shelf: 'H2', package: null
+},
+{
+  material_number: '14', reference_number: '12', branch: 'Vapen',
+  storage_room: 'Vapen Labb', shelf: 'C15', package: 'K2'
+},
+{
+  material_number: '15', reference_number: '12', branch: 'Vapen',
+  storage_room: 'Vapen Labb', shelf: 'E15', package: 'K3'
+},
+
+{
+  material_number: '16', reference_number: '12', branch: 'Bio',
+  storage_room: 'Bio Uppack', shelf: 'B15', package: 'P2'
+},
+{
+  material_number: '17', reference_number: '12', branch: 'Vapen',
+  storage_room: 'Vapen Uppack', shelf: 'A15', package: null
+},
+{
+  material_number: '18', reference_number: '12', branch: 'Vapen',
+  storage_room: 'Vapen Labb', shelf: 'D15', package: 'K2'
+},
+{
+  material_number: '19', reference_number: '12', branch: 'Finger',
+  storage_room: 'Finger Labb', shelf: 'F15', package: 'K2'
+},
+{
+  material_number: '20', reference_number: '12', branch: 'Finger',
+  storage_room: 'Finger Uppack', shelf: 'F15', package: 'P7'
+},
+{
+  material_number: '21', reference_number: '12', branch: 'Finger',
+  storage_room: 'Finger Uppack', shelf: 'K15', package: 'P17'
+}
+  ,
+{
+  material_number: '22', reference_number: '12', branch: 'Vapen',
+  storage_room: 'Vapen Labb', shelf: 'C15', package: 'K7'
+}
+];
+
 @Component({
   selector: 'app-case-page',
   templateUrl: './case-page.component.html',
@@ -83,65 +140,18 @@ export class CasePageComponent implements OnInit {
       created_date: '20190123 11.02', status: 'Aktiv',
       time_active: '21d 2h 3min', last_modified: '21d 2h 3min'
     };
-    this.materials = [{
-      material_number: '10', reference_number: '12', branch: 'Bio',
-      storage_room: 'Bio Uppack', shelf: 'B15', package: 'P2'
-    },
-    {
-      material_number: '11', reference_number: '12', branch: 'Vapen',
-      storage_room: 'Vapen Uppack', shelf: 'A15', package: null
-    },
-    {
-      material_number: '12', reference_number: '12', branch: 'Vapen',
-      storage_room: 'Vapen Labb', shelf: 'C15', package: 'K2'
-    },
-    {
-      material_number: '13', reference_number: '12', branch: 'Finger',
-      storage_room: 'Finger Labb', shelf: 'H2', package: null
-    },
-    {
-      material_number: '14', reference_number: '12', branch: 'Vapen',
-      storage_room: 'Vapen Labb', shelf: 'C15', package: 'K2'
-    },
-    {
-      material_number: '15', reference_number: '12', branch: 'Vapen',
-      storage_room: 'Vapen Labb', shelf: 'E15', package: 'K3'
-    },
 
-    {
-      material_number: '16', reference_number: '12', branch: 'Bio',
-      storage_room: 'Bio Uppack', shelf: 'B15', package: 'P2'
-    },
-    {
-      material_number: '17', reference_number: '12', branch: 'Vapen',
-      storage_room: 'Vapen Uppack', shelf: 'A15', package: null
-    },
-    {
-      material_number: '18', reference_number: '12', branch: 'Vapen',
-      storage_room: 'Vapen Labb', shelf: 'D15', package: 'K2'
-    },
-    {
-      material_number: '19', reference_number: '12', branch: 'Finger',
-      storage_room: 'Finger Labb', shelf: 'F15', package: 'K2'
-    },
-    {
-      material_number: '20', reference_number: '12', branch: 'Finger',
-      storage_room: 'Finger Uppack', shelf: 'F15', package: 'P7'
-    },
-    {
-      material_number: '30', reference_number: '12', branch: 'Finger',
-      storage_room: 'Finger Uppack', shelf: 'K15', package: 'P17'
-    }
-    ];
+    // Temporarily grabs the test data. TODO: get all materials in the case from the back end
+    this.materials = MATERIALS;
 
 
-    this.branches = [];
+      this.branches = [];
     this.storage_rooms = [];
     this.shelves = [];
     this.packages = [];
     this.branchData = [];
-    // ---------- This very long code allows us to draw the accordion ------------------------------------------------
-    
+    // ---------- This code allows us to draw the accordion ------------------------------------------------
+
     // Finds the unique branches, rooms etc.
     this.branches = this.materials
       .map(item => item.branch)
@@ -156,7 +166,8 @@ export class CasePageComponent implements OnInit {
       .map(item => item.package)
       .filter((value, index, self) => self.indexOf(value) === index);
 
-    //Loops through, for each branch determines which rooms belong there, then which shelves belong in that rooms etc.
+    //Loops through, for each branch determines which rooms belong there, then which shelves belong in that rooms etc...
+    // Might be inefficient with large numbers of materials per case, could probably be done in a better way
     this.branches.forEach((branch) => {
       var tempBranch: Branch = { name: branch, storage_rooms: [] };
       var uniqueRooms: string[] = [];
@@ -233,6 +244,7 @@ export class CasePageComponent implements OnInit {
   }
 
 }
+// TODO: Get list of the actual statuses, these are for testing
 const STATUSES: string[] = ['Aktiv', 'Inaktiv'];
 
 @Component({
@@ -262,6 +274,6 @@ export class CasePageDialogComponent {
   // This function is run when a new status is selected in the status selection 
   changeStatus(): void {
     // TODO: change the status in the back-end
-    // console.log(this.data.material_data.status);
+    // console.log(this.data.case_info.status);
   }
 }
