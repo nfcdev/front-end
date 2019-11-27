@@ -9,28 +9,18 @@
     </div>
 
     <div mat-dialog-content class="casePageContent">
-        <mat-grid-list cols="5" rowHeight="450px">
+        <mat-grid-list cols="5" rowHeight="400px">
             <!-- Case information -->
             <mat-grid-tile [colspan]='2'>
                 <div class="caseInfo">
                     <table class="caseInfoTable">
                         <td>
                             <tr><b class="caseInfoLabel">Skapad </b></tr>
-                            <tr><b class="caseInfoLabel">Status </b></tr>
                             <tr><b class="caseInfoLabel">Tid aktiv </b></tr>
                             <tr><b class="caseInfoLabel">Senast ändrad </b></tr>
                         </td>
                         <td>
                             <tr>{{data.case_info.created_date}}</tr>
-                            <tr>
-                                <mat-form-field appearance="none"
-                                    style=" margin-bottom: -30px; margin-top: -20px; width: 100px;">
-                                    <select matNativeControl [(ngModel)]="data.case_info.status" name="status"
-                                        (ngModelChange)="changeStatus()" [value]='data.case_info.status'>
-                                        <option *ngFor="let st of statuses" [value]="st">{{st}}</option>
-                                    </select>
-                                </mat-form-field>
-                            </tr>
                             <tr>{{data.case_info.time_active}}</tr>
                             <tr>{{data.case_info.last_modified}}</tr>
                         </td>
@@ -45,11 +35,11 @@
                             <mat-expansion-panel closed>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        <b> {{branch.name}} </b> 
+                                        <b> {{branch.name}} </b>
                                     </mat-panel-title>
                                     <mat-panel-description>
-                                        
-                                        
+
+
                                     </mat-panel-description>
                                 </mat-expansion-panel-header>
                                 <ng-template matExpansionPanelContent>
@@ -62,7 +52,7 @@
                                                         <i>{{storage_room.name}}</i>
                                                     </mat-panel-title>
                                                     <mat-panel-description>
-                                                        
+
                                                     </mat-panel-description>
                                                 </mat-expansion-panel-header>
                                                 <ng-template matExpansionPanelContent>
@@ -71,11 +61,12 @@
                                                             <mat-expansion-panel closed>
                                                                 <mat-expansion-panel-header>
                                                                     <mat-panel-title>
-                                                                        Hylla &nbsp; <app-shelf-page [shelf]="shelf.name">
+                                                                        Hylla &nbsp; <app-shelf-page
+                                                                            [shelf]="shelf.name">
                                                                         </app-shelf-page>
                                                                     </mat-panel-title>
                                                                     <mat-panel-description>
-                                                                        
+
                                                                     </mat-panel-description>
                                                                 </mat-expansion-panel-header>
                                                                 <ng-template matExpansionPanelContent>
@@ -87,17 +78,19 @@
                                                                                 <mat-expansion-panel-header>
                                                                                     <mat-panel-title>
                                                                                         <div
-                                                                                            *ngIf="!(package.name == null)">
-                                                                                            Paket &nbsp; </div>
-                                                                                        <app-package-page
-                                                                                            [package]="package.name">
-                                                                                        </app-package-page>
+                                                                                            *ngIf="!(package.name == ' - ')">
+                                                                                            Paket &nbsp;
+                                                                                            <app-package-page
+                                                                                                [package]="package.name">
+                                                                                            </app-package-page>
+                                                                                        </div>
+
                                                                                         <div
-                                                                                            *ngIf="package.name == null">
+                                                                                            *ngIf="(package.name == ' - ')">
                                                                                             Löst</div>
                                                                                     </mat-panel-title>
                                                                                     <mat-panel-description>
-                                                                                        
+
                                                                                     </mat-panel-description>
                                                                                 </mat-expansion-panel-header>
                                                                                 <ng-template matExpansionPanelContent>

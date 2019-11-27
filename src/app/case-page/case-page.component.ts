@@ -1,11 +1,9 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MaterialCheckBoxService } from '../table-article-data/material-check-box.service';
-
+import { DataService } from '../data.service';
 
 export interface CaseInfo {
   created_date: string;
-  status: string;
   time_active: string;
   last_modified: string;
 }
@@ -14,18 +12,10 @@ export interface CaseInfo {
 export interface DialogData {
   reference_number: number;
   case_info: CaseInfo;
-  materials: MaterialInfo[];
+  materials: any[];
   branchData: Branch[];
 }
 
-export interface MaterialInfo {
-  material_number: string;
-  reference_number: string;
-  branch: string;
-  storage_room: string;
-  shelf: string;
-  package: string;
-}
 
 export interface MaterialBox {
   branch: string;
@@ -52,62 +42,6 @@ export interface Package {
   materials: string[];
 }
 
-// Temporary test data
-const MATERIALS: MaterialInfo[] = [{
-  material_number: '10', reference_number: '12', branch: 'Bio',
-  storage_room: 'Bio Uppack', shelf: 'B15', package: 'P2'
-},
-{
-  material_number: '11', reference_number: '12', branch: 'Vapen',
-  storage_room: 'Vapen Uppack', shelf: 'A15', package: null
-},
-{
-  material_number: '12', reference_number: '12', branch: 'Vapen',
-  storage_room: 'Vapen Labb', shelf: 'C15', package: 'K2'
-},
-{
-  material_number: '13', reference_number: '12', branch: 'Finger',
-  storage_room: 'Finger Labb', shelf: 'H2', package: null
-},
-{
-  material_number: '14', reference_number: '12', branch: 'Vapen',
-  storage_room: 'Vapen Labb', shelf: 'C15', package: 'K2'
-},
-{
-  material_number: '15', reference_number: '12', branch: 'Vapen',
-  storage_room: 'Vapen Labb', shelf: 'E15', package: 'K3'
-},
-
-{
-  material_number: '16', reference_number: '12', branch: 'Bio',
-  storage_room: 'Bio Uppack', shelf: 'B15', package: 'P2'
-},
-{
-  material_number: '17', reference_number: '12', branch: 'Vapen',
-  storage_room: 'Vapen Uppack', shelf: 'A15', package: null
-},
-{
-  material_number: '18', reference_number: '12', branch: 'Vapen',
-  storage_room: 'Vapen Labb', shelf: 'D15', package: 'K2'
-},
-{
-  material_number: '19', reference_number: '12', branch: 'Finger',
-  storage_room: 'Finger Labb', shelf: 'F15', package: 'K2'
-},
-{
-  material_number: '20', reference_number: '12', branch: 'Finger',
-  storage_room: 'Finger Uppack', shelf: 'F15', package: 'P7'
-},
-{
-  material_number: '21', reference_number: '12', branch: 'Finger',
-  storage_room: 'Finger Uppack', shelf: 'K15', package: 'P17'
-}
-  ,
-{
-  material_number: '22', reference_number: '12', branch: 'Vapen',
-  storage_room: 'Vapen Labb', shelf: 'C15', package: 'K7'
-}
-];
 
 @Component({
   selector: 'app-case-page',
@@ -121,7 +55,9 @@ export class CasePageComponent implements OnInit {
 
   @Input() reference_number: number;
   case_info: CaseInfo;
-  materials: MaterialInfo[];
+
+  materials: any[];
+
   branches: string[];
   storage_rooms: string[];
   shelves: string[];
@@ -130,22 +66,107 @@ export class CasePageComponent implements OnInit {
 
   branchData: Branch[] = [];
 
-  constructor(public dialog: MatDialog) { }
+  data: any;
 
+  constructor(public dialog: MatDialog,
+    private dataService: DataService) { }
+
+
+  //Loads the materials of the case before opening the dialog
+  load(): void {
+    this.dataService.sendGetRequest('/article?reference_number=' + this.reference_number).subscribe((data: any[]) => {
+      this.data = data;
+      this.openDialog();
+    });
+  }
+
+  // Gets the case information by calculating/formating the timestamps of the articles
+  getCaseInfo(): void {
+    let timeAddedMin: number = Number.POSITIVE_INFINITY;
+    let lastModMax: number = Number.NEGATIVE_INFINITY;
+    // Calculates time created and last modified
+    this.materials.forEach((mat) => {
+      if (mat.timestamp < timeAddedMin) {
+        timeAddedMin = mat.timestamp;
+      }
+      if (mat.last_modified > lastModMax) {
+        lastModMax = mat.last_modified;
+      }
+    });
+
+    let currTime = new Date();
+    let lastModTime = new Date(lastModMax * 1000);
+    let createdTime = new Date(timeAddedMin * 1000);
+
+    let yearFormated: string = '' + createdTime.getUTCFullYear();
+    let monthFormated: string;
+    let dateFormated: string;
+    let hoursFormated: string;
+    let minutesFormated: string;
+
+
+    // Adds a 0 before month/date/hours if they are below 10 for formating
+    // Adds 1 to month since otherwise January is month 0.
+    if ((createdTime.getUTCMonth() + 1) < 10) {
+      monthFormated = '0' + (createdTime.getUTCMonth() + 1);
+    } else {
+      monthFormated = '' + (createdTime.getUTCMonth() + 1);
+    }
+    if (createdTime.getUTCDate() < 10) {
+      dateFormated = '0' + createdTime.getUTCDate();
+    } else {
+      dateFormated = '' + createdTime.getUTCDate();
+    }
+    if (createdTime.getUTCHours() < 10) {
+      hoursFormated = '0' + createdTime.getUTCHours();
+    } else {
+      hoursFormated = '' + createdTime.getUTCHours();
+    }
+    if (createdTime.getUTCMinutes() < 10) {
+      minutesFormated = '0' + createdTime.getUTCMinutes();
+    } else {
+      minutesFormated = '' + createdTime.getUTCMinutes();
+    }
+
+    // Saves the data for the dialog to use
+    this.case_info.created_date = '' + yearFormated +
+      monthFormated + dateFormated + ' ' +
+      hoursFormated + '.' + minutesFormated;
+    this.case_info.last_modified = this.dhm(currTime.getTime() - lastModTime.getTime());
+    this.case_info.time_active = this.dhm(currTime.getTime() - createdTime.getTime());
+  }
+
+  // This function converts time to days, hours and months
+  dhm(t): string {
+    let cd = 24 * 60 * 60 * 1000;
+    let ch = 60 * 60 * 1000;
+    let d = Math.floor(t / cd);
+    let h = Math.floor((t - d * cd) / ch);
+    let m = Math.round((t - d * cd - h * ch) / 60000);
+    if (m === 60) {
+      h++;
+      m = 0;
+    }
+    if (h === 24) {
+      d++;
+      h = 0;
+    }
+    return '' + d + 'd ' + h + 'h ' + m + 'm';
+  }
 
   openDialog(): void {
-
+    this.materials = this.data;
     // TODO: Get information about the case from the back end here and then send it to the dialog
     this.case_info = {
-      created_date: '20190123 11.02', status: 'Aktiv',
+      created_date: '20190123 11.02',
       time_active: '21d 2h 3min', last_modified: '21d 2h 3min'
     };
 
-    // Temporarily grabs the test data. TODO: get all materials in the case from the back end
-    this.materials = MATERIALS;
+
+    this.getCaseInfo();
 
 
-      this.branches = [];
+    this.branches = [];
     this.storage_rooms = [];
     this.shelves = [];
     this.packages = [];
@@ -167,34 +188,35 @@ export class CasePageComponent implements OnInit {
       .filter((value, index, self) => self.indexOf(value) === index);
 
     //Loops through, for each branch determines which rooms belong there, then which shelves belong in that rooms etc...
-    // Might be inefficient with large numbers of materials per case, could probably be done in a better way
     this.branches.forEach((branch) => {
-      var tempBranch: Branch = { name: branch, storage_rooms: [] };
-      var uniqueRooms: string[] = [];
+      let tempBranch: Branch = { name: branch, storage_rooms: [] };
+      let uniqueRooms: string[] = [];
       this.materials.forEach((box) => {
         if (box.branch === branch) {
-          var tempRoom: StorageRoom = { name: box.storage_room, shelves: [] };
+          let tempRoom: StorageRoom = { name: box.storage_room, shelves: [] };
           if (!uniqueRooms.includes(box.storage_room)) {
             // Find rooms in that branch
             this.storage_rooms.forEach((storage_room) => {
-              var uniqueShelves: string[] = [];
+              let uniqueShelves: string[] = [];
               this.materials.forEach((box1) => {
-                if (box1.branch === branch && box1.storage_room === storage_room && box.storage_room == storage_room) {
-                  var tempShelf: Shelf = { name: box1.shelf, packages: [] };
+                if (box1.branch === branch && box1.storage_room === storage_room
+                  && box.storage_room === storage_room) {
+                  let tempShelf: Shelf = { name: box1.shelf, packages: [] };
                   if (!uniqueShelves.includes(box1.shelf)) {
                     //Find packages in that shelf
                     this.shelves.forEach((shelf) => {
-                      var uniquePackages: string[] = [];
+                      let uniquePackages: string[] = [];
                       this.materials.forEach((box2) => {
                         if (box2.branch === branch && box2.storage_room === storage_room && box2.shelf === shelf
-                          && box1.shelf == shelf) {
-                          var tempPackage: Package = { name: box2.package, materials: [] };
+                          && box1.shelf === shelf) {
+                          let tempPackage: Package = { name: box2.package, materials: [] };
                           if (!uniquePackages.includes(box2.package)) {
                             //Find materials in that package
                             this.packages.forEach((pack) => {
                               this.materials.forEach((box3) => {
-                                if (box3.branch === branch && box3.storage_room === storage_room && box3.shelf === shelf && box3.package == pack
-                                  && box2.package == pack) {
+                                if (box3.branch === branch && box3.storage_room === storage_room &&
+                                  box3.shelf === shelf && box3.package === pack
+                                  && box2.package === pack) {
                                   tempPackage.materials.push(box3.material_number);
                                 }
                               });
@@ -270,10 +292,5 @@ export class CasePageDialogComponent {
   // Runs when the back arrow button is clicked
   onBackButton(): void {
     this.dialogRef.close();
-  }
-  // This function is run when a new status is selected in the status selection 
-  changeStatus(): void {
-    // TODO: change the status in the back-end
-    // console.log(this.data.case_info.status);
   }
 }
