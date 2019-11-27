@@ -1,13 +1,17 @@
 <div class="dialogContainer">
-    <div *ngIf="checkOutConfirmed">
-        <div style="text-align: center;">Följande paket har checkats ut:  <b *ngFor="let material of data.selectedPackages;let isLast=last">
-            {{material}}{{isLast ? '' : ', '}}</b></div>
+    <div class ="confirmMessage" *ngIf="checkOutConfirmed">
+        <div style="text-align: center;">Följande paket har checkats ut:  <b  *ngFor="let package of data.selectedPackages;let isLast=last">
+            {{package}}{{isLast ? '' : ', '}}</b></div>
         </div>
         
 <div class="closeButton"><button mat-raised-button (click)="onNoClick()">X</button></div>
 <div *ngIf="!checkOutConfirmed">
-<div class="materialText"><b> Vill du checka ut paket <b *ngFor="let material of data.selectedPackages;let isLast=last">
-        {{material}}{{isLast ? '' : ', '}}</b>?</b> </div>
+        
+<div class="materialText">
+        
+    <b> Vill du checka ut paket <b *ngFor="let package of data.selectedPackages;let isLast=last" > {{package}}{{isLast ? '' : ', '}}</b>?</b> 
+    </div>   
+    <!--<app-package-page [package]="package"></app-package-page>-->
 <div class="notes"><b> Anteckningar</b> </div>
 <div mat-form-field class='formField'>
         <textarea matInput [(ngModel)]="comment" class="form-control"

@@ -26,7 +26,6 @@ export class PackagePageComponent implements OnInit {
 
 
   openDialog(): void {
-
     // TODO: Get information about the materials that are in this package from the back end here and then send it to the dialog
 
     const dialogRef = this.dialog.open(PackagePageDialogComponent, {
