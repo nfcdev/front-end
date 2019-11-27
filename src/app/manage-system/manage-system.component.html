@@ -37,8 +37,7 @@
                 </div>
                 <form class="example-form">
                     <mat-form-field class="example-full-width">
-
-                        <input #newBranch class="add-new" [hidden]="_dataLoading" matInput placeholder="Ny avdelning"
+                        <input #newBranch class="add-new" matInput placeholder="Ny avdelning"
                             (keyup.enter)="addBranch(newBranch.value); newBranch.value='' ">
                     </mat-form-field>
                     <button type="button" mat-button
@@ -79,7 +78,7 @@
                 <form class="example-form">
                     <mat-form-field class="example-full-width">
 
-                        <input #newRoom class="add-new" [hidden]="_dataLoading" matInput placeholder="Nytt rum"
+                        <input #newRoom class="add-new" matInput placeholder="Nytt rum"
                             (keyup.enter)="addRoom(newRoom.value); newRoom.value='' ">
                     </mat-form-field>
                     <button type="button" mat-button (click)="addRoom(newRoom.value); newRoom.value='' ">+</button>
@@ -168,7 +167,7 @@
                 <form class="example-form">
                     <mat-form-field class="example-full-width">
 
-                        <input #newUser class="add-new" [hidden]="_dataLoading" matInput placeholder="Ny användare"
+                        <input #newUser class="add-new" matInput placeholder="Ny användare"
                             (keyup.enter)="addUser(newUser.value); newUser.value='' ">
                     </mat-form-field>
                     <button mat-button type="button" (click)="addUser(newUser.value); newUser.value='' ">+</button>
@@ -191,7 +190,7 @@
                 <form class="example-form">
                     <mat-form-field class="example-full-width">
 
-                        <input #newAdmin class="add-new" [hidden]="_dataLoading" matInput placeholder="Ny admin"
+                        <input #newAdmin class="add-new" matInput placeholder="Ny admin"
                             (keyup.enter)="addAdmin(newAdmin.value); newAdmin.value='' ">
                     </mat-form-field>
                     <button type="button" mat-button (click)="addAdmin(newAdmin.value); newAdmin.value='' ">+</button>
