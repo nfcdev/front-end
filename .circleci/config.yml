@@ -30,7 +30,7 @@ jobs:
           at: ~/
       - run:
           name: Build front-end
-          command: cd front-end && npm run build
+          command: cd front-end && npm run build:prod
 
 workflows:
   version: 2
