@@ -37,13 +37,13 @@
     <mat-checkbox class="search-component" 
         [(ngModel)]="activeMaterials" 
         [ngModelOptions]="{standalone: true}"
-        (change)="changeActive($event)">
+        (change)="changeActive()">
         Aktiva material
     </mat-checkbox>
     <mat-checkbox class="search-component" 
         [(ngModel)]="inactiveMaterials" 
         [ngModelOptions]="{standalone: true}"
-        (change)="changeInactive($event)">
+        (change)="changeInactive()">
         Inaktiva material
     </mat-checkbox>
     </div>
