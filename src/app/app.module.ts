@@ -48,6 +48,8 @@ import {
   MatMenuModule,
   MatListModule,
   MatChipsModule,
+  MatTooltipModule,
+  MatExpansionModule,
   MatAutocompleteModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
@@ -73,10 +75,12 @@ import {
   ManageSystemDialogComponent,
   ManageSystemDialogPopupComponent
 } from "./manage-system/manage-system-dialog/manage-system-dialog.component";
+
 import {
   MaterialCheckOutComponent,
   MaterialCheckOutDialogComponent
 } from "./material-check-out/material-check-out.component";
+
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
 import { CheckOutPreselectedComponent, CheckOutPreselectedDialogComponent } from './check-out-preselected/check-out-preselected.component';
 
@@ -157,6 +161,8 @@ import {
     NgbAlertModule,
     MatMenuModule,
     MatListModule,
+    MatTooltipModule,
+    MatExpansionModule,
     MatAutocompleteModule
   ],
   providers: [

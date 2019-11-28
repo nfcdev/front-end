@@ -7,11 +7,11 @@ import { MatTable } from '@angular/material/table';
 
 export interface DialogData{
   package: string;
-  materials: number[];
+  materials: string[];
 }
 
 // Temporary test data
-const MATERIALS: number[] = [55123123, 42123123123, 33123123, 42123123, 7723123333, 33123123, 21123];
+const MATERIALS: string[] = ['2019020355-14', '2019020355-15', '33123123', '42123123', '772312333', '33123123', '21123'];
 
 
 @Component({
@@ -21,12 +21,13 @@ const MATERIALS: number[] = [55123123, 42123123123, 33123123, 42123123, 77231233
 })
 export class PackagePageComponent implements OnInit {
   @Input()package: string;
-  materials: number[] = MATERIALS;
+  materials: string[];
   constructor(public dialog: MatDialog) { }
 
 
   openDialog(): void {
     // TODO: Get information about the materials that are in this package from the back end here and then send it to the dialog
+    this.materials = MATERIALS;
 
     const dialogRef = this.dialog.open(PackagePageDialogComponent, {
       width: '1000px',
@@ -48,8 +49,6 @@ export class PackagePageComponent implements OnInit {
   templateUrl: './package-page-dialog.component.html',
 })
 export class PackagePageDialogComponent {
-  displayedColumns = ['material'];
-  dataSource = this.data.materials;
 
   constructor(
     public dialogRef: MatDialogRef<PackagePageDialogComponent>,

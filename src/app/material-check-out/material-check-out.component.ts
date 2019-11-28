@@ -3,7 +3,8 @@ import { MaterialCheckBoxService } from '../table-article-data/material-check-bo
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { SelectionModel, DataSource } from '@angular/cdk/collections';
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
-
+import { StorageRoomStore } from '../storage-room/storage-room-store'
+import { DataService } from '../data.service'
 
 export interface DialogData{
   selectedMaterials: string[];
@@ -83,14 +84,21 @@ export class MaterialCheckOutDialogComponent implements OnInit{
   materials: string[];
 
   checkInForm: FormGroup;
-
+  storage_room_id: Number;
 
   constructor(
     public dialogRef: MatDialogRef<MaterialCheckOutDialogComponent>,
     private allDialogRef: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private storageRoomStore: StorageRoomStore,
+    private dataService: DataService) {
       this.createForm();
+
+      this.storageRoomStore.currentStorageRoom.subscribe(currentRoom => {
+        this.storage_room_id = currentRoom.id;
+      });
+
     }
 
     createForm() {
@@ -112,8 +120,24 @@ export class MaterialCheckOutDialogComponent implements OnInit{
 // Runs when "Checka Ut" button is pressed
   onConfirm() : void {
     this.checkOutConfirmed = true;
-    console.log(this.comment);
-    // TODO: check-out the materials in this.data.selection in the back-end here together with this.comment
+    //console.log(this.comment);
+    // TODO: check-out the materials in this.data.selectedMaterials in the back-end here together with this.comment
+    for (var mat of this.data.selectedMaterials) {
+
+      var post_data = {"material_number": mat,
+      "storage_room": this.storage_room_id,
+      };
+
+      //If comment is added then add it to data for post-request
+      if (this.comment !== "" && this.comment !== null) {
+        post_data["comment"] = this.comment;
+      }
+
+      this.dataService.sendPostRequest("/article/check-out", post_data).subscribe((data: any[])=>{
+      })
+
+    }
+
   }
 
   addMaterial(newMaterial : string) : void {
