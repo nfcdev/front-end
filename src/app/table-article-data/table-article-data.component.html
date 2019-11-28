@@ -36,7 +36,7 @@
 
     <ng-container matColumnDef="package_nr">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Paket</th>
-      <td mat-cell *matCellDef="let row" class="bold"><app-package-page [package]='row.package'></app-package-page>
+      <td mat-cell *matCellDef="let row"><app-package-page [package]='row.package_number'></app-package-page>
     </ng-container>
 
     <ng-container matColumnDef="branch">
