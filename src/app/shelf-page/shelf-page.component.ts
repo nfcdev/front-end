@@ -1,9 +1,6 @@
 import { Component, OnInit, Input, Inject, ViewChild, AfterViewInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
-import {MatTableDataSource} from '@angular/material/table';
+import { DataService } from '../data.service';
 
 
 export interface DialogData{
@@ -16,31 +13,47 @@ export interface ShelfPageData {
   package: string;
 }
 
-// Temporary test data
-const SHELF_DATA: ShelfPageData[] =  [{ package: 'P1', packageMaterials: ['77', '65', '22']},
-{ package: 'P2', packageMaterials: ['72', '64', '28', '11', '24']},
-{ package: 'P3', packageMaterials: ['71', '61']},
-{ package: 'K1', packageMaterials: ['70', '60', '50', '40']},
-{ package: 'K2', packageMaterials: ['77']},
-{ package: 'K3', packageMaterials: ['72','73','74','75','76','78','79','80','81','82','83','84','85','86','87','88','89',]},
-{ package: 'K4', packageMaterials: []}
-]
-
 @Component({ 
   selector: 'app-shelf-page',
   templateUrl: './shelf-page.component.html',
   styleUrls: ['./shelf-page.component.less']
 })
 export class ShelfPageComponent implements OnInit {
-  @Input()shelf: string;
-  shelfPageData: ShelfPageData[];
-  constructor(public dialog: MatDialog) { }
+  @Input('shelf')shelf: string;
+  @Input('storage_room')storage_room: string;
+  materials : any[];
+  shelfPageData: ShelfPageData[] = [];
+  packages: string[];
+  constructor(public dialog: MatDialog,
+              private dataService: DataService) { }
 
+  load() : void {
+    
+    this.shelfPageData = [];
+    this.dataService.sendGetRequest('/article?storage_room=' + this.storage_room + '&shelf=' + this.shelf).subscribe( (data : any[]) => {
+      this.materials = data; 
+      // Get list of packages
+      this.packages = this.materials
+      .map(item => item.package)
+      .filter((value, index, self) => self.indexOf(value) === index);
+      // Link materials to packages and saves them in a format that can be displayed in the component
+      this.packages.forEach( (pack) => {
+        let temp : ShelfPageData = {package: pack, packageMaterials : []};
+        this.materials.forEach( (mat) => {
+          if(mat.package === pack){
+            temp.packageMaterials.push(mat.material_number);
+          }
+        });  
+        this.shelfPageData.push(temp);
+      });
+      
+
+      this.openDialog();
+    });
+    
+  }
 
   openDialog(): void {
-
-    // TODO: Get packages and their contained materials here from the back end and send it to the dialog
-    this.shelfPageData = SHELF_DATA;
 
     const dialogRef = this.dialog.open(ShelfPageDialogComponent, {
       width: '1000px',
