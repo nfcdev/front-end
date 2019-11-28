@@ -3,30 +3,41 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { SelectionModel, DataSource } from '@angular/cdk/collections';
 import { MaterialCheckBoxService } from '../table-article-data/material-check-box.service';
-
+import { StorageRoomStore } from "../storage-room/storage-room-store";
+import { StorageRoomService } from "../storage-room/storage-room.service";
+import { DataService } from "../data.service"
+import { variable } from '@angular/compiler/src/output/output_ast';
 
 export interface DialogData {
   material_number: any;
   reference_number: number;
-  area: string;
-  storage_room: string;
-  shelf: string;
-  package: string;
-  comment: string;
+  branch: String;
+  storage_room: String;
+  shelf: String;
+  package: String;
+  comment: String;
   placement: any;
 }
 
 export interface Room {
-  roomName: string;
+  roomName: String;
   roomId: number;
 }
+export interface Shelf {
+  shelfName: String;
+  shelfId: number;
+}
 export interface Area {
-  areaName: string;
+  areaName: String;
   areaId: number;
+}
+export interface Package {
+  packageName: String;
+  packageId: number;
 }
 
 export interface DialogData{
-  selectedMaterials: string[];
+  selectedMaterials: String[];
   preChosen: boolean;
 }
 
@@ -38,51 +49,39 @@ export interface DialogData{
 })
 export class MaterialCheckInComponent implements OnInit {
 
-  given_storage_room_id : number;
-  given_area_id: number;
 
   selection : any[];
-  materials: string[];
+  materials: String[];
   preChosen = false;
 
-  // TODO: Get rooms from database instead of hard-coding them
-  rooms: Room[] = [
-    {roomName: 'Rum 1', roomId : 1},
-    {roomName: 'Rum 2', roomId : 2}
-  ];
-
-  areas: Area[] = [
-    {areaName: 'Område 1', areaId: 1},
-    {areaName: 'Område 2', areaId: 1}
-  ];
+  storage_room: String;
+  branch: String;
 
 
   constructor(
     private materialCheckBoxService: MaterialCheckBoxService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private storageRoomStore: StorageRoomStore,
+    private storageRoomService: StorageRoomService,
+    ) { }
 
   openDialog(): void {
-
-    // TODO: Get information about the material from the back end here and then send it to the dialog
-    this.given_storage_room_id = 1; //TODO: Get storage room ID here
-    this.given_area_id = 1; //TODO: Get area id here
 
     if((this.materials && this.materials.length > 0)){
       this.preChosen= true;
     } else {
       this.preChosen = false;
-      this.materials = [] as string[];
+      this.materials = [] as String[];
     }
 
     const dialogRef = this.dialog.open(MaterialCheckInDialogComponent, {
       width: '500px',
-      // send in data to form to be filled automatically TODO: send in room computer is in
+
       data:
-      {area: this.areas.find(x => x.areaId === this.given_area_id ).areaName, //finds the room name from the given id
-      storage_room: this.rooms.find(x => x.roomId === this.given_storage_room_id ).roomName, //finds the room name from the given id
+      {branch: this.branch,
+      storage_room: this.storage_room,
       selectedMaterials: this.materials,
       preChosen: this.preChosen
-      
       }
     });
 
@@ -92,7 +91,6 @@ export class MaterialCheckInComponent implements OnInit {
       console.log('The dialog was closed');
 
       if(result != null ){ // if user presses cancel the result is null. TODO: better solution for checking this
-      console.log(result);
 
       // TODO: Jsonify data and send to back-end
 
@@ -101,17 +99,26 @@ export class MaterialCheckInComponent implements OnInit {
       } else {
         console.log('Empty result');
       }
-     
-      
+
     });
   }
 
   ngOnInit() {
+    this.storageRoomStore.currentStorageRoom.subscribe(currentRoom => {
+      this.storageRoomService
+        .getBranchNameForStorageRoom(currentRoom)
+        .subscribe(branchName => {
+          this.branch = branchName;
+          this.storage_room = currentRoom.name;
+        });
+    });
     this.materialCheckBoxService.checkBoxChange.subscribe(newSelection => {
       this.selection = newSelection.selected;
       this.materials = this.selection.reduce((a, {material_number}) => a.concat(material_number), []);
     });
   }
+
+
 }
 
 @Component({
@@ -122,24 +129,55 @@ export class MaterialCheckInDialogComponent {
   checkOutConfirmed : boolean = false;
 
   checkInForm: FormGroup;
+  storage_room_id: Number;
+  branch_id: Number;
 
-  shelves: string[] = [ //TODO: Get shelves from database here instead
-    'A15', 'A18', 'B18', 'B23'
-  ];
+  shelves: Shelf[];
+  packages: Package[];
 
 
   constructor(
     public dialogRef: MatDialogRef<MaterialCheckInDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private fb: FormBuilder) {
+    private dataService: DataService,
+    private fb: FormBuilder,
+    private storageRoomStore: StorageRoomStore) {
+      this.storageRoomStore.currentStorageRoom.subscribe(currentRoom => {
+          this.branch_id = currentRoom.branch;
+          this.storage_room_id = currentRoom.id;
+      });
+
+      //Get the shelves that belong to the current storage room
+      this.dataService.sendGetRequest("/shelf/storageroom/" + this.storage_room_id).subscribe((data: any[])=>{
+        var tmp_shelves = []
+        for (var d of data) {
+          var tmp: Shelf = {"shelfName": d.shelf_name,
+                            "shelfId": d.id}
+          tmp_shelves.push(tmp);
+        }
+        this.shelves = tmp_shelves;
+      })
+
+      //Get the packages that belong to the current room
+      this.dataService.sendGetRequest("/package/storageroom/" + this.storage_room_id).subscribe((data: any[])=>{
+        var tmp_packages = []
+        for (var d of data) {
+          var tmp: Package = {"packageName": d.package_number,
+                            "packageId": d.id}
+          tmp_packages.push(tmp);
+        }
+        this.packages = tmp_packages;
+      })
+
       this.createForm();
     }
+
   createForm() {
     // create variables and validators for form fields
     this.checkInForm = this.fb.group({
       material_number: [''],
-      reference_number: ['', Validators.required],
-      area: [{value: '', disabled: true}, Validators.required],
+      //reference_number: ['', Validators.required], //Should always be pre-filled?
+      branch: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
       shelf: ['', Validators.required],
       package: [''],
@@ -159,19 +197,83 @@ export class MaterialCheckInDialogComponent {
 
   onConfirm() : void {
     this.checkOutConfirmed = true;
+
+  //TODO: If item(s) does not exist, add case number and do different back-end call
+
+
+  //For check in of existing items
+   for (var mat of this.data.selectedMaterials) {
     
-    //console.log(this.comment);
-    // TODO: check-out the materials in this.data.selection in the back-end here together with this.comment
+
+
+    var post_data = {"material_number": mat,
+                    "storage_room": this.storage_room_id,
+                    "shelf": this.getShelfId(this.data.shelf)
+                    };
+
+      //If comment is added then add it to data for post-request
+      if (this.data.comment !== "" && this.data.comment !== null) {
+        post_data["comment"] = this.data.comment;
+      }
+
+      //If package is added then add it to data for post-request
+      if (this.data.package !== "" && this.data.package !== undefined) {
+        post_data["package"] = this.data.package;
+      }
+
+      this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[])=>{
+      })
+
+    }
+
+
+   }
+
+
+  addCase(currentMaterial : string) : boolean {
+    this.dataService.sendGetRequest("/article/" + currentMaterial).subscribe((data: any[])=>{
+      console.log(data);
+    })
+    //Get case for the chosen material
+    //If case is empty, then add case.
+    //If the case is same as previous case, then return true.
+    return true;
   }
 
   addMaterial(newMaterial : string) : void {
+    //this.addCase(newMaterial); TODO: FIX THIS WHEN YOU CAN EITHER GET ID OR REQUEST WITH MATERIAL_NO
     if (!this.data.selectedMaterials.includes(newMaterial)) { 
       if(newMaterial && newMaterial.length > 0) {
         this.data.selectedMaterials.push(newMaterial);
         this.checkInForm.controls['material_number'].reset()
+
       }
     } else {
       // duplicate
+    }
+  }
+
+  getShelfId(chosenShelfName) : number {
+    for (var shelf of this.shelves) {
+      if (chosenShelfName === shelf.shelfName) {
+        return shelf.shelfId;
+      }
+    }
+  }
+
+  getShelfName(chosenShelfId) : String {
+    for (var shelf of this.shelves) {
+      if (chosenShelfId === shelf.shelfId) {
+        return shelf.shelfName;
+      }
+    }
+  }
+
+  getPackageId(chosenPackageName) : number {
+    for (var pg of this.packages) {
+      if (chosenPackageName=== pg.packageName) {
+        return pg.packageId;
+      }
     }
   }
 
@@ -180,5 +282,42 @@ export class MaterialCheckInDialogComponent {
       if (item === material) this.data.selectedMaterials.splice(index, 1);
     });
   }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async updatePackages() {
+    //Sleep needed because focusout-event triggers before data is submitted
+    await this.sleep(150);
+    var shelf_id = this.getShelfId(this.data.shelf);
+    if (shelf_id !== undefined) {
+      this.dataService.sendGetRequest("/package/shelf/" + shelf_id).subscribe((data: any[])=>{
+        var tmp_packages = []
+        for (var d of data) {
+          var tmp: Package = {"packageName": d.package_number,
+                            "packageId": d.id}
+          tmp_packages.push(tmp);
+        }
+        this.packages = tmp_packages;
+      })
+   }
+  }
+
+  async updateShelf() {
+    //Sleep needed because focusout-event triggers before data is submitted
+    await this.sleep(150);
+    var package_id = this.getPackageId(this.data.package);
+    if (package_id !== undefined) {
+      this.dataService.sendGetRequest("/package/" + package_id).subscribe((data: any)=>{
+        var package_shelf = data.shelf
+        var tmp_shelves = []
+        var tmp: Shelf = {"shelfName": this.getShelfName(data.shelf),
+                          "shelfId": data.shelf}
+        this.shelves = [tmp];
+      })
+    }
+  }
+
 }
 
