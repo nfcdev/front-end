@@ -1,42 +1,82 @@
 <div class="matPage">
-<div class="MatPageHeader" style="width:100%;">
-  <mat-grid-list cols="7" rowHeight="50px">
-  <mat-grid-tile [colspan]='1' class="matPageBackButton"><button mat-raised-button (click)="onBackButton()">←</button></mat-grid-tile>
-  <mat-grid-tile [colspan]='5' class="matPageHeaderText" style="font-size: 22px; text-decoration: underline; ">Materialnummer: {{data.material_number}}</mat-grid-tile>
-  <mat-grid-tile [colspan]='1' class="matPageExitButton"><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
-</mat-grid-list>
-</div>
-<br>
-<div class="matInfo">
-    <table class="matInfoTable">
-            <td>
-              <tr><b class="matInfoLabel">Skapad av       </b></tr>
-              <tr><b class="matInfoLabel">Skapad datum    </b></tr>
-              <tr><b class="matInfoLabel">Status          </b></tr>
-              <tr><b class="matInfoLabel">Nuvarande plats </b></tr>
-              <tr><b class="matInfoLabel">Senast ändrad   </b></tr>
-            </td>
-            <td>
-              <tr>{{data.material_data.created_by}}</tr>
-              <tr>{{data.material_data.created_date}}</tr>
-              <tr>
-                  <mat-form-field appearance="none" style=" margin-bottom: -30px; margin-top: -20px; width: 100px;">
-                  <select matNativeControl [(ngModel)]="data.material_data.status" name="status" (ngModelChange)="changeStatus()" [value]='data.material_data.status'>
-                      <option *ngFor="let st of statuses" [value]="st" >{{st}}</option>        
-                    </select>
-                  </mat-form-field>
-              </tr>
-              <tr>{{data.material_data.current_placement}}</tr>
-              <tr>{{data.material_data.last_modified}}</tr>
-            </td>
-    </table>
-</div>
-<!-- Table for displaying the material's events -->
-<div class="matEventTable">
+  <div class="MatPageHeader" style="width:100%;">
+    <mat-grid-list cols="7" rowHeight="50px">
+      <mat-grid-tile [colspan]='1' class="matPageBackButton"><button mat-raised-button
+          (click)="onBackButton()">←</button></mat-grid-tile>
+      <mat-grid-tile [colspan]='5' class="matPageHeaderText" style="font-size: 22px; text-decoration: underline; ">
+        Materialnummer: {{data.material_number}}</mat-grid-tile>
+      <mat-grid-tile [colspan]='1' class="matPageExitButton"><button mat-raised-button (click)="onNoClick()">X</button>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <br>
+
+  <mat-grid-list cols="7" rowHeight="175px">
+    <!-- Material information -->
+    <mat-grid-tile [colspan]="3">
+      <div class="matInfo">
+        <table class="matInfoTable">
+          <td>
+            <tr><b class="matInfoLabel">Skapad av </b></tr>
+            <tr><b class="matInfoLabel">Skapad datum </b></tr>
+            <tr><b class="matInfoLabel">Status </b></tr>
+            <tr><b class="matInfoLabel">Nuvarande plats </b></tr>
+            <tr><b class="matInfoLabel">Senast ändrad </b></tr>
+            <tr><b class="matInfoLabel">Beskrivning </b></tr>
+          </td>
+          <td>
+            <tr>{{data.material_data.created_by }}</tr>
+            <tr>{{data.material_data.created_date}}</tr>
+            <tr>
+              <mat-form-field appearance="none" style=" margin-bottom: -30px; margin-top: -20px; width: 100px;">
+                <select matNativeControl [(ngModel)]="data.material_data.status" name="status"
+                  (ngModelChange)="changeStatus()" [value]='data.material_data.status'>
+                  <option *ngFor="let st of statuses" [value]="st">{{st}}</option>
+                </select>
+              </mat-form-field>
+            </tr>
+            <tr>{{data.material_data.current_placement}}</tr>
+            <tr>{{data.material_data.last_modified}}</tr>
+            <tr>
+              <textarea rows="3" placeholder="Beskriv artikeln här" matNativeControl
+                [(ngModel)]="data.material_data.description" name="description" (ngModelChange)="changeStatus()"
+                [value]='data.material_data.description'>
+              </textarea>
+            </tr>
+          </td>
+        </table>
+      </div>
+    </mat-grid-tile>
+
+    <!-- Visualisation -->
+    <mat-grid-tile [colspan]="2">
+      <div class="materialPageVis">
+        Visualisering
+      </div>
+    </mat-grid-tile>
+
+    <!-- Comment box -->
+    <mat-grid-tile [colspan]="2">
+      <div class="materialPageNotes">
+        <form [formGroup]="form">
+          <mat-form-field style="margin-left:10px;">
+            <textarea formControlName="notes" matInput class="form-control" [(ngModel)]="data.material_note"
+              value="{{data.material_note}}" placeholder="Anteckning"></textarea>
+          </mat-form-field>
+          <button mat-raised-button style="float: right;" (click)="saveNotes()">Spara</button>
+        </form>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+
+  <!-- Table for displaying the material's events -->
+  <div class="matEventTable">
 
     <table *ngIf="dataSource" mat-table [dataSource]="dataSource">
 
-        <!-- Comment column -->
+      <!-- Comment column -->
         <ng-container matColumnDef="comment">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let row">
@@ -91,5 +131,6 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
 </div>
+
 
 </div>
