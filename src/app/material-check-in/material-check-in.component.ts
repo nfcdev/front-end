@@ -199,6 +199,7 @@ export class MaterialCheckInDialogComponent {
   }
 
   onConfirm() : void {
+    console.log(this.data.material_number.toString())
     this.addMaterial(this.data.material_number.toString());
     
     this.checkOutConfirmed = true;
@@ -208,8 +209,6 @@ export class MaterialCheckInDialogComponent {
 
   //For check in of existing items
    for (var mat of this.data.selectedMaterials) {
-    
-
 
     var post_data = {"material_number": mat,
                     "storage_room": this.storage_room_id,
@@ -245,16 +244,24 @@ export class MaterialCheckInDialogComponent {
     return true;
   }
 
+  // /article?material_number=input
   addMaterial(newMaterial : string) : void {
+    this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe((data: DialogData)=>{
+      console.log(data)
+      console.log(data[0].status)
+      if (data[0].material_number.includes(newMaterial) && data[0].status.includes("checked_in")){
+        this.duplicateComp.openDialog();
+      }   
+      
+    })
+   
     //this.addCase(newMaterial); TODO: FIX THIS WHEN YOU CAN EITHER GET ID OR REQUEST WITH MATERIAL_NO
     if (!this.data.selectedMaterials.includes(newMaterial)) { 
       if(newMaterial && newMaterial.length > 0) {
         this.data.selectedMaterials.push(newMaterial);
         this.checkInForm.controls['material_number'].reset()
-
+        
       }
-    } else {
-      this.duplicateComp.openDialog();
     }
   }
 

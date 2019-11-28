@@ -11,9 +11,7 @@ export class CheckInDublcateComponent {
 constructor(public dialog: MatDialog) {}
 openDialog() {
   const dialogRef = this.dialog.open(CheckInDublcateComponentDialog);
-  dialogRef.afterClosed().subscribe(result => {
-    console.log(`Dialog result: ${result}`);
-  });
+  
 } 
 }
 @Component({
@@ -24,7 +22,11 @@ export class CheckInDublcateComponentDialog {
   constructor(
   public dialog: MatDialogRef<CheckInDublcateComponentDialog>){}
 
-  onNoClick(): void {
-    this.dialog.close();
+  onNoClick(): boolean{
+    return false;
+    
+  }
+  onConfirm(): boolean{
+    return true;
   }
 }
