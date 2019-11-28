@@ -6,8 +6,12 @@
         <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
     </mat-grid-list>
 </div> -->
+<div>
+    <button mat-raised-button type="button" style="float:right;" (click)="onNoClick()">X</button>
+</div><br>
+
 <div *ngIf="!checkOutConfirmed">
-    <h1 mat-dialog-title>Check-out</h1>
+    <h1 mat-dialog-title>Checka ut material</h1>
 </div>
 <div mat-dialog-content [formGroup]="checkInForm">
         <!-- Content to display before confirmation -->
@@ -22,13 +26,14 @@
             <input class="form-control"  name="material_number"
             formControlName="material_number" matInput
             [(ngModel)]="data.material_number" placeholder="Materialnummer" 
-            (keyup.enter)="addMaterial(data.material_number)">
+            (keyup.enter)="addMaterial(data.material_number); data.material_number =''">
         </mat-form-field>
+        <button mat-button (click)="addMaterial(data.material_number); data.material_number=''">+</button>
     </div>
 
     <mat-chip-list #chipList>
         <mat-chip *ngFor="let material of data.selectedMaterials">
-            {{material}}
+            <app-material-page [material_number]="material"></app-material-page>
             <div *ngIf="!checkOutConfirmed">
                 <mat-icon matChipRemove (click)="removeMaterial(material)">cancel</mat-icon>
             </div>
@@ -36,6 +41,24 @@
     </mat-chip>
     </mat-chip-list>
     <br>
+
+
+    <div *ngIf="!checkOutConfirmed">
+    <mat-form-field>
+        <mat-select formControlName="status"
+       [(ngModel)]="data.status" name="status" placeholder="Ny status">
+          <mat-option *ngFor="let st of status" [value]="st">
+            {{st}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
+    <div *ngIf="checkOutConfirmed">
+        <div style="text-align: center;">Med uppdaterad status: <br>
+             {{data.status}}
+             </div>
+</div>
 
 
 <!--    <div class="addNewField" *ngIf="!data.preChosen && !checkOutConfirmed">
@@ -60,20 +83,23 @@
     </div>-->
     <div *ngIf="!checkOutConfirmed">
     <mat-form-field>
-    <textarea matInput class="form-control"
-    placeholder="Lämna en anteckning"></textarea>
+        <textarea matInput class="form-control" name="comment"
+        formControlName="comment" [(ngModel)]="comment" placeholder="Lämna en anteckning"></textarea>
     </mat-form-field>
     </div>
     <br>
 
- 
+
     <div mat-dialog-actions>
-         <div *ngIf="!checkOutConfirmed">
+        <div *ngIf="!checkOutConfirmed">
             <button mat-raised-button (click)="onNoClick()">Avbryt</button>
         </div>
         <div *ngIf="!checkOutConfirmed">
-                <button mat-raised-button (click)="onConfirm()">Checka Ut</button>
+                <button [disabled]='data.selectedMaterials.length == 0' mat-raised-button (click)="onConfirm()">Checka Ut</button>
         </div>
+        <div *ngIf="checkOutConfirmed">
+            <button mat-raised-button [mat-dialog-close]="data">Tillbaka</button>
+    </div>
     </div>
 
     <br>

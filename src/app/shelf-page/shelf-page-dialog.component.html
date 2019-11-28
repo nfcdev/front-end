@@ -1,45 +1,35 @@
 <div class="shelfPageHeader" style="width:100%;">
-    <mat-grid-list cols="7" rowHeight="50px">
+  <mat-grid-list cols="7" rowHeight="50px">
     <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onBackButton()">←</button></mat-grid-tile>
     <mat-grid-tile [colspan]='5' style="font-size: 22px;
       text-decoration: underline; ">Hylla {{data.shelf}}</mat-grid-tile>
-    <mat-grid-tile [colspan]='1' ><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
+    <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
   </mat-grid-list>
 </div>
 
-<div class="shelfTable">
-    <table *ngIf="dataSource" mat-table matSort [dataSource]="dataSource">
-    
-            <!-- Material Column -->
-            <ng-container matColumnDef="material_number">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Materialnummer</th>
-              <td mat-cell *matCellDef="let row"><app-material-page [material_number]='row.material_number'></app-material-page> </td>
-            </ng-container>
+<div class="shelfPageContainer" style="height: 400px; overflow-y:scroll;">
 
-            <!-- Package Column -->
-            <ng-container matColumnDef="package">
-              <!-- TODO: Add filter option to filter packages -->
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Paket</th>
-                <td mat-cell *matCellDef="let row">
-                    <ng-container *ngIf="row.package; then hasPackage; else hasNoPackage">
-                    </ng-container>
-
-                    <ng-template #hasPackage>
-                        <div>
-                            <app-package-page [package]='row.package'></app-package-page>
-                        </div>
-                    </ng-template>
-                    <ng-template #hasNoPackage>
-                        <div>
-                        Löst
-                        </div>
-                    </ng-template>
-                </td>
-              </ng-container>
-
-        
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
+  <mat-accordion multi="true" class="example-headers-align">
+    <ng-container *ngFor="let package of data.shelfPageData">
+      <mat-expansion-panel closed>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Paket {{package.package}}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{package.packageMaterials?.length}} material
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+          <mat-chip-list #chipList>
+            <mat-chip *ngFor="let material of package.packageMaterials">
+              <app-material-page [material_number]="material"></app-material-page>
+              <br>
+            </mat-chip>
+          </mat-chip-list>
+        </ng-template>
+      </mat-expansion-panel>
+    </ng-container>
+  </mat-accordion>
 
 </div>
