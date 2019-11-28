@@ -82,6 +82,8 @@ import {
 } from "./material-check-out/material-check-out.component";
 
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
+
+import { CasePageComponent, CasePageDialogComponent } from './case-page/case-page.component';
 import {
   PackageCheckInComponent,
   PackageCheckInDialogComponent
@@ -129,7 +131,9 @@ import {
     UserPageComponent,
     UserPageDialogComponent,
     PackageCheckOutComponent,
-    PackageCheckOutDialogComponent
+    PackageCheckOutDialogComponent,
+    CasePageComponent,
+    CasePageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -185,7 +189,8 @@ import {
     DataVisualizationDialogComponent,
     PackageCheckInDialogComponent,
     UserPageDialogComponent,
-    PackageCheckOutDialogComponent
+    PackageCheckOutDialogComponent,
+    CasePageDialogComponent
   ]
 })
 export class AppModule {}
