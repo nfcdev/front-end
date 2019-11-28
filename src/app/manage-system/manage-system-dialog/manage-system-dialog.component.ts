@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
+import { AuthenticationService } from "../../auth/authService"
 
 
 export interface DialogData {
@@ -15,15 +16,16 @@ export interface DialogData {
 })
 export class ManageSystemDialogComponent implements OnInit {
 
-
-  constructor(public dialog: MatDialog) { }
+  isAdmin: boolean = false;
+  constructor(public dialog: MatDialog,
+              private authenticationService: AuthenticationService) { }
 
   openDialog(): void {
 
 
     const dialogRef = this.dialog.open(ManageSystemDialogPopupComponent, {
-      width: '1500px',
-      height: '900px',
+      width: '1800px',
+      height: '800px',
       data:
       {
       }
@@ -31,6 +33,7 @@ export class ManageSystemDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isAdmin = this.authenticationService.isUserAdmin();
   }
 }
 
