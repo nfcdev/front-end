@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 
@@ -16,10 +16,10 @@ import { StorageRoomStore } from '../storage-room/storage-room-store'
   templateUrl: './table-article-data.component.html',
   styleUrls: ['./table-article-data.component.less']
 })
-export class TableArticleDataComponent implements AfterViewInit, OnInit {
+export class TableArticleDataComponent implements OnInit {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
-  @ViewChild(MatTable, {static: false}) table: MatTable<TableArticleDataItem>;
+  @ViewChild(MatTable, {static: true}) table: MatTable<TableArticleDataItem>;
   dataSource: TableArticleDataDataSource;
   storageRoom: StorageRoomStore;
   selection = new SelectionModel(true, []);
@@ -70,10 +70,12 @@ transformData(requestData) {
     //TODO: The call should be changed to this when it is possible to access a correct Storage room.
     //this.dataService.sendGetRequest("/article/storageroom/" + this.storageRoom.getStorageRoom()).subscribe((data: any[])=>{
     this.dataService.sendGetRequest("/article").subscribe((data: any[])=>{
+      
       this.dataSource = new TableArticleDataDataSource(this.transformData(data));
       console.log(this.dataSource);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+      console.log("table: " + this.table)
       this.table.dataSource = this.dataSource;
     })
 
@@ -83,7 +85,10 @@ transformData(requestData) {
     });
   }
 
-  ngAfterViewInit() {
-
+  setDataSource(data): void {
+    console.log(this.table);
+    this.dataSource = new TableArticleDataDataSource(this.transformData(data))
+    this.table.dataSource = this.dataSource;
   }
+ 
 }
