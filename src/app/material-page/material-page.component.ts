@@ -62,7 +62,6 @@ export class MaterialPageComponent implements OnInit {
     this.table_data = [];
 
     this.dataService.sendGetRequest('/article?material_number=' + this.material_number).subscribe((data: any[]) => {
-      console.log(data[0]);
       let createdTime = new Date(data[0].timestamp * 1000);
       let lastModTime = new Date(data[0].last_modified * 1000);
       let currPlacement: string = '';
@@ -75,9 +74,7 @@ export class MaterialPageComponent implements OnInit {
       this.article_id = data[0].id;
 
       this.dataService.sendGetRequest('/storage-event/article/' + data[0].id).subscribe((events: any[]) => {
-        console.log(events);
         let sortedEvents : any [] = events.sort( (a, b ) => (a.timestamp > b.timestamp) ? 1 : -1);
-        console.log(sortedEvents);
         sortedEvents.forEach( (event) => {
           let tempData : EventTable = {date: this.formatDateWithTime(new Date(event.timestamp*1000)), 
             event: this.convertStatus(event.status), branch: event.branch, room : event.storage_room,
