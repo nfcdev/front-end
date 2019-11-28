@@ -1,9 +1,9 @@
-<form  (ngSubmit)="onSubmit()">
+<form [formGroup]="checkInForm" (ngSubmit)="onSubmit()">
 
 
     <mat-form-field>
         <mat-select
-        [(ngModel)]="category" name="searchcategory" placeholder="Kategori">
+        [(ngModel)]="category" required formControlName="category" placeholder="Kategori">
             <mat-option *ngFor="let cat of searchCategory" [value]="cat.category">
             {{cat.category}}
             </mat-option>
@@ -25,18 +25,25 @@
             <input matInput placeholder="Sök..."
                     [matChipInputFor]="chipList"
                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                   
-                    (matChipInputTokenEnd)="add($event)">
+                    (matChipInputTokenEnd)="add($event)"
+                    formControlName="searchcomponent"
+                    >
         <!-- </mat-chip-list> -->
     </mat-form-field>
-    <button mat-raised-button class="search-component" id="search">
-        Sök
+    <button mat-raised-button class="clear-component" id="clear">
+        Rensa
     </button>
 
-    <mat-checkbox class="search-component" [(ngModel)]="activeMaterials" [ngModelOptions]="{standalone: true}">
+    <mat-checkbox class="search-component" 
+        [(ngModel)]="activeMaterials" 
+        [ngModelOptions]="{standalone: true}"
+        (change)="changeActive($event)">
         Aktiva material
     </mat-checkbox>
-    <mat-checkbox class="search-component" [(ngModel)]="inactiveMaterials" [ngModelOptions]="{standalone: true}">
+    <mat-checkbox class="search-component" 
+        [(ngModel)]="inactiveMaterials" 
+        [ngModelOptions]="{standalone: true}"
+        (change)="changeInactive($event)">
         Inaktiva material
     </mat-checkbox>
     </div>
