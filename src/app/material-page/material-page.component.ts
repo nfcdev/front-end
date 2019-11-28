@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
+import { FormGroup, FormControl } from '@angular/forms';
 
 
 
@@ -49,6 +50,7 @@ export interface DialogData{
   material_number: number;
   event_data: EventTable[];
   material_data: MaterialInfo;
+  material_note: string;
 }
 
 
@@ -60,8 +62,9 @@ export interface DialogData{
 })
 export class MaterialPageComponent implements OnInit {
   @Input()material_number:Number;
-  table_data: EventTable[] = EVENT_DATA;
-  material_data: MaterialInfo = MATERIAL_DATA;
+  table_data: EventTable[];
+  material_data: MaterialInfo;
+  material_note: string;
   
 
   constructor(public dialog: MatDialog) {
@@ -72,6 +75,9 @@ export class MaterialPageComponent implements OnInit {
   openDialog(): void {
 
     // TODO: Get information about the material from the back end here and then send it to the dialog
+    this.table_data = EVENT_DATA;
+    this.material_data = MATERIAL_DATA;
+    this.material_note = 'En anteckning';
 
     const dialogRef = this.dialog.open(MaterialPageDialogComponent, {
       width: '1000px',
@@ -79,7 +85,8 @@ export class MaterialPageComponent implements OnInit {
       data:
       {material_number: this.material_number,
         event_data: this.table_data,
-        material_data: this.material_data
+        material_data: this.material_data,
+        material_note: this.material_note
       }
     });
 
@@ -96,17 +103,20 @@ const STATUSES: string[] = ['Incheckat','Utcheckat','Åter','Införlivat','Kasse
   selector: 'app-material-page-dialog',
   templateUrl: './material-page-dialog.component.html',
 })
-export class MaterialPageDialogComponent {
+export class MaterialPageDialogComponent implements OnInit {
   displayedColumns = ['comment', 'date', 'event', 'branch', 'room', 'shelf', 'package', 'user'];
   dataSource = this.data.event_data;
   statuses: string[] = STATUSES;
+  form: FormGroup;
 
 
   constructor(
     public dialogRef: MatDialogRef<MaterialPageDialogComponent>,
     private allDialogRef: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    
     ) {
+      
     }
 
     // Runs when X-button is clicked
@@ -121,6 +131,22 @@ export class MaterialPageDialogComponent {
   changeStatus() : void{
     // TODO: change the status in the back-end
     // console.log(this.data.material_data.status);
+  }
+  saveNotes() : void {
+    console.log('Anteckning ' + this.data.material_note + ' sparad.');
+    // TODO: Save material note in back-end (this.data.material_note)
+  }
+
+  ngOnInit() : void {
+    //console.log(this.data.material_note);
+    this.form = new FormGroup({
+      notes: new FormControl(''),
+    });
+    this.form.patchValue({
+      notes: this.data.material_note
+    });
+
+    
   }
 }
 
