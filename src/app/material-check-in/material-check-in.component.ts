@@ -212,7 +212,7 @@ export class MaterialCheckInDialogComponent {
                     };
 
       //If comment is added then add it to data for post-request
-      if (this.data.comment !== "" && this.data.package !== null) {
+      if (this.data.comment !== "" && this.data.comment !== null) {
         post_data["comment"] = this.data.comment;
       }
 
