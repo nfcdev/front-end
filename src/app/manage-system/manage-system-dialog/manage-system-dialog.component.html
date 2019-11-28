@@ -1,1 +1,1 @@
-<button mat-raised-button (click)="openDialog()">Hantera System</button>
+<button mat-raised-button (click)="openDialog()" *ngIf="isAdmin">Hantera System</button>
