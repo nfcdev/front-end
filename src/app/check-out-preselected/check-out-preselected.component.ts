@@ -4,8 +4,7 @@ import { MaterialCheckBoxService } from '../table-article-data/material-check-bo
 import { StorageRoomService } from "../storage-room/storage-room.service";
 import { DataService } from '../data.service';
 import {
-  StorageRoomStore,
-  StorageRoom
+  StorageRoomStore
 } from "../storage-room/storage-room-store";
 
 export interface DialogData{
@@ -30,8 +29,6 @@ export class CheckOutPreselectedComponent implements OnInit{
       
 
   openDialog(): void {
-    
-    if (this.packages[0] != "-"){
     this.dialog.open(CheckOutPreselectedDialogComponent,{
       width:'800px',
       height:'400px',
@@ -40,7 +37,7 @@ export class CheckOutPreselectedComponent implements OnInit{
         preChosen: this.preChosen,
       }
     })
-    }
+    
   
   
   }
@@ -50,6 +47,7 @@ export class CheckOutPreselectedComponent implements OnInit{
       this.packages = this.selection.reduce((a, {package_number}) => a.concat(package_number), []);
       
     });
+    
     this.materialCheckBoxService.checkBoxChange.subscribe(newSelection => { if((this.packages && this.packages.length > 0)){
       this.preChosen= true;
     }else{
@@ -68,7 +66,7 @@ export class CheckOutPreselectedDialogComponent implements OnInit {
   checkOutConfirmed : boolean = false;
   preChosen : boolean = false;
   comment :String;
- storage_room_id: number;
+ 
 
   constructor(
     public dialogRef: MatDialogRef<CheckOutPreselectedDialogComponent>,
@@ -106,7 +104,6 @@ for (var package_nr of this.data.selectedPackages) {
       post_data["package"] = this.data.selectedPackages;
       //post_data["storage_room"] = this.
     }
-   
     this.dataService.sendPostRequest("/package/check-out", post_data).subscribe((data: any[])=>{
     })
  

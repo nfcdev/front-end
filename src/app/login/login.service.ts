@@ -21,7 +21,6 @@ export class LoginService {
   }
 
   logout() {
-    // return this.http.post('http://localhost:9000/logout', {}, { withCredentials: true });
     console.log("---Mocked logout---");
 
     return new BehaviorSubject<any>({});

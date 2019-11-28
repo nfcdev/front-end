@@ -9,6 +9,8 @@ import { DataService } from '../data.service'
 export interface DialogData{
   selectedMaterials: string[];
   preChosen: boolean;
+  material_number: any;
+  status: string;
 }
 
 @Component({
@@ -84,6 +86,9 @@ export class MaterialCheckOutDialogComponent implements OnInit{
   materials: string[];
 
   checkInForm: FormGroup;
+  status: string[] = [ //TODO: Get status from database here instead
+    'Utcheckat', 'Införlivat', 'Kasserat', 'Åter'
+  ];
   storage_room_id: Number;
 
   constructor(
@@ -104,7 +109,8 @@ export class MaterialCheckOutDialogComponent implements OnInit{
     createForm() {
       // create variables and validators for form fields
       this.checkInForm = this.fb.group({
-        material_number: ['', Validators.required],
+        material_number: [''],
+        status: ['', Validators.required],
         comment: ['']
       });
     }

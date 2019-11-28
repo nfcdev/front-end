@@ -84,6 +84,8 @@ import {
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
 import { CheckOutPreselectedComponent, CheckOutPreselectedDialogComponent } from './check-out-preselected/check-out-preselected.component';
 
+
+import { CasePageComponent, CasePageDialogComponent } from './case-page/case-page.component';
 import {
   PackageCheckInComponent,
   PackageCheckInDialogComponent
@@ -133,7 +135,9 @@ import {
     UserPageComponent,
     UserPageDialogComponent,
     PackageCheckOutComponent,
-    PackageCheckOutDialogComponent
+    PackageCheckOutDialogComponent,
+    CasePageComponent,
+    CasePageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -190,7 +194,8 @@ import {
     CheckOutPreselectedDialogComponent,
     PackageCheckInDialogComponent,
     UserPageDialogComponent,
-    PackageCheckOutDialogComponent
+    PackageCheckOutDialogComponent,
+    CasePageDialogComponent
   ]
 })
 export class AppModule {}
