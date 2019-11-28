@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatIconModule} from '@angular/material/icon'
 import { MatTable } from '@angular/material/table';
 import { FormGroup, FormControl } from '@angular/forms';
 

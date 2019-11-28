@@ -1,0 +1,126 @@
+<div>
+    <div mat-dialog-header class="casePageHeader">
+        <mat-grid-list cols="7" rowHeight="50px">
+            <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onBackButton()">←</button></mat-grid-tile>
+            <mat-grid-tile [colspan]='5' style="font-size: 22px; text-decoration: underline; ">Diarienummer:
+                {{data.reference_number}}</mat-grid-tile>
+            <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
+        </mat-grid-list>
+    </div>
+
+    <div mat-dialog-content class="casePageContent">
+        <mat-grid-list cols="5" rowHeight="400px">
+            <!-- Case information -->
+            <mat-grid-tile [colspan]='2'>
+                <div class="caseInfo">
+                    <table class="caseInfoTable">
+                        <td>
+                            <tr><b class="caseInfoLabel">Skapad </b></tr>
+                            <tr><b class="caseInfoLabel">Tid aktiv </b></tr>
+                            <tr><b class="caseInfoLabel">Senast ändrad </b></tr>
+                        </td>
+                        <td>
+                            <tr>{{data.case_info.created_date}}</tr>
+                            <tr>{{data.case_info.time_active}}</tr>
+                            <tr>{{data.case_info.last_modified}}</tr>
+                        </td>
+                    </table>
+                </div>
+            </mat-grid-tile>
+            <!-- List of materials -->
+            <mat-grid-tile [colspan]='3'>
+                <div class="caseMatList">
+                    <mat-accordion multi=" true">
+                        <ng-container *ngFor="let branch of data.branchData">
+                            <mat-expansion-panel closed>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        <b> {{branch.name}} </b>
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+
+
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+                                <ng-template matExpansionPanelContent>
+                                    <mat-accordion multi=" true" style="margin-left:5px;">
+                                        <ng-container *ngFor="let storage_room of branch.storage_rooms">
+
+                                            <mat-expansion-panel closed>
+                                                <mat-expansion-panel-header>
+                                                    <mat-panel-title>
+                                                        <i>{{storage_room.name}}</i>
+                                                    </mat-panel-title>
+                                                    <mat-panel-description>
+
+                                                    </mat-panel-description>
+                                                </mat-expansion-panel-header>
+                                                <ng-template matExpansionPanelContent>
+                                                    <mat-accordion multi=" true" style="margin-left:5px;">
+                                                        <ng-container *ngFor="let shelf of storage_room.shelves">
+                                                            <mat-expansion-panel closed>
+                                                                <mat-expansion-panel-header>
+                                                                    <mat-panel-title>
+                                                                        Hylla &nbsp; <app-shelf-page
+                                                                            [shelf]="shelf.name" [storage_room]="storage_room.name">
+                                                                        </app-shelf-page>
+                                                                    </mat-panel-title>
+                                                                    <mat-panel-description>
+
+                                                                    </mat-panel-description>
+                                                                </mat-expansion-panel-header>
+                                                                <ng-template matExpansionPanelContent>
+                                                                    <mat-accordion multi=" true"
+                                                                        style="margin-left:5px;">
+                                                                        <ng-container
+                                                                            *ngFor="let package of shelf.packages">
+                                                                            <mat-expansion-panel closed>
+                                                                                <mat-expansion-panel-header>
+                                                                                    <mat-panel-title>
+                                                                                        <div
+                                                                                            *ngIf="!(package.name == ' - ')">
+                                                                                            Paket &nbsp;
+                                                                                            <app-package-page
+                                                                                                [package]="package.name">
+                                                                                            </app-package-page>
+                                                                                        </div>
+
+                                                                                        <div
+                                                                                            *ngIf="(package.name == ' - ')">
+                                                                                            Löst</div>
+                                                                                    </mat-panel-title>
+                                                                                    <mat-panel-description>
+
+                                                                                    </mat-panel-description>
+                                                                                </mat-expansion-panel-header>
+                                                                                <ng-template matExpansionPanelContent>
+                                                                                    <mat-chip-list #chipList>
+                                                                                        <mat-chip
+                                                                                            *ngFor="let mat of package.materials">
+                                                                                            <app-material-page
+                                                                                                [material_number]="mat">
+                                                                                            </app-material-page>
+                                                                                            <br>
+                                                                                        </mat-chip>
+                                                                                    </mat-chip-list>
+                                                                                </ng-template>
+                                                                            </mat-expansion-panel>
+                                                                        </ng-container>
+                                                                    </mat-accordion>
+                                                                </ng-template>
+                                                            </mat-expansion-panel>
+                                                        </ng-container>
+                                                    </mat-accordion>
+                                                </ng-template>
+                                            </mat-expansion-panel>
+                                        </ng-container>
+                                    </mat-accordion>
+                                </ng-template>
+                            </mat-expansion-panel>
+                        </ng-container>
+                    </mat-accordion>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+</div>

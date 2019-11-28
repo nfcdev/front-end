@@ -77,65 +77,60 @@
     <table *ngIf="dataSource" mat-table [dataSource]="dataSource">
 
       <!-- Comment column -->
-      <ng-container matColumnDef="comment">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let row">
-          <!-- Checks if we have a comment for the event and if so prints an icon -->
-          <div style="font-size: 22px" title="{{row.comment}}" *ngIf="row.comment && row.comment.length > 0">
-            <mat-icon>library_books</mat-icon>
-          </div>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="comment">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <!-- Checks if we have a comment for the event and if so prints an icon -->
+              <div style="font-size: 22px" matTooltip="{{row.comment}}" matTooltipPosition="left" *ngIf="row.comment && row.comment.length > 0"><mat-icon>notes</mat-icon></div>
+            </td>
+        </ng-container>
 
-      <!-- Date Column -->
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef> Datum och tid </th>
-        <td mat-cell *matCellDef="let row"> {{row.date}} </td>
-      </ng-container>
+        <!-- Date Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Datum och tid </th>
+          <td mat-cell *matCellDef="let row"> {{row.date}} </td>
+        </ng-container>
+    
+        <!-- Event Column -->
+        <ng-container matColumnDef="event">
+          <th mat-header-cell *matHeaderCellDef> Händelse </th>
+          <td mat-cell *matCellDef="let row"> {{row.event}} </td>
+        </ng-container>
+    
+        <!-- Branch Column -->
+        <ng-container matColumnDef="branch">
+          <th mat-header-cell *matHeaderCellDef> Avdelning </th>
+          <td mat-cell *matCellDef="let row"> {{row.branch}} </td>
+        </ng-container>
+    
+        <!-- Room Column -->
+        <ng-container matColumnDef="room">
+          <th mat-header-cell *matHeaderCellDef> Rum </th>
+          <td mat-cell *matCellDef="let row"> {{row.room}} </td>
+        </ng-container>
 
-      <!-- Event Column -->
-      <ng-container matColumnDef="event">
-        <th mat-header-cell *matHeaderCellDef> Händelse </th>
-        <td mat-cell *matCellDef="let row"> {{row.event}} </td>
-      </ng-container>
+        <!-- Shelf Column -->
+        <ng-container matColumnDef="shelf">
+            <th mat-header-cell *matHeaderCellDef> Hylla </th>
+            <td mat-cell *matCellDef="let row"> <app-shelf-page [shelf]='row.shelf' [storage_room]='row.room'></app-shelf-page> </td>
+          </ng-container>
 
-      <!-- Branch Column -->
-      <ng-container matColumnDef="branch">
-        <th mat-header-cell *matHeaderCellDef> Avdelning </th>
-        <td mat-cell *matCellDef="let row"> {{row.branch}} </td>
-      </ng-container>
+        <!-- Package Column -->
+        <ng-container matColumnDef="package">
+            <th mat-header-cell *matHeaderCellDef> Paket </th>
+            <td mat-cell *matCellDef="let row"><app-package-page [package]='row.package'></app-package-page></td>
+          </ng-container>
 
-      <!-- Room Column -->
-      <ng-container matColumnDef="room">
-        <th mat-header-cell *matHeaderCellDef> Rum </th>
-        <td mat-cell *matCellDef="let row"> {{row.room}} </td>
-      </ng-container>
+        <!-- User Column -->
+        <ng-container matColumnDef="user">
+            <th mat-header-cell *matHeaderCellDef> Användare </th>
+            <td mat-cell *matCellDef="let row"> {{row.user}} </td>
+          </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+</div>
 
-      <!-- Shelf Column -->
-      <ng-container matColumnDef="shelf">
-        <th mat-header-cell *matHeaderCellDef> Hylla </th>
-        <td mat-cell *matCellDef="let row">
-          <app-shelf-page [shelf]='row.shelf'></app-shelf-page>
-        </td>
-      </ng-container>
-
-      <!-- Package Column -->
-      <ng-container matColumnDef="package">
-        <th mat-header-cell *matHeaderCellDef> Paket </th>
-        <td mat-cell *matCellDef="let row">
-          <app-package-page [package]='row.package'></app-package-page>
-        </td>
-      </ng-container>
-
-      <!-- User Column -->
-      <ng-container matColumnDef="user">
-        <th mat-header-cell *matHeaderCellDef> Användare </th>
-        <td mat-cell *matCellDef="let row"> {{row.user}} </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </div>
 
 </div>
