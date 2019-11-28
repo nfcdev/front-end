@@ -3,27 +3,29 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
-import articleData from './example_data.json';
 
 export interface TableArticleDataItem {
   material_number: string;
   reference_number: string;
+  branch: string;
   storage_room: string;
   shelf: string;
+  package: string;
   status: string;
   timestamp: number;
   last_modified: number;
 }
 
-const EXAMPLE_DATA: TableArticleDataItem[] = articleData;
 
 export class TableArticleDataDataSource extends DataSource<TableArticleDataItem> {
-  data: TableArticleDataItem[] = EXAMPLE_DATA;
+  data: TableArticleDataItem[] = [];
   paginator: MatPaginator;
   sort: MatSort;
 
-  constructor() {
+  //Expected parameter data adheres to TableArticleDataItem content
+  constructor(data) {
     super();
+    this.data = data;
   }
 
   /**
@@ -65,12 +67,12 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
     return data.sort((a, b) => {
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
-        case 'article_nr': return compare(a.material_number, b.material_number, isAsc);
         case 'case_nr': return compare(+a.reference_number, +b.reference_number, isAsc);
+        case 'article_nr': return compare(a.material_number, b.material_number, isAsc);
+        case 'package_nr': return compare(a.package, b.package, isAsc);
+        case 'branch': return compare(a.branch, b.branch, isAsc);
         case 'storage_room': return compare(a.storage_room, b.storage_room, isAsc);
         case 'shelf': return compare(a.shelf, b.shelf, isAsc);
-        case 'status': return compare(a.status, b.status, isAsc);
-        case 'timestamp': return compare(+a.timestamp, +b.timestamp, isAsc);
         case 'last_modified': return compare(+a.last_modified, +b.last_modified, isAsc);
 
         default: return 0;
