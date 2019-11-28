@@ -18,7 +18,7 @@ export interface DialogData{
   styleUrls: ['./check-out-preselected.component.less']
 })
 export class CheckOutPreselectedComponent implements OnInit{
-
+  packageExists: boolean;
   selection : any[];
   packages: string[];
   preChosen = false;
@@ -29,6 +29,8 @@ export class CheckOutPreselectedComponent implements OnInit{
       
 
   openDialog(): void {
+    
+    console.log(this.packages)
     this.dialog.open(CheckOutPreselectedDialogComponent,{
       width:'800px',
       height:'400px',
@@ -37,7 +39,7 @@ export class CheckOutPreselectedComponent implements OnInit{
         preChosen: this.preChosen,
       }
     })
-    
+    console.log(this.packageExists)
   
   
   }
@@ -45,6 +47,11 @@ export class CheckOutPreselectedComponent implements OnInit{
     this.materialCheckBoxService.checkBoxChange.subscribe(newSelection => {
       this.selection = newSelection.selected;
       this.packages = this.selection.reduce((a, {package_number}) => a.concat(package_number), []);
+      if (this.packages.includes(" - ")){
+      this.packageExists = false;
+      } else{
+        this.packageExists = true;
+      }
       
     });
     
@@ -54,8 +61,9 @@ export class CheckOutPreselectedComponent implements OnInit{
      this.preChosen=false;
     } 
   });
-  }
   
+  
+}
 }
 @Component({
   selector: 'app-check-out-preselected-dialog',
@@ -66,18 +74,14 @@ export class CheckOutPreselectedDialogComponent implements OnInit {
   checkOutConfirmed : boolean = false;
   preChosen : boolean = false;
   comment :String;
- 
+  selectedStorageRoomId :Number;
+  
 
   constructor(
     public dialogRef: MatDialogRef<CheckOutPreselectedDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private storageRoomService: StorageRoomService,
     private storageRoomStore: StorageRoomStore,
-    private dataService: DataService){}
-
-    selectedStorageRoomId = this.storageRoomStore.getStorageRoom().id;
-    
- 
+    private dataService: DataService){} 
     
   onNoClick(): void {
     this.dialogRef.close();
@@ -85,11 +89,13 @@ export class CheckOutPreselectedDialogComponent implements OnInit {
   }
 
   onConfirm() : void {
+    this.selectedStorageRoomId =this.storageRoomStore.getStorageRoom().id;
     this.checkOutConfirmed = true;
     console.log(this.comment);
    
 //For check in of existing items
 for (var package_nr of this.data.selectedPackages) {
+  
   var post_data = {"package_number": package_nr,
                   "comment":this.comment,
                   "storage_room": this.selectedStorageRoomId
@@ -104,6 +110,7 @@ for (var package_nr of this.data.selectedPackages) {
       post_data["package"] = this.data.selectedPackages;
       //post_data["storage_room"] = this.
     }
+    console.log(post_data)
     this.dataService.sendPostRequest("/package/check-out", post_data).subscribe((data: any[])=>{
     })
  
@@ -113,8 +120,7 @@ for (var package_nr of this.data.selectedPackages) {
   }
 
   ngOnInit() : void {
-    this.storageRoomStore.currentStorageRoom.subscribe(room => {
-      this.selectedStorageRoomId = room.id});
+   
   }
 
   
