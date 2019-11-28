@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MaterialCheckBoxService } from '../table-article-data/material-check-box.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { StorageRoomService } from "../storage-room/storage-room.service";
 import { DataService } from '../data.service';
 import {
@@ -32,6 +31,7 @@ export class CheckOutPreselectedComponent implements OnInit{
 
   openDialog(): void {
     
+    if (this.packages[0] != "-"){
     this.dialog.open(CheckOutPreselectedDialogComponent,{
       width:'800px',
       height:'400px',
@@ -39,9 +39,10 @@ export class CheckOutPreselectedComponent implements OnInit{
       {selectedPackages: this.packages,
         preChosen: this.preChosen,
       }
-      
     })
-    console.log(this.packages[0]);
+    }
+  
+  
   }
   ngOnInit() {
     this.materialCheckBoxService.checkBoxChange.subscribe(newSelection => {
@@ -77,6 +78,7 @@ export class CheckOutPreselectedDialogComponent implements OnInit {
     private dataService: DataService){}
 
     selectedStorageRoomId = this.storageRoomStore.getStorageRoom().id;
+    
  
     
   onNoClick(): void {
@@ -87,6 +89,7 @@ export class CheckOutPreselectedDialogComponent implements OnInit {
   onConfirm() : void {
     this.checkOutConfirmed = true;
     console.log(this.comment);
+   
 //For check in of existing items
 for (var package_nr of this.data.selectedPackages) {
   var post_data = {"package_number": package_nr,
@@ -103,7 +106,7 @@ for (var package_nr of this.data.selectedPackages) {
       post_data["package"] = this.data.selectedPackages;
       //post_data["storage_room"] = this.
     }
-    console.log(post_data)
+   
     this.dataService.sendPostRequest("/package/check-out", post_data).subscribe((data: any[])=>{
     })
  
