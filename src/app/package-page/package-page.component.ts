@@ -69,9 +69,6 @@ export class PackagePageComponent implements OnInit {
       });
     };
     // this.materials = MATERIALS;
-
-    
-
   }
   ngOnInit() {
   }

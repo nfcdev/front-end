@@ -55,7 +55,7 @@ HttpErrorResponse
     return this.httpClient.put(this.REST_API_SERVER + request, data, httpOptions).pipe(catchError(this.handleError));
   }
 
-  public sendDeleteRequest(request:string, data){
+  public sendDeleteRequest(request:string){
     return this.httpClient.get(this.REST_API_SERVER + request).pipe(retry(2), catchError(this.handleError));
   }
 

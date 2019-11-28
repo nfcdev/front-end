@@ -1,6 +1,17 @@
 <form  (ngSubmit)="onSubmit()">
 
-    <!-- TODO: Lägg till drop down för val av kategori -->
+
+    <mat-form-field>
+        <mat-select
+        [(ngModel)]="category" name="searchcategory" placeholder="Kategori">
+            <mat-option *ngFor="let cat of searchCategory" [value]="cat.category">
+            {{cat.category}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+        
+
 
     <!-- Creates the search-bar component as well as the chip list -->
    <div class="search-field">
@@ -34,7 +45,7 @@
     <mat-chip-list #chipList>
             <mat-chip *ngFor="let option of options" [selectable] = "selectable"
                     [removable]="removable" (removed)="remove(option)">
-                {{option.name}} ({{option.category}})
+                {{option.value}} ({{option.category}})
                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
             </mat-chip>
 </mat-chip-list>
