@@ -34,7 +34,7 @@ import { MatCardModule } from "@angular/material/card";
 
 import { StorageRoomStore } from "./storage-room/storage-room-store";
 
-import { BranchStore } from './branch/branch-store';
+import { BranchStore } from "./branch/branch-store";
 
 import { LoginComponent } from "./login/login.component";
 
@@ -47,7 +47,10 @@ import {
   MatGridListModule,
   MatMenuModule,
   MatListModule,
-  MatChipsModule
+  MatChipsModule,
+  MatTooltipModule,
+  MatExpansionModule,
+  MatAutocompleteModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
 import { SearchBarComponent } from "./search-bar/search-bar.component";
@@ -72,11 +75,17 @@ import {
   ManageSystemDialogComponent,
   ManageSystemDialogPopupComponent
 } from "./manage-system/manage-system-dialog/manage-system-dialog.component";
+
 import {
   MaterialCheckOutComponent,
   MaterialCheckOutDialogComponent
 } from "./material-check-out/material-check-out.component";
+
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
+import {
+  PackageCheckInComponent,
+  PackageCheckInDialogComponent
+} from "./package-check-in/package-check-in.component";
 import { RoomAndBranchNameComponent } from "./room-and-branch-name/room-and-branch-name.component";
 import {
   UserPageComponent,
@@ -114,6 +123,8 @@ import {
     MaterialCheckInDialogComponent,
     DataVisualizationComponent,
     DataVisualizationDialogComponent,
+    PackageCheckInComponent,
+    PackageCheckInDialogComponent,
     RoomAndBranchNameComponent,
     UserPageComponent,
     UserPageDialogComponent,
@@ -145,7 +156,10 @@ import {
     MatGridListModule,
     NgbAlertModule,
     MatMenuModule,
-    MatListModule
+    MatListModule,
+    MatTooltipModule,
+    MatExpansionModule,
+    MatAutocompleteModule
   ],
   providers: [
     {
@@ -169,6 +183,7 @@ import {
     MaterialCheckOutDialogComponent,
     MaterialCheckInDialogComponent,
     DataVisualizationDialogComponent,
+    PackageCheckInDialogComponent,
     UserPageDialogComponent,
     PackageCheckOutDialogComponent
   ]
