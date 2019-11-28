@@ -51,11 +51,11 @@ HttpErrorResponse
     return this.httpClient.post(this.REST_API_SERVER + request, data, httpOptions).pipe(catchError(this.handleError));
   }
 
-  public sendPutRequest(data, request:string){
+  public sendPutRequest(request:string, data){
     return this.httpClient.put(this.REST_API_SERVER + request, data, httpOptions).pipe(catchError(this.handleError));
   }
 
-  public sendDeleteRequest(data, request:string){
+  public sendDeleteRequest(request:string, data){
     return this.httpClient.get(this.REST_API_SERVER + request).pipe(retry(2), catchError(this.handleError));
   }
 

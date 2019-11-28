@@ -23,7 +23,8 @@ import {
 } from "./storage-event-form/storage-event-form.component";
 import {
   MaterialCheckInComponent,
-  MaterialCheckInDialogComponent } from "./material-check-in/material-check-in.component"
+  MaterialCheckInDialogComponent
+} from "./material-check-in/material-check-in.component";
 
 import { DataVisualizationDialogComponent } from "./data-visualization/data-visualization.component";
 import { MatDialogModule } from "@angular/material";
@@ -32,6 +33,8 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { MatCardModule } from "@angular/material/card";
 
 import { StorageRoomStore } from "./storage-room/storage-room-store";
+
+import { BranchStore } from "./branch/branch-store";
 
 import { LoginComponent } from "./login/login.component";
 
@@ -45,7 +48,8 @@ import {
   MatMenuModule,
   MatListModule,
   MatChipsModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatAutocompleteModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
 import { SearchBarComponent } from "./search-bar/search-bar.component";
@@ -75,6 +79,19 @@ import {
   MaterialCheckOutDialogComponent
 } from "./material-check-out/material-check-out.component";
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
+import {
+  PackageCheckInComponent,
+  PackageCheckInDialogComponent
+} from "./package-check-in/package-check-in.component";
+import { RoomAndBranchNameComponent } from "./room-and-branch-name/room-and-branch-name.component";
+import {
+  UserPageComponent,
+  UserPageDialogComponent
+} from "./user-page/user-page.component";
+import {
+  PackageCheckOutComponent,
+  PackageCheckOutDialogComponent
+} from "./package-check-out/package-check-out.component";
 
 @NgModule({
   declarations: [
@@ -102,7 +119,14 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     MaterialCheckInComponent,
     MaterialCheckInDialogComponent,
     DataVisualizationComponent,
-    DataVisualizationDialogComponent
+    DataVisualizationDialogComponent,
+    PackageCheckInComponent,
+    PackageCheckInDialogComponent,
+    RoomAndBranchNameComponent,
+    UserPageComponent,
+    UserPageDialogComponent,
+    PackageCheckOutComponent,
+    PackageCheckOutDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -118,11 +142,6 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
@@ -134,11 +153,9 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     MatGridListModule,
     NgbAlertModule,
     MatMenuModule,
-    MatGridListModule,
-    MatCheckboxModule,
     MatListModule,
-    MatChipsModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatAutocompleteModule
   ],
   providers: [
     {
@@ -148,6 +165,7 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     },
     AuthenticationService,
     StorageRoomStore,
+    BranchStore,
     MaterialCheckBoxService
   ],
   bootstrap: [AppComponent],
@@ -160,7 +178,10 @@ import { MaterialCheckBoxService } from "./table-article-data/material-check-box
     ManageSystemDialogPopupComponent,
     MaterialCheckOutDialogComponent,
     MaterialCheckInDialogComponent,
-    DataVisualizationDialogComponent
+    DataVisualizationDialogComponent,
+    PackageCheckInDialogComponent,
+    UserPageDialogComponent,
+    PackageCheckOutDialogComponent
   ]
 })
 export class AppModule {}
