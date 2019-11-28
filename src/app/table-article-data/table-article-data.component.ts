@@ -90,8 +90,8 @@ export class TableArticleDataComponent implements OnInit {
   }
 
   setTableData(data) {
-    this.dataSource.updateData(this.transformData(data));
-    this.paginator._changePageSize(this.paginator.pageSize); // Hack to fix update of table data
+    //this.dataSource.data = this.transformData(data);
+    this.table.dataSource = this.transformData(data);
   }
 
 }
