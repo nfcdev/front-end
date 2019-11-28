@@ -67,6 +67,10 @@ export class TableArticleDataComponent implements OnInit {
     return data;
   }
 
+  ngOnInit() {
+
+  }
+
   ngAfterViewInit() {
     this.storageRoom = new StorageRoomStore();
     console.log("Storage room:" + this.storageRoom.getStorageRoom());
