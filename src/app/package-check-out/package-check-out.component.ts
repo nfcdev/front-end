@@ -8,6 +8,7 @@ import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 export interface DialogData{
   selectedPackage: string;
   preChosen: boolean;
+  package: any;
 }
 
 @Component({

@@ -6,13 +6,14 @@ import { MaterialCheckBoxService } from '../table-article-data/material-check-bo
 
 
 export interface DialogData {
-  material_number: number;
+  material_number: any;
   reference_number: number;
   area: string;
   storage_room: string;
   shelf: string;
   package: string;
   comment: string;
+  placement: any;
 }
 
 export interface Room {
