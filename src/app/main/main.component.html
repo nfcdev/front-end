@@ -7,8 +7,8 @@
               <app-search-bar></app-search-bar>
         </div>
 
+        <div class="button" [hidden]="viewOnly">
 
-        <div class="button">
             <app-manage-system-dialog></app-manage-system-dialog>
         </div>
 
@@ -18,22 +18,21 @@
 
         <!-- <app-storage-event-form></app-storage-event-form> -->
         <!-- <div><app-check-in-form></app-check-in-form></div> -->
-        <div class="button">
+        <div class="button" [hidden]="viewOnly">
           <app-check-in-drop-down></app-check-in-drop-down>
         </div>
 
-        <div class="button">
-        <button mat-raised-button [matMenuTriggerFor]="checkOutMenu">
-            Checka Ut
-        </button>
-        <mat-menu #checkOutMenu="matMenu">
-            <app-material-check-out></app-material-check-out>
-            <app-package-check-out></app-package-check-out>
-        </mat-menu>
+        <div class="button" [hidden]="viewOnly">
+          <button mat-raised-button [matMenuTriggerFor]="checkOutMenu">
+              Checka Ut
+          </button>
+          <mat-menu #checkOutMenu="matMenu">
+              <app-material-check-out></app-material-check-out>
+              <app-package-check-out></app-package-check-out>
+          </mat-menu>
         </div>
       </div>
       <br>
-
     <br>
   </div>
 
