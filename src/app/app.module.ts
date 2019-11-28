@@ -82,6 +82,8 @@ import {
 } from "./material-check-out/material-check-out.component";
 
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
+import { CheckOutPreselectedComponent, CheckOutPreselectedDialogComponent } from './check-out-preselected/check-out-preselected.component';
+
 
 import { CasePageComponent, CasePageDialogComponent } from './case-page/case-page.component';
 import {
@@ -125,6 +127,8 @@ import {
     MaterialCheckInDialogComponent,
     DataVisualizationComponent,
     DataVisualizationDialogComponent,
+    CheckOutPreselectedComponent,
+    CheckOutPreselectedDialogComponent,
     PackageCheckInComponent,
     PackageCheckInDialogComponent,
     RoomAndBranchNameComponent,
@@ -187,6 +191,7 @@ import {
     MaterialCheckOutDialogComponent,
     MaterialCheckInDialogComponent,
     DataVisualizationDialogComponent,
+    CheckOutPreselectedDialogComponent,
     PackageCheckInDialogComponent,
     UserPageDialogComponent,
     PackageCheckOutDialogComponent,

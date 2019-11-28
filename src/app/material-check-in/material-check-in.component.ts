@@ -92,8 +92,6 @@ export class MaterialCheckInComponent implements OnInit {
 
       if(result != null ){ // if user presses cancel the result is null. TODO: better solution for checking this
 
-      // TODO: Jsonify data and send to back-end
-
        // reset material list
       this.materials = [];
       } else {
