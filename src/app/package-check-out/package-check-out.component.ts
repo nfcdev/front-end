@@ -116,6 +116,8 @@ export class PackageCheckOutDialogComponent implements OnInit{
     this.checkOutConfirmed = true;
     console.log(this.comment);
     // TODO: check out this.data.package to the back-end here
+
+    
   }
 
   ngOnInit() : void {

@@ -18,7 +18,7 @@ export interface DialogData{
   styleUrls: ['./check-out-preselected.component.less']
 })
 export class CheckOutPreselectedComponent implements OnInit{
-  packageExists: boolean;
+  packageExists: boolean = true;
   selection : any[];
   packages: string[];
   preChosen = false;
@@ -110,13 +110,13 @@ for (var package_nr of this.data.selectedPackages) {
       post_data["package"] = this.data.selectedPackages;
       //post_data["storage_room"] = this.
     }
-    console.log(post_data)
+    
     this.dataService.sendPostRequest("/package/check-out", post_data).subscribe((data: any[])=>{
     })
  
 }
 
-    // TODO: check-out the materials in this.data.selection in the back-end here together with this.comment
+
   }
 
   ngOnInit() : void {
