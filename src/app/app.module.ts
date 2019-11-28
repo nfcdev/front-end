@@ -48,6 +48,7 @@ import {
   MatMenuModule,
   MatListModule,
   MatChipsModule,
+  MatExpansionModule,
   MatAutocompleteModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
@@ -155,6 +156,7 @@ import {
     NgbAlertModule,
     MatMenuModule,
     MatListModule,
+    MatExpansionModule,
     MatAutocompleteModule
   ],
   providers: [
