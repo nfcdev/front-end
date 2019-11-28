@@ -10,7 +10,7 @@ import {
 } from '../table-article-data/table-article-data.component';
 import { TableArticleDataItem } from '../table-article-data/table-article-data-datasource';
 import EXAMPLE_DATA from '../table-article-data/example_data.json';
-
+import { DataService } from '../data.service'
 
 // This creates the type "option" which collects the data from the search
 export interface Option {
@@ -20,6 +20,9 @@ export interface Option {
 
 export const activeStatuses: String [] = ["check_in", "check_out"];
 export const inactiveStatuses: String [] = ["discarded", "processed"];
+export interface SearchData {
+
+}
 
 @Component({
   selector: 'app-search-bar',
@@ -36,6 +39,7 @@ export class SearchBarComponent implements OnInit {
   options: Option[] = [];
   activeMaterials: Boolean = true;
   inactiveMaterials: Boolean = false;
+
   tableData: TableArticleDataItem [] = EXAMPLE_DATA; // TODO: adjust for actual data
   storageRooms: String [] = [];
   statuses: String [] = activeStatuses.concat(inactiveStatuses);
@@ -75,6 +79,9 @@ export class SearchBarComponent implements OnInit {
       }
     }
   }
+  //search_data: = [];
+
+  constructor(private dataService: DataService) {}
 
   add(event: MatChipInputEvent): void {
     const input = event.input;
@@ -88,6 +95,8 @@ export class SearchBarComponent implements OnInit {
       /** IMPORTANT! The name of the tempCategories created below are used in "table-article-data.component.ts" as well,
        *  so if they are changed here they need to altered in that file also*/ 
 
+      //TODO: Check input choise from drop-down and category it as such and set tempCategory
+      // Reference number
       if ((value || '').trim().length == 6) {
         tempCategory = "Fall";
       }
@@ -100,13 +109,19 @@ export class SearchBarComponent implements OnInit {
       if (this.statuses.includes((value || '').trim())) {
         tempCategory = "Status"
       }
+
       if (this.shelves.includes((value || '').trim())) {
         tempCategory = "Hylla"
       }
 
+      //TODO: Why value trim?
+
       var tempOption: Option =  { name: value.trim(), category: tempCategory }
       this.options.push({ name: value.trim(), category: tempCategory });
       applyFilter(tempOption);
+
+      //Create query to back-end /search/, alternatively in onSubmit().TODO: Check when which is run
+      //TODO: Console.log result of search
     }
     // Reset the input value
     if (input) {
