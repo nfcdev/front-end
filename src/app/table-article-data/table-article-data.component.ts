@@ -53,7 +53,7 @@ transformData(requestData) {
                "branch": d["branch"],
                "storage_room": d["storage_room"],
                "shelf": d["shelf"],
-               "package": d["package"],
+               "package_number": d["package"],
                "status": d["status"],
                "timestamp": d["timestamp"],
                "last_modified": d["last_modified"]

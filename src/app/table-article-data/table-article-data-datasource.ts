@@ -10,7 +10,7 @@ export interface TableArticleDataItem {
   branch: string;
   storage_room: string;
   shelf: string;
-  package: string;
+  package_number: string;
   status: string;
   timestamp: number;
   last_modified: number;
@@ -69,7 +69,7 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
       switch (this.sort.active) {
         case 'case_nr': return compare(+a.reference_number, +b.reference_number, isAsc);
         case 'article_nr': return compare(a.material_number, b.material_number, isAsc);
-        case 'package_nr': return compare(a.package, b.package, isAsc);
+        case 'package_nr': return compare(a.package_number, b.package_number, isAsc);
         case 'branch': return compare(a.branch, b.branch, isAsc);
         case 'storage_room': return compare(a.storage_room, b.storage_room, isAsc);
         case 'shelf': return compare(a.shelf, b.shelf, isAsc);
