@@ -112,7 +112,7 @@
         <!-- Shelf Column -->
         <ng-container matColumnDef="shelf">
             <th mat-header-cell *matHeaderCellDef> Hylla </th>
-            <td mat-cell *matCellDef="let row"> <app-shelf-page [shelf]='row.shelf'></app-shelf-page> </td>
+            <td mat-cell *matCellDef="let row"> <app-shelf-page [shelf]='row.shelf' [storage_room]='row.room'></app-shelf-page> </td>
           </ng-container>
 
         <!-- Package Column -->
