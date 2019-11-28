@@ -2,7 +2,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { dataService, DataService } from '../data.service'
+import { DataService } from '../data.service'
 
 // This creates the type "option" which collects the data from the search
 export interface Option {
@@ -11,7 +11,7 @@ export interface Option {
 }
 
 export interface SearchData {
-  
+
 }
 
 @Component({
