@@ -48,6 +48,8 @@ import {
   MatMenuModule,
   MatListModule,
   MatChipsModule,
+  MatTooltipModule,
+  MatExpansionModule,
   MatAutocompleteModule
 } from "@angular/material";
 import { MainComponent } from "./main/main.component";
@@ -73,11 +75,15 @@ import {
   ManageSystemDialogComponent,
   ManageSystemDialogPopupComponent
 } from "./manage-system/manage-system-dialog/manage-system-dialog.component";
+
 import {
   MaterialCheckOutComponent,
   MaterialCheckOutDialogComponent
 } from "./material-check-out/material-check-out.component";
+
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
+
+import { CasePageComponent, CasePageDialogComponent } from './case-page/case-page.component';
 import {
   PackageCheckInComponent,
   PackageCheckInDialogComponent
@@ -125,7 +131,9 @@ import {
     UserPageComponent,
     UserPageDialogComponent,
     PackageCheckOutComponent,
-    PackageCheckOutDialogComponent
+    PackageCheckOutDialogComponent,
+    CasePageComponent,
+    CasePageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -153,6 +161,8 @@ import {
     NgbAlertModule,
     MatMenuModule,
     MatListModule,
+    MatTooltipModule,
+    MatExpansionModule,
     MatAutocompleteModule
   ],
   providers: [
@@ -179,7 +189,8 @@ import {
     DataVisualizationDialogComponent,
     PackageCheckInDialogComponent,
     UserPageDialogComponent,
-    PackageCheckOutDialogComponent
+    PackageCheckOutDialogComponent,
+    CasePageDialogComponent
   ]
 })
 export class AppModule {}
