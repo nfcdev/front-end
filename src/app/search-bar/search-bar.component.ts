@@ -4,6 +4,8 @@ import { MatChipInputEvent } from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DataService } from '../data.service'
 import { TableArticleDataComponent } from '../table-article-data/table-article-data.component'
+import { dataSource, transformData } from '../table-article-data/table-article-data.component'
+
 
 // This creates the type "option" which collects the data from the search
 export interface Option {
@@ -11,6 +13,7 @@ export interface Option {
   value: string;
   category: string;
 }
+
 
 export interface ArticleData {
   material_number: string;
@@ -120,8 +123,9 @@ export class SearchBarComponent  {
     
     this.dataService.sendGetRequest("/article" + query).subscribe((data: ArticleData[])=>{
       this.searchData = data;
-      this.articleTable.setDataSource(data);
-      console.log("True ds:" + this.articleTable.dataSource);
+      dataSource.data = transformData(data);
+      dataSource.paginator._changePageSize(dataSource.paginator.pageSize); 
+
     })
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 
@@ -9,7 +9,26 @@ import { MaterialCheckBoxService } from './material-check-box.service';
 import { DataService } from '../data.service';
 import { StorageRoomStore } from '../storage-room/storage-room-store'
 
+export var dataSource: TableArticleDataDataSource;
 
+export function transformData(requestData) {
+  var data = [];
+  for (const d of requestData) {
+    var tmp = {"material_number": d["material_number"],
+              "reference_number": d["reference_number"],
+              "branch": d["branch"],
+              "storage_room": d["storage_room"],
+              "shelf": d["shelf"],
+              "package_number": d["package"],
+              "status": d["status"],
+              "timestamp": d["timestamp"],
+              "last_modified": d["last_modified"]
+              };
+
+    data.push(tmp);
+  }
+  return data;
+}
 
 @Component({
   selector: 'app-table-article-data',
@@ -20,7 +39,7 @@ export class TableArticleDataComponent implements OnInit {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatTable, {static: true}) table: MatTable<TableArticleDataItem>;
-  dataSource: TableArticleDataDataSource;
+  //dataSource: TableArticleDataDataSource;
   storageRoom: StorageRoomStore;
   selection = new SelectionModel(true, []);
 
@@ -30,40 +49,23 @@ export class TableArticleDataComponent implements OnInit {
   constructor(
     private materialCheckOutService: MaterialCheckBoxService,
     private dataService: DataService,
+    private changeDetectorRefs: ChangeDetectorRef
   ) { }
-/** Whether the number of selected elements matches the total number of rows. */
-isAllSelected() {
-  const numSelected = this.selection.selected.length;
-  const numRows = this.dataSource.data.length;
-  return numSelected == numRows;
-}
-
-/** Selects all rows if they are not all selected; otherwise clear selection. */
-masterToggle() {
-  this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
-}
-
-transformData(requestData) {
-  var data = [];
-  for (const d of requestData) {
-    var tmp = {"material_number": d["material_number"],
-               "reference_number": d["reference_number"],
-               "branch": d["branch"],
-               "storage_room": d["storage_room"],
-               "shelf": d["shelf"],
-               "package_number": d["package"],
-               "status": d["status"],
-               "timestamp": d["timestamp"],
-               "last_modified": d["last_modified"]
-               };
-
-    data.push(tmp);
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = dataSource.data.length;
+    return numSelected == numRows;
   }
-  return data;
-}
 
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+ 
   ngOnInit() {
     this.storageRoom = new StorageRoomStore();
     console.log("Storage room:" + this.storageRoom.getStorageRoom());
@@ -71,12 +73,12 @@ transformData(requestData) {
     //this.dataService.sendGetRequest("/article/storageroom/" + this.storageRoom.getStorageRoom()).subscribe((data: any[])=>{
     this.dataService.sendGetRequest("/article").subscribe((data: any[])=>{
       
-      this.dataSource = new TableArticleDataDataSource(this.transformData(data));
-      console.log(this.dataSource);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+      dataSource = new TableArticleDataDataSource(transformData(data));
+      console.log(dataSource);
+      dataSource.sort = this.sort;
+      dataSource.paginator = this.paginator;
       console.log("table: " + this.table)
-      this.table.dataSource = this.dataSource;
+      this.table.dataSource = dataSource;
     })
 
     //this.dataSource = new TableArticleDataDataSource(data);
@@ -85,10 +87,7 @@ transformData(requestData) {
     });
   }
 
-  setDataSource(data): void {
-    console.log(this.table);
-    this.dataSource = new TableArticleDataDataSource(this.transformData(data))
-    this.table.dataSource = this.dataSource;
-  }
+
+
  
 }

@@ -17,6 +17,7 @@ export interface TableArticleDataItem {
 }
 
 
+
 export class TableArticleDataDataSource extends DataSource<TableArticleDataItem> {
   data: TableArticleDataItem[] = [];
   paginator: MatPaginator;
