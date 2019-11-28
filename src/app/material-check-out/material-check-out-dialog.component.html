@@ -6,6 +6,10 @@
         <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
     </mat-grid-list>
 </div> -->
+<div>
+    <button mat-raised-button type="button" style="float:right;" (click)="onNoClick()">X</button>
+</div><br>
+
 <div *ngIf="!checkOutConfirmed">
     <h1 mat-dialog-title>Checka ut material</h1>
 </div>
@@ -67,9 +71,9 @@
     </div>
     <br>
 
- 
+
     <div mat-dialog-actions>
-         <div *ngIf="!checkOutConfirmed">
+        <div *ngIf="!checkOutConfirmed">
             <button mat-raised-button (click)="onNoClick()">Avbryt</button>
         </div>
         <div *ngIf="!checkOutConfirmed">
