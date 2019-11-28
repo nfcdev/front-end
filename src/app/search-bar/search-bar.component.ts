@@ -1,5 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DataService } from '../data.service'
@@ -36,13 +36,13 @@ export interface Category {
   styleUrls: ['./search-bar.component.less'],
   providers: [TableArticleDataComponent]
 })
-export class SearchBarComponent  {
-  
-  searchCategory : Category[] = [ {"category": "Materialnummer", "name": "material_number"},
-                                  {"category": "Diarienummer", "name": "reference_number"},
-                                  {"category": "Rum", "name": "storage_room"},
-                                  {"category": "Hylla", "name": "shelf"},
-                                  {"category": "Paket", "name": "package_number"}];
+export class SearchBarComponent {
+
+  searchCategory: Category[] = [{ "category": "Materialnummer", "name": "material_number" },
+  { "category": "Diarienummer", "name": "reference_number" },
+  { "category": "Rum", "name": "storage_room" },
+  { "category": "Hylla", "name": "shelf" },
+  { "category": "Paket", "name": "package_number" }];
 
   category: string;
   visible = true;
@@ -54,28 +54,28 @@ export class SearchBarComponent  {
   activeMaterials: Boolean = true;
   inactiveMaterials: Boolean = false;
   searchData: ArticleData[];
+  @Input() articleTable: TableArticleDataComponent;
 
-  constructor(private dataService: DataService,
-              private articleTable: TableArticleDataComponent) {}
+
+  constructor(private dataService: DataService) { }
 
   add(event: MatChipInputEvent): void {
-    console.log("add");
     const input = event.input;
     const value = event.value;
     // Add our input searchoption
     if ((value || '').trim() && this.category !== undefined) {
 
-      var cat : Category[] = this.searchCategory.filter(obj => {
+      var cat: Category[] = this.searchCategory.filter(obj => {
         if (obj.category === this.category) {
           return obj;
         }
       })
 
 
-      var option: Option =  { value: value.trim(), name: cat[0].name, category: cat[0].category}
-      
+      var option: Option = { value: value.trim(), name: cat[0].name, category: cat[0].category }
+
       this.options.push(option);
-      
+
       this.search();
     }
 
@@ -85,20 +85,19 @@ export class SearchBarComponent  {
     }
   }
 
-  remove (option: Option):void {
+  remove(option: Option): void {
     console.log("remove");
     const index = this.options.indexOf(option);
-    if (index >=0) {
+    if (index >= 0) {
       this.options.splice(index, 1);
     }
     this.search();
   }
 
-  onSubmit ():void {
-    
-    console.log("submit");
+  onSubmit(): void {
+
     const size = this.options.length;
-    for (let i =0; i < size; i++ ){
+    for (let i = 0; i < size; i++) {
       console.log(this.options[i]);
     }
     this.options.splice(0, size);
@@ -106,22 +105,24 @@ export class SearchBarComponent  {
     this.search();
   }
 
-  createQuery() : String {
+  createQuery(): String {
     //Loop through options + create string
-    var query : String = "?";
+    var query: String = "?";
     for (var opt of this.options) {
       query = query + opt.name + "=" + opt.value + "&";
     }
+    console.log("creating query", query);
+
     return query;
   }
 
 
   getSearchData(query) {
-    
-    this.dataService.sendGetRequest("/article" + query).subscribe((data: ArticleData[])=>{
+    console.log("query was:", query);
+
+    this.dataService.sendGetRequest("/article" + query).subscribe((data: ArticleData[]) => {
       this.searchData = data;
-      this.articleTable.setDataSource(data);
-      console.log("True ds:" + this.articleTable.dataSource);
+      this.articleTable.setTableData(data);
     })
   }
 

@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
+import { TableArticleDataComponent } from './table-article-data.component';
 
 export interface TableArticleDataItem {
   material_number: string;
@@ -47,11 +48,15 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
     }));
   }
 
+  updateData(data) {
+    this.data = data;
+  }
+
   /**
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect() {}
+  disconnect() { }
 
 
   private getPagedData(data: TableArticleDataItem[]) {
