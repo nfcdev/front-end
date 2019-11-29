@@ -1,17 +1,53 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { DataService } from '../data.service';
 
+export interface DataBranch {
+  id: number;
+  name: string;
+}
 
 export interface Room {
   branch: string;
   room: string;
 }
 
+export interface DataRoom {
+  id: number;
+  branch: number;
+  name: string;
+}
+
 export interface Shelf {
   branch: string;
   room: string;
   shelf: string;
+}
+
+export interface DataShelf {
+  id: number;
+  shelf_name: string;
+  current_storage_room: number;
+}
+
+export interface DataUser {
+  id: number;
+  shortcode: string;
+  role: string;
+}
+
+export interface DataArticle {
+  material_number: string;
+  reference_number: string;
+  branch: string;
+  storage_room: string;
+  package: string;
+  shelf: string;
+  status: string;
+  timestamp: number;
+  last_modified: number;
+  description: string;
 }
 
 
@@ -21,11 +57,15 @@ export interface Shelf {
   styleUrls: ['./manage-system.component.less']
 })
 export class ManageSystemComponent implements OnInit {
-  branches: string[];
-  rooms: Room[];
-  shelves: Shelf[];
-  users: string[];
-  admins: string[];
+  branches: string[] = [];
+  dataBranches: DataBranch [] = [];
+  rooms: Room[] = [];
+  dataRooms: DataRoom [] = [];
+  shelves: Shelf[] = [];
+  dataShelves: DataShelf [] = [];
+  users: string[] = [];
+  admins: string[]= [];
+  dataArticles: DataArticle [] = [];
 
   chosenBranchInRoom: string;
   chosenBranchInShelf: string;
@@ -63,44 +103,54 @@ export class ManageSystemComponent implements OnInit {
 
 
 
-  constructor() { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    // TEMPORARY TEST DATA
-    this.branches = ['Vapen', 'Bio', 'Finger']; // TODO: Get branches from back end
-    this.rooms = [{ branch: 'Vapen', room: 'Vapen Material' },
-    { branch: 'Vapen', room: 'Vapen Labb' },
-    { branch: 'Vapen', room: 'Vapen Uppack' },
-    { branch: 'Bio', room: 'Bio Material' },
-    { branch: 'Bio', room: 'Bio Labb' },
-    { branch: 'Bio', room: 'Bio Uppack' },
-    { branch: 'Finger', room: 'Finger Material' },
-    { branch: 'Finger', room: 'Finger Labb' },
-    { branch: 'Finger', room: 'Finger Uppack' }];
+    // Get all branches from database
+    this.dataService.sendGetRequest("/branch").subscribe((getBranches: DataBranch [] )=> {
+      this.dataBranches = getBranches;
+      for (let i=0; i < this.dataBranches.length ; i++) {
+        this.branches.push(this.dataBranches[i].name);
+      }
+      // Get all storage rooms from database
+      this.dataService.sendGetRequest("/storageroom").subscribe((getRooms: DataRoom []) => {
+        this.dataRooms = getRooms;
+        var tempRoom: Room;
+        for (let i=0; i < this.dataRooms.length; i++) {
+          tempRoom = {branch: this.dataBranches.find(it => it.id == this.dataRooms[i].branch).name, room: this.dataRooms[i].name };
+          this.rooms.push(tempRoom);
+        }
+        // Get all shelves from database
+        this.dataService.sendGetRequest("/shelf").subscribe((getShelves: DataShelf[]) => {
+          this.dataShelves = getShelves;
+          var tempShelf: Shelf;
+          for (let i=0; i < this.dataShelves.length; i++) {
+            tempShelf = {
+              branch: this.dataBranches.find(it => it.id == this.dataRooms.find(it => it.id == this.dataShelves[i].current_storage_room).branch).name,
+              room: this.dataRooms.find(it => it.id == this.dataShelves[i].current_storage_room).name,
+              shelf: this.dataShelves[i].shelf_name
+            }
+            this.shelves.push(tempShelf);
+          }
+        })
 
-    this.shelves = [{ branch: 'Vapen', room: 'Vapen Material', shelf: 'A15' },
-    { branch: 'Vapen', room: 'Vapen Labb', shelf: 'A16' },
-    { branch: 'Vapen', room: 'Vapen Uppack', shelf: 'A17' },
-    { branch: 'Bio', room: 'Bio Material', shelf: 'A18' },
-    { branch: 'Bio', room: 'Bio Labb', shelf: 'A19' },
-    { branch: 'Bio', room: 'Bio Uppack', shelf: 'A11' },
-    { branch: 'Finger', room: 'Finger Material', shelf: 'A12' },
-    { branch: 'Finger', room: 'Finger Labb', shelf: 'A13' },
-    { branch: 'Finger', room: 'Finger Uppack', shelf: 'A14' },
+      })
+    });
+    // Get all articles for checking if shelves are empy in "isEmptyShelf"
+    this.dataService.sendGetRequest("/article").subscribe((getArticles: DataArticle []) => {
+      this.dataArticles = getArticles;
+    })
 
-    { branch: 'Vapen', room: 'Vapen Material', shelf: 'B15' },
-    { branch: 'Vapen', room: 'Vapen Labb', shelf: 'B16' },
-    { branch: 'Vapen', room: 'Vapen Uppack', shelf: 'B17' },
-    { branch: 'Bio', room: 'Bio Material', shelf: 'B18' },
-    { branch: 'Bio', room: 'Bio Labb', shelf: 'B19' },
-    { branch: 'Bio', room: 'Bio Uppack', shelf: 'B11' },
-    { branch: 'Finger', room: 'Finger Material', shelf: 'B12' },
-    { branch: 'Finger', room: 'Finger Labb', shelf: 'B13' },
-    { branch: 'Finger', room: 'Finger Uppack', shelf: 'B14' }];
-
-
-    this.users = ['user1', 'user2', 'user3', 'user4'];
-    this.admins = ['user1'];
+    // Get all users and admins from database
+    this.dataService.sendGetRequest("/user").subscribe((dataUsers: DataUser []) => {
+      for (let i=0; i < dataUsers.length ; i ++) {
+        if (dataUsers[i].role == "user") {
+          this.users.push(dataUsers[i].shortcode);
+        }else if (dataUsers[i].role == "admin") {
+          this.admins.push(dataUsers[i].shortcode);
+        }
+      }
+    })
 
 
 
@@ -199,6 +249,8 @@ export class ManageSystemComponent implements OnInit {
     this.clearConfirmations();
     if (!this.branches.includes(newBranch)) {
       if (newBranch.length > 0) {
+        // Saves the new branch to back-end and updates the branch-list in front-end.
+        this.dataService.sendPostRequest("/branch", {"name": newBranch}).subscribe(data=>{ console.log(data)});
         this.branches.push(newBranch);
         this.changeSuccessMessage('Du har lagt till avdelning ' + newBranch + '.');
 
@@ -206,7 +258,7 @@ export class ManageSystemComponent implements OnInit {
         this.changeFailedMessage('Avdelning ' + newBranch + ' finns redan.')
       }
     }
-    // TODO: save new branch in back-end
+    
   }
   // Sends the confirmation message to remove a branch
   removeBranchConfirmation(branch: string): void {
@@ -217,24 +269,26 @@ export class ManageSystemComponent implements OnInit {
       this.changeBranchConfirmationMessage('Vill du verkligen ta bort avdelning ' + branch + '?');
       this.branchToRemove = branch;
     } else {
-      this.changeFailedMessage('Kan inte ta bort avdelning som innehåller incheckade material.');
+      this.changeFailedMessage('Kan inte ta bort avdelning som innehåller rum.');
       this.clearConfirmations();
     }
   }
 
   // Removes the branch when the confirm button is pressed
   removeBranch(branch: string): void {
-    this.branches.forEach((item, index) => {
-      if (item === branch) this.branches.splice(index, 1);
-
-      // TODO: remove branch from back-end too
-    });
+    this.dataService.sendGetRequest("/branch").subscribe((getBranches: DataBranch []) =>  {
+      console.log(getBranches.find(it => it.name === branch).id);
+      this.dataService.sendDeleteRequest("/branch/" + getBranches.find(it => it.name === branch).id).subscribe();
+      this.branches.splice(this.branches.indexOf(branch), 1);
+    })
     this.changeSuccessMessage('Avdelning ' + branch + ' borttagen.');
     this.clearConfirmations();
   }
+
   // TEMPORARY: Returns true if branch is empty. TODO: check in back-end if branch is empty
   isEmptyBranch(branch: string): boolean {
-    if (branch == 'Vapen') {
+    // TODO : Check database instead
+    if (this.rooms.find(it => it.branch === branch)) {
       return false;
     } else {
       return true;
@@ -249,6 +303,8 @@ export class ManageSystemComponent implements OnInit {
     if (newRoom.length > 0) {
       if (this.chosenBranchInRoom) {
         if (!this.roomAlreadyExists(newRoom, this.chosenBranchInRoom)) {
+          // Add the new room to the database.
+          this.dataService.sendPostRequest("/storageroom", {"name": newRoom, "branch": this.dataBranches.find(it => it.name == this.chosenBranchInRoom).id}).subscribe(data => {console.log(data)});
           this.rooms.push(temp);
           this.changeSuccessMessage('Du har lagt till rum ' + newRoom + '.');
         } else {
@@ -256,7 +312,6 @@ export class ManageSystemComponent implements OnInit {
         }
       }
     }
-    // TODO: save new room in back-end
   }
   roomAlreadyExists(room: string, branch: string): boolean {
     var exists: boolean = false;
@@ -282,6 +337,9 @@ export class ManageSystemComponent implements OnInit {
 
   }
   removeRoom(room: string): void {
+    this.dataService.sendGetRequest("/storageroom").subscribe((getRooms:DataRoom[])=> {
+      this.dataService.sendDeleteRequest("/storageroom/" + getRooms.find(it => it.name === room).id).subscribe();
+    })
     this.rooms.forEach((item, index) => {
       if (item.room === room) this.rooms.splice(index, 1);
     });
@@ -292,7 +350,8 @@ export class ManageSystemComponent implements OnInit {
   }
   // TEMPORARY: Returns true if room is empty. TODO: check in back-end if room is empty
   isEmptyRoom(room: string): boolean {
-    if (room == 'Vapen Material') {
+    // TODO : Check database instead
+    if (this.shelves.find(it => it.room === room)) {
       return false;
     } else {
       return true;
@@ -307,6 +366,9 @@ export class ManageSystemComponent implements OnInit {
     if (this.chosenBranchInShelf && this.chosenRoomInShelf) {
       if (newShelf.length > 0) {
         if (!this.shelfAlreadyExists(newShelf, this.chosenRoomInShelf, this.chosenBranchInShelf)) {
+          this.dataService.sendPostRequest("/shelf/storageroom/" 
+                                          + this.dataRooms.find(it => it.name === this.chosenRoomInShelf).id,
+                                           {"shelf_name": newShelf}).subscribe();
           this.shelves.push(temp);
           this.changeSuccessMessage('Du har lagt till hylla ' + newShelf + '.');
         } else {
@@ -314,7 +376,6 @@ export class ManageSystemComponent implements OnInit {
         }
       }
     }
-    // TODO: save new shelf in back-end
   }
   shelfAlreadyExists(shelf: string, room: string, branch: string): boolean {
     var exists: boolean = false;
@@ -342,6 +403,9 @@ export class ManageSystemComponent implements OnInit {
 
   }
   removeShelf(shelf: string): void {
+    this.dataService.sendGetRequest("/shelf").subscribe((getShelves:DataShelf[]) => {
+      this.dataService.sendDeleteRequest("/shelf/" + getShelves.find(it => it.shelf_name === shelf).id).subscribe();
+    })
     this.shelves.forEach((item, index) => {
       if (item.shelf === shelf) this.shelves.splice(index, 1);
     });
@@ -352,7 +416,7 @@ export class ManageSystemComponent implements OnInit {
   }
   // TEMPORARY: Returns true if shelf is empty. TODO: check in back-end if shelf is empty
   isEmptyShelf(shelf: string): boolean {
-    if (shelf == 'A15') {
+    if (this.dataArticles.find(it => it.shelf === shelf)) {
       return false;
     } else {
       return true;

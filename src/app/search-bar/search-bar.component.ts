@@ -144,7 +144,7 @@ export class SearchBarComponent {
 
   getStatusNames(): String[] {
     if (this.activeMaterials) {
-      return ["check_in", "check_out"];
+      return ["checked_in", "checked_out"];
     }
 
     if (this.inactiveMaterials) {
