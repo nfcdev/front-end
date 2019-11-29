@@ -7,15 +7,18 @@
 
 
 <div mat-dialog-content [formGroup]="checkInForm" *ngIf="!checkOutConfirmed">
-    
-
+  
+  <mat-form-field *ngIf="!newData" >
+    <input class="form-control" name="reference_number" formControlName="reference_number" matInput
+      [(ngModel)]="data.reference_number" placeholder="Diarienummer">
+  </mat-form-field>
   <!-- <mat-form-field>
     <input class="form-control"
     formControlName="reference_number" matInput
     [(ngModel)]="data.reference_number" placeholder="Diarienummer">
   </mat-form-field>
   <br> -->
-
+<br>
   <mat-form-field>
     <input class="form-control" name="material_number" formControlName="material_number" matInput
       [(ngModel)]="data.material_number" placeholder="Materialnummer"

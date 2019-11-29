@@ -10,7 +10,7 @@ import { variable } from '@angular/compiler/src/output/output_ast';
 
 export interface DialogData {
   material_number: any;
-  reference_number: number;
+  reference_number: string;
   branch: String;
   storage_room: String;
   shelf: String;
@@ -131,9 +131,11 @@ export class MaterialCheckInDialogComponent {
   checkInForm: FormGroup;
   storage_room_id: Number;
   branch_id: Number;
-
+  reference_number: string;
   shelves: Shelf[];
   packages: Package[];
+
+  newData: boolean =true;
 
   
 
@@ -209,7 +211,9 @@ export class MaterialCheckInDialogComponent {
   //For check in of existing items
    for (var mat of this.data.selectedMaterials) {
     
-
+    var article_data ={"material_number": mat,
+                        "reference_number": this.reference_number,
+                      "description":"gun"}
 
     var post_data = {"material_number": mat,
                     "storage_room": this.storage_room_id,
@@ -217,14 +221,24 @@ export class MaterialCheckInDialogComponent {
                     };
 
       //If comment is added then add it to data for post-request
-      if (this.data.comment !== "" && this.data.comment !== null) {
+      if (this.data.comment !== "" && this.data.comment !== undefined) {
         post_data["comment"] = this.data.comment;
+      }else{
+        post_data["comment"] = ""
       }
 
       //If package is added then add it to data for post-request
       if (this.data.package !== "" && this.data.package !== undefined) {
         post_data["package"] = this.data.package;
       }
+
+      if (this.data.reference_number!= "" && this.data.reference_number != undefined){
+          article_data["reference_number"] = this.data.reference_number;
+        console.log(this.data.reference_number)
+      }
+      console.log(article_data)
+      this.dataService.sendPostRequest("/article", article_data).subscribe((data: any[])=>{
+      })
 
       this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[])=>{
       })
@@ -246,17 +260,29 @@ export class MaterialCheckInDialogComponent {
   }
 
   addMaterial(newMaterial : string) : void {
+    
+    this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe( (data: DialogData)=>{
+        console.log(data);
+      if (data[0] != undefined ){
+      this.newData = true;
+    } else{
+      this.newData = false;
+    }
+    console.log(this.newData)
+    
     //this.addCase(newMaterial); TODO: FIX THIS WHEN YOU CAN EITHER GET ID OR REQUEST WITH MATERIAL_NO
     if (!this.data.selectedMaterials.includes(newMaterial)) { 
       if(newMaterial && newMaterial.length > 0) {
         this.data.selectedMaterials.push(newMaterial);
         this.checkInForm.controls['material_number'].reset()
-
       }
+      
     } else {
       // duplicate
     }
+  })
   }
+
 
   getShelfId(chosenShelfName) : number {
     for (var shelf of this.shelves) {
