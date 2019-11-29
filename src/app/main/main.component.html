@@ -1,43 +1,42 @@
-
 <div class="page">
   <div class="page-component">
     <!-- <app-room-and-branch-name></app-room-and-branch-name> -->
-      <div class="button-row">
-        <div class="button">
-              <app-search-bar></app-search-bar>
-        </div>
-
-        <div class="button" [hidden]="viewOnly">
-
-            <app-manage-system-dialog></app-manage-system-dialog>
-        </div>
-
-          <div class="button">
-            <app-data-visualization></app-data-visualization>
-          </div>
-
-        <!-- <app-storage-event-form></app-storage-event-form> -->
-        <!-- <div><app-check-in-form></app-check-in-form></div> -->
-        <div class="button" [hidden]="viewOnly">
-          <app-check-in-drop-down></app-check-in-drop-down>
-        </div>
-
-        <div class="button" [hidden]="viewOnly">
-          <button mat-raised-button [matMenuTriggerFor]="checkOutMenu">
-              Checka Ut
-          </button>
-          <mat-menu #checkOutMenu="matMenu">
-              <app-material-check-out></app-material-check-out>
-              <app-package-check-out></app-package-check-out>
-          </mat-menu>
-        </div>
+    <div class="button-row">
+      <div class="button">
+        <app-search-bar [articleTable]="articleTable"></app-search-bar>
       </div>
-      <br>
+
+      <div class="button" [hidden]="viewOnly">
+
+        <app-manage-system-dialog></app-manage-system-dialog>
+      </div>
+
+      <div class="button">
+        <app-data-visualization></app-data-visualization>
+      </div>
+
+      <!-- <app-storage-event-form></app-storage-event-form> -->
+      <!-- <div><app-check-in-form></app-check-in-form></div> -->
+      <div class="button" [hidden]="viewOnly">
+        <app-check-in-drop-down></app-check-in-drop-down>
+      </div>
+
+      <div class="button" [hidden]="viewOnly">
+        <button mat-raised-button [matMenuTriggerFor]="checkOutMenu">
+          Checka Ut
+        </button>
+        <mat-menu #checkOutMenu="matMenu">
+          <app-material-check-out></app-material-check-out>
+          <app-check-out-preselected></app-check-out-preselected>
+        </mat-menu>
+      </div>
+    </div>
+    <br>
     <br>
   </div>
 
 
   <div class="page-component">
-    <app-table-article-data> </app-table-article-data>
+    <app-table-article-data #articleTable></app-table-article-data>
   </div>
 </div>
