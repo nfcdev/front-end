@@ -20,10 +20,11 @@ openDialog(): any{
     data: {buttonClick: this.buttonClick}
   });
   dialogRef.afterClosed().subscribe(result => {
-    this.buttonClick=result;
+    dialogRef.close(result);
     console.log(result)
   })
-  
+  console.log(this.buttonClick)
+  return this.buttonClick;
 } 
 }
 @Component({
