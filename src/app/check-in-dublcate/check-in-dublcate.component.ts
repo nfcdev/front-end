@@ -15,16 +15,16 @@ export class CheckInDublcateComponent {
   dialogRef: any;
   buttonClick:boolean;
 constructor(public dialog: MatDialog) {}
-openDialog(): any{
+openDialog(boolean): boolean{
   let dialogRef = this.dialog.open(CheckInDublcateComponentDialog, {
     data: {buttonClick: this.buttonClick}
   });
   dialogRef.afterClosed().subscribe(result => {
-    dialogRef.close(result);
-    console.log(result)
+    dialogRef.close(this.buttonClick);
+    return(result);
   })
-  console.log(this.buttonClick)
-  return this.buttonClick;
+  return false;
+  
 } 
 }
 @Component({
@@ -39,11 +39,11 @@ export class CheckInDublcateComponentDialog {
 
   onNoClick(): any{
     this.buttonClick = false;
-    this.dialog.close();
+    this.dialog.close(this.buttonClick);
   }
   onConfirm():any{
     this.buttonClick = true;
-    this.dialog.close();
+    this.dialog.close(this.buttonClick);
   }
   
 }

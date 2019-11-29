@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ElementRef } from '@angular/core';
+import { Component, OnInit, Inject, ElementRef, ExistingSansProvider } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { SelectionModel, DataSource } from '@angular/cdk/collections';
@@ -54,7 +54,7 @@ export class MaterialCheckInComponent implements OnInit {
   selection : any[];
   materials: String[];
   preChosen = false;
-
+  
   storage_room: String;
   branch: String;
 
@@ -132,7 +132,7 @@ export class MaterialCheckInDialogComponent {
   checkInForm: FormGroup;
   storage_room_id: Number;
   branch_id: Number;
-
+  dublcate: boolean;
   shelves: Shelf[];
   packages: Package[];
 
@@ -246,23 +246,29 @@ export class MaterialCheckInDialogComponent {
 
   // /article?material_number=input
   addMaterial(newMaterial : string) : void {
+     
     this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe((data: DialogData)=>{
-      console.log(data)
       console.log(data[0].status)
+      console.log(data[0].status.includes("checked_in"));
       if (data[0].material_number.includes(newMaterial) && data[0].status.includes("checked_in")){
-        this.duplicateComp.openDialog();
+       
+        console.log(this.duplicateComp.openDialog(this.dublcate));
+        if(!this.dublcate){
+          if (!this.data.selectedMaterials.includes(newMaterial)) { 
+            if(newMaterial && newMaterial.length > 0) {
+              this.data.selectedMaterials.push(newMaterial);
+              this.checkInForm.controls['material_number'].reset()
+              
+            }
+          }
+          
+        }
       }   
       
     })
    
     //this.addCase(newMaterial); TODO: FIX THIS WHEN YOU CAN EITHER GET ID OR REQUEST WITH MATERIAL_NO
-    if (!this.data.selectedMaterials.includes(newMaterial)) { 
-      if(newMaterial && newMaterial.length > 0) {
-        this.data.selectedMaterials.push(newMaterial);
-        this.checkInForm.controls['material_number'].reset()
-        
-      }
-    }
+    
   }
 
   getShelfId(chosenShelfName) : number {
