@@ -242,17 +242,19 @@ export class MaterialCheckInDialogComponent {
     return true;
   }
 
+  getDublcate() : boolean{
+    return this.duplicateComp.openDialog();
+  }  
   // /article?material_number=input
-  addMaterial (newMaterial : string) : void {
+   addMaterial (newMaterial : string): void {
      console.log(this.dublcate)
-    this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe((data: DialogData)=>{
-      console.log(data[0].status)
+    this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe( (data: DialogData)=>{
+      
       console.log(data[0].status.includes("processed"));
       if (data[0].material_number.includes(newMaterial) && data[0].status.includes("processed")){
-       
-        this.dublcate = this.duplicateComp.openDialog();
-        console.log(this.dublcate)
-        
+        this.dublcate=  this.getDublcate()
+        console.log(this.dublcate);
+      
         if(!this.dublcate){
           console.log(this.dublcate)
           if (!this.data.selectedMaterials.includes(newMaterial)) { 

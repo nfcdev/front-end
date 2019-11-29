@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import {MatDialog,MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 
 export interface DialogData{
   buttonClick:boolean;
@@ -13,24 +14,27 @@ export interface DialogData{
 })
 export class CheckInDublcateComponent {
   dialogRef: any;
-  buttonClick:boolean =true;
+  buttonClick:boolean 
 constructor(public dialog: MatDialog) {}
-openDialog(): boolean{
+openDialog():  boolean{
   let dialogRef = this.dialog.open(CheckInDublcateComponentDialog, {
     data: {buttonClick: this.buttonClick}
   });
   dialogRef.afterClosed().subscribe(result => {
     dialogRef.close(this.buttonClick);
-    console.log(this.buttonClick)
-    return(result);
+    this.buttonClick = result;
     
   })
+ if (this.buttonClick == true){
+return true;
+ }else if (this.buttonClick == false){
+   return false;
+ }
+  
+}
  
   
 
-  return this.buttonClick;
-  
-} 
 }
 @Component({
   selector: 'check-in-dublcate-component',
