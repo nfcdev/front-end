@@ -1,3 +1,7 @@
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material';
+
+
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { CdkTableModule } from "@angular/cdk/table";
@@ -140,6 +144,8 @@ import {
     CasePageDialogComponent
   ],
   imports: [
+    MatDatepickerModule,
+    MatNativeDateModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
@@ -170,6 +176,7 @@ import {
     MatAutocompleteModule
   ],
   providers: [
+    MatDatepickerModule,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedInterceptor,
