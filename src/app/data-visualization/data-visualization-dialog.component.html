@@ -1,4 +1,17 @@
-<h1 mat-dialog-title>Visualisering</h1>
+<div class="visualizationPageHeader" style="width:100%;">
+    <mat-grid-list cols="8" rowHeight="50px">
+        <mat-grid-tile [colspan]='2'>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]='4'>
+            <h3>Visualisering</h3>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]='2'><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
+    </mat-grid-list>
+</div>
+
 <div mat-dialog-content>
     <p>{{data.text}}</p>
     <ul>
