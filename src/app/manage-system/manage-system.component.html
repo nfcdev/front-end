@@ -9,7 +9,7 @@
         </mat-grid-list>
     </div>
 
-    <div class="mangeSystemContainer" style="height: 400px; overflow-y:scroll;">
+    <div class="mangeSystemContainer" style="height: auto; overflow-y:scroll;">
         <mat-accordion multi="true" class="example-headers-align">
             <!-- Branches (Avdelningar) -->
             <ng-container>
@@ -172,25 +172,32 @@
                     </mat-expansion-panel-header>
                     <ng-template matExpansionPanelContent>
                         <!-- Content -->
-                        <div class="system-list">
+                        <div class="user-list" style="float: left;">
+                            <p style="text-align: left;">
+                                Välj användare som ska bli admins:
+                            </p>
                             <mat-chip-list #chipList>
-                                <mat-chip *ngFor="let user of users">
+                                <mat-chip *ngFor="let user of users" (click)="selectUser(user)">
                                     {{user}}
-                                    <mat-icon (click)="selectUser(user)"></mat-icon>
                                     <br>
                                 </mat-chip>
                             </mat-chip-list>
                         </div>
-                        <div class="form-list">
+                        <div class="user-list" style ="float: right;">
+                            <p style="text-align: left;">
+                                Användare som ska bli admins:
+                            </p>
                             <mat-chip-list #chipList>
                                 <mat-chip *ngFor="let user of selectedUsers">
                                     {{user}}
                                     <mat-icon matChipRemove (click)="unSelectUser(user)">cancel</mat-icon>
                                     <br>
                                 </mat-chip>
-                            </mat-chip-list>
-                             
-                        </div>                       
+                            </mat-chip-list>             
+                        </div>
+                        <button mat-raised-button typ="button" style="text-align: center; align-items: center; padding: 5px;" (click)="upgradeUsers()">
+                            Uppgradera användare
+                        </button>                      
                     </ng-template>
                 </mat-expansion-panel>
             </ng-container>
