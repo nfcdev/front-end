@@ -76,6 +76,8 @@ export class MaterialCheckInComponent implements OnInit {
 
     const dialogRef = this.dialog.open(MaterialCheckInDialogComponent, {
       width: '500px',
+      height:'550px',
+      
 
       data:
       {branch: this.branch,
@@ -190,6 +192,9 @@ export class MaterialCheckInDialogComponent {
     this.dialogRef.close();
   }
 
+  onXClick(): void{ // Runs when X is clicked
+    this.dialogRef.close();
+  }
   // Runs when the back arrow button is clicked
   onBackButton() : void {
     this.dialogRef.close();
