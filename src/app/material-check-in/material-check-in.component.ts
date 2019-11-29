@@ -133,6 +133,8 @@ export class MaterialCheckInDialogComponent {
   shelves: Shelf[];
   packages: Package[];
 
+  
+
 
   constructor(
     public dialogRef: MatDialogRef<MaterialCheckInDialogComponent>,
@@ -174,7 +176,7 @@ export class MaterialCheckInDialogComponent {
     // create variables and validators for form fields
     this.checkInForm = this.fb.group({
       material_number: [''],
-      //reference_number: ['', Validators.required], //Should always be pre-filled?
+      reference_number: ['', Validators.required], //Should always be pre-filled?
       branch: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
       shelf: ['', Validators.required],
