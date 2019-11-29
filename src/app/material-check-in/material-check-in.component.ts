@@ -6,7 +6,7 @@ import { MaterialCheckBoxService } from '../table-article-data/material-check-bo
 import { StorageRoomStore } from "../storage-room/storage-room-store";
 import { StorageRoomService } from "../storage-room/storage-room.service";
 import { DataService } from "../data.service"
-import { variable } from '@angular/compiler/src/output/output_ast';
+
 
 export interface DialogData {
   material_number: any;
@@ -213,7 +213,7 @@ export class MaterialCheckInDialogComponent {
     
     var article_data ={"material_number": mat,
                         "reference_number": this.reference_number,
-                      "description":"gun"}
+                      "description":""}
 
     var post_data = {"material_number": mat,
                     "storage_room": this.storage_room_id,
