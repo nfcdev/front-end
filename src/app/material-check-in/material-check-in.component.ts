@@ -250,12 +250,12 @@ export class MaterialCheckInDialogComponent {
      console.log(this.dublcate)
     this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe( (data: DialogData)=>{
       
-      console.log(data[0].status.includes("processed"));
-      if (data[0].material_number.includes(newMaterial) && data[0].status.includes("processed")){
-        this.dublcate=  this.getDublcate()
+      console.log(data[0].status.includes("checked_in"));
+      if (data[0].material_number.includes(newMaterial) && data[0].status.includes("checked_in")){
+        this.dublcate= this.getDublcate()
         console.log(this.dublcate);
       
-        if(!this.dublcate){
+        if(this.dublcate){
           console.log(this.dublcate)
           if (!this.data.selectedMaterials.includes(newMaterial)) { 
             if(newMaterial && newMaterial.length > 0) {
