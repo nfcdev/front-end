@@ -9,7 +9,7 @@ import { StorageRoomService } from "../storage-room/storage-room.service";
 import { DataService } from "../data.service"
 import { variable } from '@angular/compiler/src/output/output_ast';
 
-export interface DialogData {
+export interface ArticleData {
   material_number: any;
   reference_number: number;
   branch: String;
@@ -18,6 +18,7 @@ export interface DialogData {
   package: String;
   comment: String;
   placement: any;
+  status: String;
 }
 
 export interface Room {
@@ -130,13 +131,15 @@ export class MaterialCheckInDialogComponent {
   checkInForm: FormGroup;
   storage_room_id: Number;
   branch_id: Number;
-  dublcate: boolean;
+  duplicate: boolean;
   shelves: Shelf[];
   packages: Package[];
+  doubleCheckIn: boolean = false;
 
 
   constructor(
     public dialogRef: MatDialogRef<MaterialCheckInDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public articleData: ArticleData,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private duplicateComp: CheckInDublcateComponent,
     private dataService: DataService,
@@ -197,8 +200,8 @@ export class MaterialCheckInDialogComponent {
   }
 
   onConfirm() : void {
-    console.log(this.data.material_number.toString())
-    this.addMaterial(this.data.material_number.toString());
+    console.log(this.articleData.material_number.toString())
+    this.addMaterial(this.articleData.material_number.toString());
     
     this.checkOutConfirmed = true;
 
@@ -210,17 +213,17 @@ export class MaterialCheckInDialogComponent {
 
     var post_data = {"material_number": mat,
                     "storage_room": this.storage_room_id,
-                    "shelf": this.getShelfId(this.data.shelf)
+                    "shelf": this.getShelfId(this.articleData.shelf)
                     };
 
       //If comment is added then add it to data for post-request
-      if (this.data.comment !== "" && this.data.comment !== null) {
-        post_data["comment"] = this.data.comment;
+      if (this.articleData.comment !== "" && this.articleData.comment !== null) {
+        this.articleData["comment"] = this.articleData.comment;
       }
 
       //If package is added then add it to data for post-request
-      if (this.data.package !== "" && this.data.package !== undefined) {
-        post_data["package"] = this.data.package;
+      if (this.articleData.package !== "" && this.articleData.package !== undefined) {
+        post_data["package"] = this.articleData.package;
       }
 
       this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[])=>{
@@ -242,21 +245,22 @@ export class MaterialCheckInDialogComponent {
     return true;
   }
 
-  getDublcate() : boolean{
+  getDuplicate() : boolean{
+    console.log("OPEN DIALOG");
     return this.duplicateComp.openDialog();
   }  
   // /article?material_number=input
    addMaterial (newMaterial : string): void {
-     console.log(this.dublcate)
-    this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe( (data: DialogData)=>{
-      
-      console.log(data[0].status.includes("checked_in"));
+     console.log(newMaterial);
+    this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe( (data: ArticleData[])=>{
+      console.log(data[0].status);
       if (data[0].material_number.includes(newMaterial) && data[0].status.includes("checked_in")){
-        this.dublcate= this.getDublcate()
-        console.log(this.dublcate);
-      
-        if(this.dublcate){
-          console.log(this.dublcate)
+        console.log("HEJ");
+        this.duplicate= this.getDuplicate()
+        console.log(this.duplicate);
+        this.doubleCheckIn = true;
+        if(this.duplicate){
+          console.log(this.duplicate)
           if (!this.data.selectedMaterials.includes(newMaterial)) { 
             if(newMaterial && newMaterial.length > 0) {
               this.data.selectedMaterials.push(newMaterial);
