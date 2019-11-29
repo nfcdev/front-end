@@ -3,6 +3,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { SelectionModel, DataSource } from '@angular/cdk/collections';
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
+import { DataService } from '../data.service';
+import { StorageRoomStore } from '../storage-room/storage-room-store';
 
 
 export interface DialogData{
@@ -81,9 +83,10 @@ export class PackageCheckOutComponent implements OnInit {
 export class PackageCheckOutDialogComponent implements OnInit{
   checkOutConfirmed : boolean = false;
   preChosen : boolean = false;
+  wrongRoom : boolean = false;
   comment: string;
   package: string;
-
+  selectedStorageRoomId :Number;
   packageCheckOutForm: FormGroup;
 
 
@@ -91,6 +94,8 @@ export class PackageCheckOutDialogComponent implements OnInit{
     public dialogRef: MatDialogRef<PackageCheckOutDialogComponent>,
     private allDialogRef: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private dataService: DataService, 
+    private storageRoomStore: StorageRoomStore,
     private fb: FormBuilder) {
       this.createForm();
     }
@@ -113,11 +118,29 @@ export class PackageCheckOutDialogComponent implements OnInit{
   }
 // Runs when "Checka Ut" button is pressed
   onConfirm() : void {
-    this.checkOutConfirmed = true;
-    console.log(this.comment);
-    // TODO: check out this.data.package to the back-end here
-
+    this.selectedStorageRoomId =this.storageRoomStore.getStorageRoom().id;
     
+    
+
+   
+      // Checks out post_data to back-end
+      var post_data = {"package_number": this.data.package,
+                      "comment":this.comment,
+                      "storage_room": this.selectedStorageRoomId
+                      };
+        if (this.comment !== "" && this.data.package !== null) {
+          post_data["comment"] = this.comment;}else{
+            post_data["comment"] = ""
+        }
+        if (this.package !== undefined) {
+          post_data["package"] = this.data.package;
+        }
+        this.dataService.sendPostRequest("/package/check-out", post_data).subscribe((data: any[])=>{
+          this.checkOutConfirmed = true;
+        })
+    if (this.checkOutConfirmed == false){
+      this.wrongRoom = true;
+    }
   }
 
   ngOnInit() : void {

@@ -52,7 +52,7 @@ export class TableArticleDataComponent implements OnInit {
   filterActive(material): TableArticleDataItem[] {
     var filteredData: TableArticleDataItem[] = [];
     for (var mat of material) {
-      if (mat.status === "discarded" || mat.status === "processed") { //TODO: Change to check_in and check_out
+      if (mat.status === "checked_in" || mat.status === "checked_out") { 
         filteredData.push(mat);
       }
     }

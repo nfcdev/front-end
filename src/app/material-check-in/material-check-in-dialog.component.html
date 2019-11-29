@@ -1,8 +1,13 @@
+
+<div>
+    <button mat-raised-button type="button" style="float:right;" (click)="onNoClick()">X</button>
+</div><br>
+
 <h1 mat-dialog-title>Checka in material</h1>
 
 
 <div mat-dialog-content [formGroup]="checkInForm" *ngIf="!checkOutConfirmed">
-
+    
 
   <!-- <mat-form-field>
     <input class="form-control"
@@ -70,7 +75,7 @@
     <button mat-raised-button (click)="onNoClick()">Avbryt</button>
     <button class="btn" mat-raised-button
       [disabled]="checkInForm.pristine || checkInForm.invalid || data.selectedMaterials.length == 0" cdkFocusInitial
-      (click)="onConfirm()">Skicka</button>
+      (click)="onConfirm()">Checka in</button>
     <br>
   </div>
 </div>
