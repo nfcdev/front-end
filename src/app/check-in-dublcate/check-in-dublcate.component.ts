@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
-import {MatDialog,MatDialogRef} from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import {MatDialog,MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
+export interface DialogData{
+  buttonClick:boolean;
+
+}
 
 @Component({
   selector: './check-in-dublcate',
@@ -8,9 +12,17 @@ import {MatDialog,MatDialogRef} from '@angular/material/dialog';
   styleUrls: ['./check-in-dublcate.component.less']
 })
 export class CheckInDublcateComponent {
+  dialogRef: any;
+  buttonClick:boolean;
 constructor(public dialog: MatDialog) {}
-openDialog() {
-  const dialogRef = this.dialog.open(CheckInDublcateComponentDialog);
+openDialog(): any{
+  let dialogRef = this.dialog.open(CheckInDublcateComponentDialog, {
+    data: {buttonClick: this.buttonClick}
+  });
+  dialogRef.afterClosed().subscribe(result => {
+    this.buttonClick=result;
+    console.log(result)
+  })
   
 } 
 }
@@ -19,14 +31,18 @@ openDialog() {
   templateUrl: './check-in-dublcate-component-dialog.html',
 })
 export class CheckInDublcateComponentDialog {
+  buttonClick:boolean;
   constructor(
-  public dialog: MatDialogRef<CheckInDublcateComponentDialog>){}
+  public dialog: MatDialogRef<CheckInDublcateComponentDialog>,
+  @Inject(MAT_DIALOG_DATA) public data: DialogData){}
 
-  onNoClick(): boolean{
-    return false;
-    
+  onNoClick(): any{
+    this.buttonClick = false;
+    this.dialog.close();
   }
-  onConfirm(): boolean{
-    return true;
+  onConfirm():any{
+    this.buttonClick = true;
+    this.dialog.close();
   }
+  
 }
