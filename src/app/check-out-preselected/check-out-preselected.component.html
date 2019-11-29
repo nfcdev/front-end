@@ -1,0 +1,3 @@
+
+<div *ngIf="preChosen && packageExists"><button mat-menu-item (click)=openDialog()>Paket</button></div>
+<div *ngIf="!preChosen && packageExists"> <app-package-check-out></app-package-check-out></div>

@@ -76,6 +76,8 @@ export class MaterialCheckInComponent implements OnInit {
 
     const dialogRef = this.dialog.open(MaterialCheckInDialogComponent, {
       width: '500px',
+      height:'550px',
+      
 
       data:
       {branch: this.branch,
@@ -91,8 +93,6 @@ export class MaterialCheckInComponent implements OnInit {
       console.log('The dialog was closed');
 
       if(result != null ){ // if user presses cancel the result is null. TODO: better solution for checking this
-
-      // TODO: Jsonify data and send to back-end
 
        // reset material list
       this.materials = [];
@@ -135,6 +135,8 @@ export class MaterialCheckInDialogComponent {
   shelves: Shelf[];
   packages: Package[];
 
+  
+
 
   constructor(
     public dialogRef: MatDialogRef<MaterialCheckInDialogComponent>,
@@ -176,7 +178,7 @@ export class MaterialCheckInDialogComponent {
     // create variables and validators for form fields
     this.checkInForm = this.fb.group({
       material_number: [''],
-      //reference_number: ['', Validators.required], //Should always be pre-filled?
+      reference_number: ['', Validators.required], //Should always be pre-filled?
       branch: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
       shelf: ['', Validators.required],
@@ -190,6 +192,9 @@ export class MaterialCheckInDialogComponent {
     this.dialogRef.close();
   }
 
+  onXClick(): void{ // Runs when X is clicked
+    this.dialogRef.close();
+  }
   // Runs when the back arrow button is clicked
   onBackButton() : void {
     this.dialogRef.close();
