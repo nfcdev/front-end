@@ -245,15 +245,19 @@ export class MaterialCheckInDialogComponent {
   }
 
   // /article?material_number=input
-  addMaterial(newMaterial : string) : void {
-     
+  addMaterial (newMaterial : string) : void {
+     console.log(this.dublcate)
     this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe((data: DialogData)=>{
       console.log(data[0].status)
       console.log(data[0].status.includes("checked_in"));
       if (data[0].material_number.includes(newMaterial) && data[0].status.includes("checked_in")){
        
-        console.log(this.duplicateComp.openDialog(this.dublcate));
+        this.dublcate = this.duplicateComp.openDialog();
+          
+        console.log(this.dublcate)
+        
         if(!this.dublcate){
+          console.log(this.dublcate)
           if (!this.data.selectedMaterials.includes(newMaterial)) { 
             if(newMaterial && newMaterial.length > 0) {
               this.data.selectedMaterials.push(newMaterial);

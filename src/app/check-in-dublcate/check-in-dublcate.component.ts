@@ -13,17 +13,22 @@ export interface DialogData{
 })
 export class CheckInDublcateComponent {
   dialogRef: any;
-  buttonClick:boolean;
+  buttonClick:boolean =true;
 constructor(public dialog: MatDialog) {}
-openDialog(boolean): boolean{
+openDialog(): boolean{
   let dialogRef = this.dialog.open(CheckInDublcateComponentDialog, {
     data: {buttonClick: this.buttonClick}
   });
   dialogRef.afterClosed().subscribe(result => {
     dialogRef.close(this.buttonClick);
+    console.log(this.buttonClick)
     return(result);
+    
   })
-  return false;
+ 
+  
+
+  return this.buttonClick;
   
 } 
 }
