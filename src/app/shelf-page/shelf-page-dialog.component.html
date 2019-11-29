@@ -1,35 +1,37 @@
 <div class="shelfPageHeader" style="width:100%;">
   <mat-grid-list cols="7" rowHeight="50px">
     <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onBackButton()">←</button></mat-grid-tile>
-    <mat-grid-tile [colspan]='5' style="font-size: 22px;
-      text-decoration: underline; ">Hylla {{data.shelf}}</mat-grid-tile>
+    <mat-grid-tile [colspan]='5'><h2>Hylla {{data.shelf}}</h2></mat-grid-tile>
     <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
   </mat-grid-list>
 </div>
 
 <div class="shelfPageContainer" style="height: 400px; overflow-y:scroll;">
-
-  <mat-accordion multi="true" class="example-headers-align">
-    <ng-container *ngFor="let package of data.shelfPageData">
-      <mat-expansion-panel closed>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Paket {{package.package}}
-          </mat-panel-title>
-          <mat-panel-description>
-            {{package.packageMaterials?.length}} material
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <ng-template matExpansionPanelContent>
-          <mat-chip-list #chipList>
-            <mat-chip *ngFor="let material of package.packageMaterials">
-              <app-material-page [material_number]="material"></app-material-page>
-              <br>
-            </mat-chip>
-          </mat-chip-list>
-        </ng-template>
-      </mat-expansion-panel>
-    </ng-container>
-  </mat-accordion>
-
+  <div class="shelfPageAccordion">
+    <mat-accordion multi="true" class="example-headers-align">
+      <ng-container *ngFor="let package of data.shelfPageData">
+        <mat-expansion-panel closed>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div *ngIf="package.package && (package.package == ' - ')">
+                Löst
+              </div>
+              <div *ngIf="!(package.package == ' - ')"> Paket {{package.package}} </div>
+            </mat-panel-title>
+            <mat-panel-description>
+              {{package.packageMaterials?.length}} material
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <ng-template matExpansionPanelContent>
+            <mat-chip-list #chipList>
+              <mat-chip *ngFor="let material of package.packageMaterials">
+                <app-material-page [material_number]="material"></app-material-page>
+                <br>
+              </mat-chip>
+            </mat-chip-list>
+          </ng-template>
+        </mat-expansion-panel>
+      </ng-container>
+    </mat-accordion>
+  </div>
 </div>

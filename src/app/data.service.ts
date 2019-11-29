@@ -56,8 +56,6 @@ HttpErrorResponse
   }
 
   public sendDeleteRequest(request:string){
-    console.log(request);
-    console.log(this.REST_API_SERVER);
     return this.httpClient.delete(this.REST_API_SERVER + request).pipe(retry(2), catchError(this.handleError));
   }
 

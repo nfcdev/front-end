@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
       this.selectedStorageRoomId = room.id;
       this.selectedStorageName = room.name;
       this.selectedBranchId = room.branch;
-      for (let i=0; i < this.branches.length ; i++) {
+      for (let i=0; i < this.branches.length ; i++) { 
         if (this.branches[i].id == this.selectedBranchId) {
           this.selectedBranchName = this.branches[i].name;
         }

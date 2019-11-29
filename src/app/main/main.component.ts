@@ -13,7 +13,7 @@ export class MainComponent implements OnInit {
   constructor(
     private storageRoomService: StorageRoomService,
     private storageRoomStore: StorageRoomStore,
-    private authService: AuthenticationService) {}  
+    private authService: AuthenticationService) {}
 
   viewOnly: Boolean = false;
   isAdmin: Boolean = false;
@@ -33,5 +33,8 @@ export class MainComponent implements OnInit {
     })
         console.log("Viewonly = " + this.viewOnly);
   }
+
+
+
 }
 

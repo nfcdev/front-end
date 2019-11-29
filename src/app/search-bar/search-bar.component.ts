@@ -1,25 +1,56 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DataService } from '../data.service'
+import { TableArticleDataComponent } from '../table-article-data/table-article-data.component'
+import { AnimationFrameScheduler } from 'rxjs/internal/scheduler/AnimationFrameScheduler';
+import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
+
+//import { dataSource, transformData } from '../table-article-data/table-article-data.component'
+
 
 // This creates the type "option" which collects the data from the search
 export interface Option {
   name: string;
-  category: string; // Will represent a post in the table: {reference_number, material_number, storage_room, shelf, package, status}
+  value: string;
+  category: string;
 }
 
-export interface SearchData {
 
+export interface ArticleData {
+  material_number: string;
+  reference_number: string;
+  branch: string;
+  storage_room: string;
+  shelf: string;
+  package: string;
+  status: string;
+  timestamp: number;
+  last_modified: number;
+}
+
+
+export interface Category {
+  category: string;
+  name: string;
 }
 
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.less']
+  styleUrls: ['./search-bar.component.less'],
+  providers: [TableArticleDataComponent]
 })
-export class SearchBarComponent  {
+export class SearchBarComponent {
+
+  searchCategory: Category[] = [{ "category": "Materialnummer", "name": "material_number" },
+  { "category": "Diarienummer", "name": "reference_number" },
+  { "category": "Rum", "name": "storage_room" },
+  { "category": "Hylla", "name": "shelf" },
+  { "category": "Paket", "name": "package_number" }];
+
+  category: string;
   visible = true;
   selectable = true;
   removable = true;
@@ -28,36 +59,43 @@ export class SearchBarComponent  {
   options: Option[] = [];
   activeMaterials: Boolean = true;
   inactiveMaterials: Boolean = false;
-  //search_data: = [];
+  searchData: ArticleData[];
+  @Input() articleTable: TableArticleDataComponent;
+  checkInForm: FormGroup;
 
-  constructor(private dataService: DataService) {}
 
+  constructor(private dataService: DataService,
+              private fb: FormBuilder) 
+              { 
+                this.createForm();
+              }
+
+    createForm() {
+      // create variables and validators for form fields
+      this.checkInForm = this.fb.group({
+        category: ['', Validators.required],
+        searchcomponent: [''],
+      });
+  
+    }
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
-    var tempCategory = '?';
-
     // Add our input searchoption
-    if ((value || '').trim()) {
-      // The following functions categorise the input option and is currently based on the "example_data.json"
-      // TODO: Update according to fit the actual data.
+    if ((value || '').trim() && this.category !== undefined) {
 
-      //TODO: Check input choise from drop-down and category it as such and set tempCategory
-      // Reference number
-      if ((value || '').trim().length == 6) {
-        tempCategory = "reference_number";
-      }
-      // Material number
-      if ((value || '').trim().length == 2) {
-        tempCategory = "material_number";
-      }
+      var cat: Category[] = this.searchCategory.filter(obj => {
+        if (obj.category === this.category) {
+          return obj;
+        }
+      })
 
-      //TODO: Why value trim?
-      var tempOption: Option =  { name: value.trim(), category: tempCategory }
-      this.options.push({ name: value.trim(), category: tempCategory });
 
-      //Create query to back-end /search/, alternatively in onSubmit().TODO: Check when which is run
-      //TODO: Console.log result of search
+      var option: Option = { value: value.trim(), name: cat[0].name, category: cat[0].category }
+
+      this.options.push(option);
+
+      this.search();
     }
 
     // Reset the input value
@@ -66,22 +104,75 @@ export class SearchBarComponent  {
     }
   }
 
-  remove (option: Option):void {
+  remove(option: Option): void {
     const index = this.options.indexOf(option);
-
-    if (index >=0) {
+    if (index >= 0) {
       this.options.splice(index, 1);
+    }
+    this.search();
+  }
+
+  onSubmit(): void {
+
+    const size = this.options.length;
+    this.options.splice(0, size);
+
+    this.search();
+  }
+
+  // Triggers each time checkbox "activeMaterials" is changed
+  changeActive() {
+    this.inactiveMaterials = !this.activeMaterials;
+    this.search();
+  }
+
+    // Triggers each time checkbox "inactiveMaterials" is changed
+  changeInactive() {
+    this.activeMaterials = !this.inactiveMaterials;
+    this.search();
+  }
+
+  createQuery(): String {
+    //Loop through options + create string
+    var query: String = "?";
+    for (var opt of this.options) {
+      query = query + opt.name + "=" + opt.value + "&";
+    }
+
+    return query;
+  }
+
+  getStatusNames(): String[] {
+    if (this.activeMaterials) {
+      return ["check_in", "check_out"];
+    }
+
+    if (this.inactiveMaterials) {
+      return ["discarded", "processed"];
     }
   }
 
-  onSubmit ():void {
-    // TODO: handle the output and filter the table
-    
-    const size = this.options.length;
-    for (let i =0; i < size; i++ ){
-      console.log(this.options[i]);
+  filterStatus(material): ArticleData[] {
+    var currentStatusNames: String[] = this.getStatusNames();
+    var filteredData: ArticleData[] = [];
+    for (var mat of material) {
+      if (mat.status === currentStatusNames[0] || mat.status === currentStatusNames[1]) {
+        filteredData.push(mat);
+      }
     }
-    this.options.splice(0, size);
+    return filteredData;
+  }
+
+  getSearchData(query) {
+
+    this.dataService.sendGetRequest("/article" + query).subscribe((data: ArticleData[]) => {
+      this.searchData = this.filterStatus(data);
+      this.articleTable.setTableData(this.searchData);
+    })
+  }
+
+  search() {
+    this.getSearchData(this.createQuery());
   }
 
 }
