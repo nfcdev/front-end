@@ -44,11 +44,11 @@ export interface Category {
 })
 export class SearchBarComponent {
 
-  searchCategory: Category[] = [{ "category": "Materialnummer", "name": "material_number" },
-  { "category": "Diarienummer", "name": "reference_number" },
+  searchCategory: Category[] = [{ "category": "Diarienummer", "name": "reference_number" },
+  { "category": "Materialnummer", "name": "material_number" },
+  { "category": "Paket", "name": "package_number" },
   { "category": "Rum", "name": "storage_room" },
-  { "category": "Hylla", "name": "shelf" },
-  { "category": "Paket", "name": "package_number" }];
+  { "category": "Hylla", "name": "shelf" }];
 
   category: string;
   visible = true;
