@@ -52,7 +52,7 @@ export class TableArticleDataComponent implements OnInit {
   filterActive(material): TableArticleDataItem[] {
     var filteredData: TableArticleDataItem[] = [];
     for (var mat of material) {
-      if (mat.status === "checked_in" || mat.status === "checked_out") { 
+      if (mat.status === "checked_in" || mat.status === "checked_out") {
         filteredData.push(mat);
       }
     }
@@ -61,8 +61,10 @@ export class TableArticleDataComponent implements OnInit {
 
   transformData(requestData) {
     var data = [];
+    var dateOptions = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+
     for (const d of requestData) {
-      
+
       var tmp = {
         "material_number": d["material_number"],
         "reference_number": d["reference_number"],
@@ -72,7 +74,7 @@ export class TableArticleDataComponent implements OnInit {
         "package_number": d["package"],
         "status": d["status"],
         "timestamp": d["timestamp"],
-        "last_modified": d["last_modified"]
+        "last_modified": this.capitalizeFirstLetter(new Date(d["last_modified"] * 1000).toLocaleDateString("sv-SE", dateOptions))
       };
 
       data.push(tmp);
@@ -80,7 +82,11 @@ export class TableArticleDataComponent implements OnInit {
     return data;
   }
 
- 
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+
   ngOnInit() {
 
   }
@@ -107,7 +113,10 @@ export class TableArticleDataComponent implements OnInit {
 
 
   setTableData(data) {
-    this.table.dataSource = this.transformData(data);
+    this.dataSource = new TableArticleDataDataSource(this.transformData(data));
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.table.dataSource = this.dataSource;
   }
 
 }

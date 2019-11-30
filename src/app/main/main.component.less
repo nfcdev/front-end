@@ -16,7 +16,9 @@
     opacity: 0;
 }
 .page-component {
-    margin: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 20px;
     width:80%;
 
 }
@@ -39,7 +41,9 @@
 .button-row {
     display: flex;
     flex-direction: row;
-    justify-content: centre;
-    position: absolute;
-    right: 10%;
+    align-content: space-between;
+    flex-wrap: wrap;
+    flex-grow: 0;     /* do not grow   - initial value: 0 */
+    flex-shrink: 0;   /* do not shrink - initial value: 1 */
+    flex-basis: 25em; /* width/height  - initial value: auto */
 }
