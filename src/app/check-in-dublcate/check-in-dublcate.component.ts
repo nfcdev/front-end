@@ -26,7 +26,7 @@ openDialog():  boolean{
     
   })
  if (this.buttonClick == true){
-return true;
+    return true;
  }else if (this.buttonClick == false){
    return false;
  }

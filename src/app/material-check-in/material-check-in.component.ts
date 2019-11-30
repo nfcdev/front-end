@@ -246,19 +246,16 @@ export class MaterialCheckInDialogComponent {
   }
 
   getDuplicate() : boolean{
-    console.log("OPEN DIALOG");
     return this.duplicateComp.openDialog();
   }  
   // /article?material_number=input
    addMaterial (newMaterial : string): void {
      console.log(newMaterial);
     this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe( (data: ArticleData[])=>{
-      console.log(data[0].status);
       if (data[0].material_number.includes(newMaterial) && data[0].status.includes("checked_in")){
-        console.log("HEJ");
         this.duplicate= this.getDuplicate()
-        console.log(this.duplicate);
         this.doubleCheckIn = true;
+        console.log("DUPLICATE:" + this.duplicate);
         if(this.duplicate){
           console.log(this.duplicate)
           if (!this.data.selectedMaterials.includes(newMaterial)) { 
