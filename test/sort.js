@@ -3,7 +3,34 @@ const puppeteer = require('puppeteer');
 const ScreenshotTester = require('puppeteer-screenshot-tester')
   //let browser;
   //let page;
+///////////////////////77
 
+describe('google test', () => {
+  let originalTimeout
+ 
+  // extend default interval to 10s because some image processing might take some time
+  // we can do it beforeEach or once per test suite it's up to you
+  // if you're running that on fast computer/server probably won't need to do that
+  beforeEach(function() {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
+  })
+ 
+  // set default interval timeout for jasmine
+  afterEach(function() {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout
+  })
+ 
+  it(`check if google exists`, async () => {
+    // create ScreenshotTester with optional config
+    const tester = await ScreenshotTester(0.8, false, false, [], {
+      transparency: 0.5
+    })
+
+
+
+
+///////////////////////////
 
   /* before(async () => {
       browser = await puppeteer.launch({
