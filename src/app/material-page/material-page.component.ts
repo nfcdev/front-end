@@ -31,7 +31,7 @@ export interface MaterialInfo {
 
 
 export interface DialogData {
-  material_number: number;
+  material_number: string;
   event_data: EventTable[];
   material_data: MaterialInfo;
   article_id: number;
@@ -46,7 +46,7 @@ const STATUSES: string[] = ['Incheckad', 'Utcheckad', 'Åter', 'Införlivad', 'K
   styleUrls: ['./material-page.component.less']
 })
 export class MaterialPageComponent implements OnInit {
-  @Input() material_number: Number;
+  @Input() material_number: string;
   table_data: EventTable[];
   material_data: MaterialInfo;
   article_id : number;
