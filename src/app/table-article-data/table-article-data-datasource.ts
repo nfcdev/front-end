@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
+import { TableArticleDataComponent } from './table-article-data.component';
 
 export interface TableArticleDataItem {
   material_number: string;
@@ -10,11 +11,12 @@ export interface TableArticleDataItem {
   branch: string;
   storage_room: string;
   shelf: string;
-  package: string;
+  package_number: string;
   status: string;
   timestamp: number;
   last_modified: number;
 }
+
 
 
 export class TableArticleDataDataSource extends DataSource<TableArticleDataItem> {
@@ -47,11 +49,15 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
     }));
   }
 
+  updateData(data) {
+    this.data = data;
+  }
+
   /**
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect() {}
+  disconnect() { }
 
 
   private getPagedData(data: TableArticleDataItem[]) {
@@ -69,7 +75,7 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
       switch (this.sort.active) {
         case 'case_nr': return compare(+a.reference_number, +b.reference_number, isAsc);
         case 'article_nr': return compare(a.material_number, b.material_number, isAsc);
-        case 'package_nr': return compare(a.package, b.package, isAsc);
+        case 'package_nr': return compare(a.package_number, b.package_number, isAsc);
         case 'branch': return compare(a.branch, b.branch, isAsc);
         case 'storage_room': return compare(a.storage_room, b.storage_room, isAsc);
         case 'shelf': return compare(a.shelf, b.shelf, isAsc);

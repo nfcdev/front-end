@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon'
 import { MatTable } from '@angular/material/table';
 import { FormGroup, FormControl } from '@angular/forms';
+import { DataService } from '../data.service';
 
 
 
@@ -28,32 +30,15 @@ export interface MaterialInfo {
 }
 
 
-// Temporary test data. TODO: Get this data from the back-end using the provided material_number
-const EVENT_DATA: EventTable[] = [
-  {date: '20190123 11.02', event: 'Skapad', branch: 'Vapen', room: 'Vapen Material', shelf: 'H15', package: 'P1', user: 'user1', comment: null},
-  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: 'En kommentar'},
-  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
-  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: 'En till kommentar'},
-  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
-  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
-  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
-  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
-  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''},
-  {date: '20190211 11.03', event: 'Incheckat', branch: 'Bio', room: 'Bio Uppack', shelf: 'A15', package: 'P1', user: 'user2', comment: ''}
-];
-
-// Temporary test data.
-const MATERIAL_DATA: MaterialInfo = {created_by: 'user1', created_date: '20190123',
-  status: 'Incheckat', current_placement: 'Bio; Bio Uppack; A15; P1', last_modified: '20190211 11.03', description: 'Ruta för beskrivning. Inte kopplat till back-end ännu.'};
-
-export interface DialogData{
+export interface DialogData {
   material_number: number;
   event_data: EventTable[];
   material_data: MaterialInfo;
-  material_note: string;
+  article_id: number;
 }
 
-
+// The different statuses a material can have
+const STATUSES: string[] = ['Incheckad', 'Utcheckad', 'Åter', 'Införlivad', 'Kasserad'];
 
 @Component({
   selector: 'app-material-page',
@@ -61,32 +46,142 @@ export interface DialogData{
   styleUrls: ['./material-page.component.less']
 })
 export class MaterialPageComponent implements OnInit {
-  @Input()material_number:Number;
+  @Input() material_number: Number;
   table_data: EventTable[];
   material_data: MaterialInfo;
-  material_note: string;
-  
+  article_id : number;
 
-  constructor(public dialog: MatDialog) {
-    
 
-   }
+  constructor(public dialog: MatDialog,
+    private dataService: DataService) {
+
+
+  }
+
+  load(): void {
+    this.table_data = [];
+
+    this.dataService.sendGetRequest('/article?material_number=' + this.material_number).subscribe((data: any[]) => {
+      let createdTime = new Date(data[0].timestamp * 1000);
+      let lastModTime = new Date(data[0].last_modified * 1000);
+      let currPlacement: string = '';
+      if (data[0].package == ' - ') {
+        currPlacement += '' + data[0].branch + '; ' + data[0].storage_room + '; ' + data[0].shelf + '; Löst';
+      } else {
+        currPlacement += '' + data[0].branch + '; ' + data[0].storage_room + '; ' + data[0].shelf + '; ' + data[0].package;
+      }
+
+      this.article_id = data[0].id;
+
+      this.dataService.sendGetRequest('/storage-event/article/' + data[0].id).subscribe((events: any[]) => {
+        let sortedEvents : any [] = events.sort( (a, b ) => (a.timestamp > b.timestamp) ? 1 : -1);
+        sortedEvents.forEach( (event) => {
+          let tempData : EventTable = {date: this.formatDateWithTime(new Date(event.timestamp*1000)), 
+            event: this.convertStatus(event.status), branch: event.branch, room : event.storage_room,
+          shelf: event.shelf, package: event.package, user: event.user, comment: event.comment};
+          this.table_data.push(tempData);
+        });
+
+
+
+        this.material_data = {
+          status: this.convertStatus(data[0].status), created_by: sortedEvents[0].user,
+          created_date: this.formatDateNoTime(createdTime),
+          current_placement: currPlacement, last_modified: this.formatDateWithTime(lastModTime), description: data[0].description
+        };
+
+        this.openDialog();
+
+
+
+      });
+
+    });
+  }
+
+  convertStatus(status): string {
+    if (status == 'processed') {
+      return 'Åter';
+    } else if (status == 'checked_out') {
+      return 'Utcheckad';
+    } else if (status == 'checked_in') {
+      return 'Incheckad';
+    } else if (status == 'discarded') {
+      return 'Kasserad'
+    } else {
+      return 'Införlivad';
+    }
+
+  }
+
+
+  formatDateNoTime(time: Date): string {
+    let yearFormated: string = '' + time.getUTCFullYear();
+    let monthFormated: string;
+    let dateFormated: string;
+
+
+    // Adds a 0 before month/date/hours if they are below 10 for formating
+    // Adds 1 to month since otherwise January is month 0.
+    if ((time.getUTCMonth() + 1) < 10) {
+      monthFormated = '0' + (time.getUTCMonth() + 1);
+    } else {
+      monthFormated = '' + (time.getUTCMonth() + 1);
+    }
+    if (time.getUTCDate() < 10) {
+      dateFormated = '0' + time.getUTCDate();
+    } else {
+      dateFormated = '' + time.getUTCDate();
+    }
+    return '' + yearFormated +
+      monthFormated + dateFormated;
+  }
+  formatDateWithTime(time: Date): string {
+    let yearFormated: string = '' + time.getUTCFullYear();
+    let monthFormated: string;
+    let dateFormated: string;
+    let hoursFormated: string;
+    let minutesFormated: string;
+
+
+    // Adds a 0 before month/date/hours if they are below 10 for formating
+    // Adds 1 to month since otherwise January is month 0.
+    if ((time.getUTCMonth() + 1) < 10) {
+      monthFormated = '0' + (time.getUTCMonth() + 1);
+    } else {
+      monthFormated = '' + (time.getUTCMonth() + 1);
+    }
+    if (time.getUTCDate() < 10) {
+      dateFormated = '0' + time.getUTCDate();
+    } else {
+      dateFormated = '' + time.getUTCDate();
+    }
+    if (time.getUTCHours() < 10) {
+      hoursFormated = '0' + time.getUTCHours();
+    } else {
+      hoursFormated = '' + time.getUTCHours();
+    }
+    if (time.getUTCMinutes() < 10) {
+      minutesFormated = '0' + time.getUTCMinutes();
+    } else {
+      minutesFormated = '' + time.getUTCMinutes();
+    }
+    return '' + yearFormated +
+      monthFormated + dateFormated + ' ' +
+      hoursFormated + '.' + minutesFormated;
+  }
 
   openDialog(): void {
-
-    // TODO: Get information about the material from the back end here and then send it to the dialog
-    this.table_data = EVENT_DATA;
-    this.material_data = MATERIAL_DATA;
-    this.material_note = 'En anteckning';
 
     const dialogRef = this.dialog.open(MaterialPageDialogComponent, {
       width: '1000px',
       height: '500px',
       data:
-      {material_number: this.material_number,
+      {
+        material_number: this.material_number,
+        article_id: this.article_id,
         event_data: this.table_data,
-        material_data: this.material_data,
-        material_note: this.material_note
+        material_data: this.material_data
       }
     });
 
@@ -96,8 +191,7 @@ export class MaterialPageComponent implements OnInit {
   }
 
 }
-// The different statuses a material can have
-const STATUSES: string[] = ['Incheckat','Utcheckat','Åter','Införlivat','Kasserat'];
+
 
 @Component({
   selector: 'app-material-page-dialog',
@@ -107,46 +201,35 @@ export class MaterialPageDialogComponent implements OnInit {
   displayedColumns = ['comment', 'date', 'event', 'branch', 'room', 'shelf', 'package', 'user'];
   dataSource = this.data.event_data;
   statuses: string[] = STATUSES;
-  form: FormGroup;
-
 
   constructor(
     public dialogRef: MatDialogRef<MaterialPageDialogComponent>,
     private allDialogRef: MatDialog,
+    private dataService: DataService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    
-    ) {
-      
-    }
 
-    // Runs when X-button is clicked
+  ) {
+
+  }
+
+  // Runs when X-button is clicked
   onNoClick(): void {
     this.allDialogRef.closeAll();
   }
-    // Runs when the back arrow button is clicked
-  onBackButton() : void {
+  // Runs when the back arrow button is clicked
+  onBackButton(): void {
     this.dialogRef.close();
   }
-  // This function is run when a new status is selected in the status selection 
-  changeStatus() : void{
-    // TODO: change the status in the back-end
-    // console.log(this.data.material_data.status);
-  }
-  saveNotes() : void {
-    console.log('Anteckning ' + this.data.material_note + ' sparad.');
-    // TODO: Save material note in back-end (this.data.material_note)
+  // Runs when description box is unfocused
+  saveDescription(): void {
+    var putData = {"description": this.data.material_data.description};
+    this.dataService.sendPutRequest('/article/' + this.data.article_id, putData).subscribe( (res) => {
+      //console.log(res);
+    });
   }
 
-  ngOnInit() : void {
-    //console.log(this.data.material_note);
-    this.form = new FormGroup({
-      notes: new FormControl(''),
-    });
-    this.form.patchValue({
-      notes: this.data.material_note
-    });
-
-    
+  ngOnInit(): void {
+  
   }
 }
 

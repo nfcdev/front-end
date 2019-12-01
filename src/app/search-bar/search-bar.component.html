@@ -1,4 +1,18 @@
-<form  (ngSubmit)="onSubmit()">
+<form [formGroup]="checkInForm" (ngSubmit)="onSubmit()">
+
+
+    <mat-form-field>
+        <mat-select
+        [(ngModel)]="category" required formControlName="category" placeholder="Kategori">
+            <mat-option *ngFor="let cat of searchCategory" [value]="cat.category">
+            {{cat.category}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+        
+
+
     <!-- Creates the search-bar component as well as the chip list -->
    <div class="search-field">
     <mat-form-field class="search-component">
@@ -11,18 +25,25 @@
             <input matInput placeholder="Sök..."
                     [matChipInputFor]="chipList"
                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                    [matChipInputAddOnBlur]="addOnBlur"
-                    (matChipInputTokenEnd)="add($event)">
+                    (matChipInputTokenEnd)="add($event)"
+                    formControlName="searchcomponent"
+                    >
         <!-- </mat-chip-list> -->
     </mat-form-field>
-    <button mat-raised-button class="search-component" id="search">
-        Sök
+    <button mat-raised-button class="clear-component" id="clear">
+        Rensa
     </button>
 
-    <mat-checkbox class="search-component" [(ngModel)]="activeMaterials" [ngModelOptions]="{standalone: true}">
+    <mat-checkbox class="search-component" 
+        [(ngModel)]="activeMaterials" 
+        [ngModelOptions]="{standalone: true}"
+        (change)="changeActive()">
         Aktiva material
     </mat-checkbox>
-    <mat-checkbox class="search-component" [(ngModel)]="inactiveMaterials" [ngModelOptions]="{standalone: true}">
+    <mat-checkbox class="search-component" 
+        [(ngModel)]="inactiveMaterials" 
+        [ngModelOptions]="{standalone: true}"
+        (change)="changeInactive()">
         Inaktiva material
     </mat-checkbox>
     </div>
@@ -31,7 +52,7 @@
     <mat-chip-list #chipList>
             <mat-chip *ngFor="let option of options" [selectable] = "selectable"
                     [removable]="removable" (removed)="remove(option)">
-                {{option.name}} ({{option.category}})
+                {{option.value}} ({{option.category}})
                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
             </mat-chip>
 </mat-chip-list>

@@ -4,10 +4,13 @@
 </div>
 <div mat-dialog-content [formGroup]="packageCheckOutForm">
 
+    <div *ngIf="!checkOutConfirmed && wrongRoom">
+        <div style="text-align: center;">Paket {{data.package}} finns ej i det nuvarande rummet.</div>
+</div>
     <div *ngIf="checkOutConfirmed">
             <div style="text-align: center;">Paket {{data.package}} har checkats ut.</div>
     </div>
-    <div *ngIf="!checkOutConfirmed">
+    <div *ngIf="!checkOutConfirmed && !wrongRoom">
         <mat-form-field>
             <input class="form-control"  name="package"
             formControlName="package" matInput
@@ -17,7 +20,7 @@
 
     <br>
 
-    <div *ngIf="!checkOutConfirmed">
+    <div *ngIf="!checkOutConfirmed && !wrongRoom">
     <mat-form-field>
     <textarea matInput class="form-control" name="comment"
     formControlName="comment" [(ngModel)]="comment" placeholder="Lämna en anteckning"></textarea>
@@ -30,7 +33,7 @@
          <div *ngIf="!checkOutConfirmed">
             <button mat-raised-button (click)="onNoClick()">Avbryt</button>
         </div>
-        <div *ngIf="!checkOutConfirmed">
+        <div *ngIf="!checkOutConfirmed && !wrongRoom">
                 <button [disabled]='packageCheckOutForm.invalid || packageCheckOutForm.pristine' mat-raised-button (click)="onConfirm()">Checka Ut</button>
         </div>
         <div *ngIf="checkOutConfirmed">

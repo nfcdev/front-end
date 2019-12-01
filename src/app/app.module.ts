@@ -1,3 +1,7 @@
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material';
+
+
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { CdkTableModule } from "@angular/cdk/table";
@@ -48,6 +52,7 @@ import {
   MatMenuModule,
   MatListModule,
   MatChipsModule,
+  MatTooltipModule,
   MatExpansionModule,
   MatAutocompleteModule
 } from "@angular/material";
@@ -81,6 +86,10 @@ import {
 } from "./material-check-out/material-check-out.component";
 
 import { MaterialCheckBoxService } from "./table-article-data/material-check-box.service";
+import { CheckOutPreselectedComponent, CheckOutPreselectedDialogComponent } from './check-out-preselected/check-out-preselected.component';
+
+
+import { CasePageComponent, CasePageDialogComponent } from './case-page/case-page.component';
 import {
   PackageCheckInComponent,
   PackageCheckInDialogComponent
@@ -122,15 +131,21 @@ import {
     MaterialCheckInDialogComponent,
     DataVisualizationComponent,
     DataVisualizationDialogComponent,
+    CheckOutPreselectedComponent,
+    CheckOutPreselectedDialogComponent,
     PackageCheckInComponent,
     PackageCheckInDialogComponent,
     RoomAndBranchNameComponent,
     UserPageComponent,
     UserPageDialogComponent,
     PackageCheckOutComponent,
-    PackageCheckOutDialogComponent
+    PackageCheckOutDialogComponent,
+    CasePageComponent,
+    CasePageDialogComponent
   ],
   imports: [
+    MatDatepickerModule,
+    MatNativeDateModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
@@ -156,10 +171,12 @@ import {
     NgbAlertModule,
     MatMenuModule,
     MatListModule,
+    MatTooltipModule,
     MatExpansionModule,
     MatAutocompleteModule
   ],
   providers: [
+    MatDatepickerModule,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedInterceptor,
@@ -181,9 +198,11 @@ import {
     MaterialCheckOutDialogComponent,
     MaterialCheckInDialogComponent,
     DataVisualizationDialogComponent,
+    CheckOutPreselectedDialogComponent,
     PackageCheckInDialogComponent,
     UserPageDialogComponent,
-    PackageCheckOutDialogComponent
+    PackageCheckOutDialogComponent,
+    CasePageDialogComponent
   ]
 })
 export class AppModule {}

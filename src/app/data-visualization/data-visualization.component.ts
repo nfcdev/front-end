@@ -7,6 +7,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
   templateUrl: './data-visualization.component.html',
   styleUrls: ['./data-visualization.component.less']
 })
+
 export class DataVisualizationComponent implements OnInit {
 
   constructor(public dialog: MatDialog) { }

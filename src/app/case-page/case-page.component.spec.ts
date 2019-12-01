@@ -1,23 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DataVisualizationComponent } from './data-visualization.component';
+import { CasePageComponent } from './case-page.component';
 
-
-
-describe('DataVisualizationComponent', () => {
-  let component: DataVisualizationComponent;
-  let fixture: ComponentFixture<DataVisualizationComponent>;
+describe('CasePageComponent', () => {
+  let component: CasePageComponent;
+  let fixture: ComponentFixture<CasePageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DataVisualizationComponent ]
-
+      declarations: [ CasePageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DataVisualizationComponent);
+    fixture = TestBed.createComponent(CasePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

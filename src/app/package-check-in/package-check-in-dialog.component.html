@@ -1,4 +1,5 @@
-<h1 mat-dialog-title *ngIf="!checkOutConfirmed">Checka in paket</h1>
+<h1 style="display:inline-block"  mat-dialog-title *ngIf="!checkOutConfirmed">Checka in paket</h1> 
+<button style="float:right" mat-raised-button (click)="onNoClick()" *ngIf="!checkOutConfirmed">X</button>
 
 <div mat-dialog-content [formGroup]="checkInPackageForm">
   <div
@@ -6,32 +7,31 @@
     style="height:100%; overflow:auto;"
     *ngIf="!checkOutConfirmed"
   >
-    <mat-form-field>
-      <input
+
+  <mat-form-field>
+    <input
         class="form-control"
         name="package"
         formControlName="package"
         matInput
         [(ngModel)]="data.package"
         placeholder="Paket"
-        [matAutocomplete]="auto"
-        (ngModelChange)="updateFields()"
+        (keyup.enter)="addPackage(data.package); data.package =''"
       />
-      <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
-        <mat-option
-          *ngFor="let package of filteredOptions | async"
-          [value]="package.name"
-        >
-          {{ package.name }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-    <div *ngIf="data.packageMaterials && !(data.packageMaterials.length > 0)">
-      Paket {{ data.package }} hittades inte
-    </div>
-    <br />
+  </mat-form-field>
+  <button mat-button (click)="addPackage(data.package); data.package=''">+</button>
 
-    <mat-form-field>
+  <mat-chip-list #chipList>
+    <mat-chip *ngFor="let package of data.packageMaterials">
+      <app-package-page [package]='package'></app-package-page>
+      <mat-icon matChipRemove (click)="removePackage(package)">cancel</mat-icon>
+      <br>
+    </mat-chip>
+  </mat-chip-list>
+  <br>
+
+
+   <!-- <mat-form-field>
       <input
         class="form-control"
         formControlName="reference_number"
@@ -41,16 +41,15 @@
         readonly
       />
     </mat-form-field>
-    <br />
+    <br /> -->
 
     <mat-form-field>
       <input matInput placeholder="Materialnummer" readonly />
-      <mat-chip-list #chipList>
-        <mat-chip *ngFor="let material of data.packageMaterials">
-          <app-material-page [material_number]="material"></app-material-page>
-          <br />
-        </mat-chip>
-      </mat-chip-list>
+
+      <mat-list-item *ngFor="let material of materials">
+        <br>
+        <mat-list-item> {{material.material_number}} ({{material.package}}) </mat-list-item>
+     </mat-list-item>
     </mat-form-field>
     <br />
 
@@ -88,23 +87,20 @@
         placeholder="Hylla"
       >
         <mat-option *ngFor="let sh of shelves" [value]="sh">
-          {{ sh }}
+          {{ sh.shelfName }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <br />
 
     <mat-form-field>
-      <textarea
-        matInput
-        class="form-control"
-        placeholder="Lämna en anteckning"
-      ></textarea>
-    </mat-form-field>
+        <textarea matInput class="form-control" formControlName="comment" [(ngModel)]="data.comment" name="comment"
+          placeholder="Lämna en anteckning"></textarea>
+      </mat-form-field>
     <br />
   </div>
   <div class="packageConfirmation" *ngIf="checkOutConfirmed">
-    Paket {{ data.package }} har checkats in på hylla {{ data.shelf }} i
+    Paket {{ data.package }} har checkats in på hylla {{ data.shelf.shelfName }} i
     {{ data.storage_room }}.
   </div>
 </div>
@@ -112,13 +108,13 @@
 <div mat-dialog-actions>
   <div class="packageCheckInButtons" *ngIf="!checkOutConfirmed">
     <button mat-raised-button (click)="onNoClick()">Avbryt</button>
+    
     <button
       class="btn"
       mat-raised-button
-      [disabled]="checkInPackageForm.pristine || checkInPackageForm.invalid"
+      [disabled]="checkInPackageForm.pristine || checkInPackageForm.invalid || data.packageMaterials.length == 0"
       cdkFocusInitial
-      (click)="onConfirm()"
-    >
+      (click)="onConfirm()">
       Checka in
     </button>
     <br />
