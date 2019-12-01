@@ -36,6 +36,7 @@ export interface ArticleData {
   providers: [TableArticleDataComponent]
 })
 export class SearchBarComponent {
+
   visible = true;
   selectable = true;
   removable = true;
