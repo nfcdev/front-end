@@ -9,7 +9,7 @@ import { DataService } from '../data.service'
 export interface DialogData{
   selectedMaterials: string[];
   preChosen: boolean;
-  material_number: any;
+  material_number: string;
   status: string;
 }
 

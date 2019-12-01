@@ -9,7 +9,7 @@ import { DataService } from "../data.service"
 import { variable } from '@angular/compiler/src/output/output_ast';
 
 export interface DialogData {
-  material_number: any;
+  material_number: string;
   reference_number: number;
   branch: String;
   storage_room: String;
