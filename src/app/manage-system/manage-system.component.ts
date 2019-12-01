@@ -64,6 +64,7 @@ export class ManageSystemComponent implements OnInit {
   shelves: Shelf[] = [];
   dataShelves: DataShelf [] = [];
   users: string[] = [];
+  selectedUsers: string [] = [];
   admins: string[]= [];
   dataArticles: DataArticle [] = [];
 
@@ -424,6 +425,28 @@ export class ManageSystemComponent implements OnInit {
   }
 
   // --------------- MANAGE USERS -----------------------
+
+  selectUser(user: string) {
+    this.users.splice(this.users.findIndex(name => name===user), 1);
+    this.selectedUsers.push(user);
+  }
+
+  unSelectUser(user: string) {
+    this.selectedUsers.splice(this.selectedUsers.findIndex(name => name===user), 1);
+    this.users.push(user);
+  }
+
+  upgradeUsers() {
+    this.dataService.sendGetRequest("/user").subscribe((getUsers: DataUser []) => {
+      for (let i=0; i < this.selectedUsers.length; i++) {
+        let tempUser: DataUser = getUsers.find(it => it.shortcode === this.selectedUsers[i]);
+        this.dataService.sendPutRequest("/user", {"shortcode": tempUser.shortcode , "role": tempUser.role}).subscribe(data => {
+          console.log(data);
+        })
+      }
+      this.selectedUsers = [];
+    })
+  }
 
   // Adds a new user
   addUser(newUser: string): void {
