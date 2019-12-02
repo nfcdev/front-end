@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataVisualizationComponent } from './data-visualization.component';
 
+
+
 describe('DataVisualizationComponent', () => {
   let component: DataVisualizationComponent;
   let fixture: ComponentFixture<DataVisualizationComponent>;
@@ -9,6 +11,7 @@ describe('DataVisualizationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DataVisualizationComponent ]
+
     })
     .compileComponents();
   }));

@@ -6,6 +6,10 @@
         <mat-grid-tile [colspan]='1'><button mat-raised-button (click)="onNoClick()">X</button></mat-grid-tile>
     </mat-grid-list>
 </div> -->
+<div>
+    <button mat-raised-button type="button" style="float:right;" (click)="onNoClick()">X</button>
+</div><br>
+
 <div *ngIf="!checkOutConfirmed">
     <h1 mat-dialog-title>Checka ut material</h1>
 </div>
@@ -39,6 +43,24 @@
     <br>
 
 
+    <div *ngIf="!checkOutConfirmed">
+    <mat-form-field>
+        <mat-select formControlName="status"
+       [(ngModel)]="data.status" name="status" placeholder="Ny status">
+          <mat-option *ngFor="let st of status" [value]="st">
+            {{st}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
+    <div *ngIf="checkOutConfirmed">
+        <div style="text-align: center;">Med uppdaterad status: <br>
+             {{data.status}}
+             </div>
+</div>
+
+
 <!--    <div class="addNewField" *ngIf="!data.preChosen && !checkOutConfirmed">
         Scanna/fyll i nytt material:
         <input #newMaterial class="add-new" placeholder="Fyll i.."
@@ -67,9 +89,9 @@
     </div>
     <br>
 
- 
+
     <div mat-dialog-actions>
-         <div *ngIf="!checkOutConfirmed">
+        <div *ngIf="!checkOutConfirmed">
             <button mat-raised-button (click)="onNoClick()">Avbryt</button>
         </div>
         <div *ngIf="!checkOutConfirmed">

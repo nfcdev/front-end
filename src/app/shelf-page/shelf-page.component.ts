@@ -1,9 +1,6 @@
 import { Component, OnInit, Input, Inject, ViewChild, AfterViewInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
-import {MatTableDataSource} from '@angular/material/table';
+import { DataService } from '../data.service';
 
 
 export interface DialogData{
@@ -12,52 +9,64 @@ export interface DialogData{
 }
 
 export interface ShelfPageData {
-  material_number: number;
+  packageMaterials: string[];
   package: string;
 }
 
-// Temporary test data
-const SHELF_DATA: ShelfPageData[] = [{material_number: 33, package: null},
-  {material_number: 2233, package: 'P1'},
-  {material_number: 7333, package: 'K1'},
-  {material_number: 992233, package: 'K3'},
-  {material_number: 872233, package: null},
-  {material_number: 22332, package: 'P1'},
-  {material_number: 733322, package: 'K1'},
-  {material_number: 9922333, package: 'K3'},
-  {material_number: 87223113, package: null},
-  {material_number: 222333, package: 'P4'},
-  {material_number: 73332, package: 'K7'},
-  {material_number: 99233, package: 'K3'},
-  {material_number: 87233, package: null},
-  {material_number: 222323, package: 'P2'}];
-
-@Component({
+@Component({ 
   selector: 'app-shelf-page',
   templateUrl: './shelf-page.component.html',
   styleUrls: ['./shelf-page.component.less']
 })
 export class ShelfPageComponent implements OnInit {
-  @Input()shelf: string;
-  shelfPageData: ShelfPageData[] = SHELF_DATA;
-  constructor(public dialog: MatDialog) { }
+  @Input('shelf')shelf: string;
+  @Input('storage_room')storage_room: string;
+  materials : any[];
+  shelfPageData: ShelfPageData[] = [];
+  packages: string[];
+  constructor(public dialog: MatDialog,
+              private dataService: DataService) { }
 
+  load() : void {
+    
+    this.shelfPageData = [];
+    this.dataService.sendGetRequest('/article?storage_room=' + this.storage_room + '&shelf=' + this.shelf).subscribe( (data : any[]) => {
+      this.materials = data; 
+      // Get list of packages
+      this.packages = this.materials
+      .map(item => item.package)
+      .filter((value, index, self) => self.indexOf(value) === index);
+      // Link materials to packages and saves them in a format that can be displayed in the component
+      this.packages.forEach( (pack) => {
+        let temp : ShelfPageData = {package: pack, packageMaterials : []};
+        this.materials.forEach( (mat) => {
+          if(mat.package === pack){
+            temp.packageMaterials.push(mat.material_number);
+          }
+        });  
+        this.shelfPageData.push(temp);
+      });
+      
+
+      this.openDialog();
+    });
+    
+  }
 
   openDialog(): void {
-
-    // TODO: Get materials and their packages here from the back end and send it to the dialog
 
     const dialogRef = this.dialog.open(ShelfPageDialogComponent, {
       width: '1000px',
       height: '500px',
       data:
       {shelf: this.shelf,
-       shelfPageData: this.shelfPageData
+        shelfPageData: this.shelfPageData
       }
     });
 
   }
   ngOnInit() {
+    
   }
 
 }
@@ -67,9 +76,7 @@ export class ShelfPageComponent implements OnInit {
   templateUrl: './shelf-page-dialog.component.html',
 })
 export class ShelfPageDialogComponent implements AfterViewInit{
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
-  displayedColumns = ['material_number', 'package'];
-  dataSource = new MatTableDataSource(this.data.shelfPageData);
+
 
   constructor(
     public dialogRef: MatDialogRef<ShelfPageDialogComponent>,
@@ -86,7 +93,6 @@ export class ShelfPageDialogComponent implements AfterViewInit{
     this.dialogRef.close();
   }
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
   }
 }
 

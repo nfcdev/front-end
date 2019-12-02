@@ -1,22 +1,25 @@
 
+<div>
+    <button mat-raised-button type="button" style="float:right;" (click)="onNoClick()">X</button>
+</div><br>
+
 <h1 mat-dialog-title>Checka in material</h1>
 
 
-<div mat-dialog-content [formGroup]="checkInForm">
+<div mat-dialog-content [formGroup]="checkInForm" *ngIf="!checkOutConfirmed && !hasDuplicate">
+    
 
-
-  <mat-form-field>
+  <!-- <mat-form-field>
     <input class="form-control"
     formControlName="reference_number" matInput
     [(ngModel)]="data.reference_number" placeholder="Diarienummer">
   </mat-form-field>
-  <br>
+  <br> -->
 
   <mat-form-field>
-    <input class="form-control"  name="material_number"
-    formControlName="material_number" matInput
-    [(ngModel)]="data.material_number" placeholder="Materialnummer" 
-    (keyup.enter)="addMaterial(data.material_number); data.material_number =''">
+    <input class="form-control" name="material_number" formControlName="material_number" matInput
+      [(ngModel)]="data.material_number" placeholder="Materialnummer"
+      (keyup.enter)="addMaterial(data.material_number); data.material_number =''">
   </mat-form-field>
   <button mat-button (click)="addMaterial(data.material_number); data.material_number=''">+</button>
 
@@ -30,47 +33,74 @@
   <br>
 
   <mat-form-field>
-    <input class="form-control" type="text"
-     matInput required formControlName="area"
-      [(ngModel)]="data.area" placeholder="Avdelning">
+    <input class="form-control" type="text" matInput required formControlName="branch" [(ngModel)]="data.branch"
+      placeholder="Avdelning">
   </mat-form-field>
   <br>
 
   <mat-form-field>
-    <input class="form-control" type="text"
-    matInput required formControlName="storage_room"
-    [(ngModel)]="data.storage_room" placeholder="Rum">
+    <input class="form-control" type="text" matInput required formControlName="storage_room"
+      [(ngModel)]="data.storage_room" placeholder="Rum">
   </mat-form-field>
   <br>
 
-
   <mat-form-field>
-    <mat-select formControlName="shelf"
-   [(ngModel)]="data.shelf" name="shelf" placeholder="Hylla">
-      <mat-option *ngFor="let sh of shelves" [value]="sh">
-        {{sh}}
+    <mat-select formControlName="package" [(ngModel)]="data.package" name="package" placeholder="Paket"
+      (focusout)="updateShelf()">
+      <mat-option *ngFor="let pg of packages" [value]="pg.packageName">
+        {{pg.packageName}}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <br>
 
   <mat-form-field>
-    <input class="form-control" type="text"
-    matInput formControlName="package"
-    [(ngModel)]="data.placement" placeholder="Paket">
+    <mat-select formControlName="shelf" [(ngModel)]="data.shelf" name="shelf" placeholder="Hylla"
+      (focusout)="updatePackages()">
+      <mat-option *ngFor="let sh of shelves" [value]="sh.shelfName">
+        {{sh.shelfName}}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
   <br>
+
 
   <mat-form-field>
-    <textarea matInput class="form-control"
-    placeholder="Lämna en anteckning"></textarea>
+    <textarea matInput class="form-control" formControlName="comment" [(ngModel)]="data.comment" name="comment"
+      placeholder="Lämna en anteckning"></textarea>
   </mat-form-field>
   <br>
 
-<div mat-dialog-actions>
-  <button mat-raised-button (click)="onNoClick()">Avbryt</button>
-  <button class="btn" mat-raised-button
-   [disabled]="checkInForm.pristine || checkInForm.invalid || data.selectedMaterials.length == 0"
-   [mat-dialog-close]="data" cdkFocusInitial (click)="onConfirm()">Skicka</button>
+  <div mat-dialog-actions>
+    <button mat-raised-button (click)="onNoClick()">Avbryt</button>
+    <button class="btn" mat-raised-button
+      [disabled]="checkInForm.pristine || checkInForm.invalid || data.selectedMaterials.length == 0" cdkFocusInitial
+      (click)="onCheckOut()">Checka in</button>
     <br>
+  </div>
 </div>
+
+<div mat-dialog-content *ngIf="hasDuplicate && !checkOutConfirmed"> 
+  <div *ngFor="let dupe of duplicateMaterials" style="color: red">
+    Material <app-material-page [material_number]='dupe.material_number'></app-material-page> är för 
+    närvarande incheckat i rum {{dupe.storage_room}}
+  </div>
+  <div style="color: red">Vill du trots det checka in materialet i rum {{data.storage_room}}?</div>
+  <button mat-raised-button  (click)=onCancelDuplicate() >Avbryt</button>
+  <button mat-raised-button (click)=onConfirm()>CHECKA IN</button>
+</div>
+
+<div mat-dialog-content *ngIf="checkOutConfirmed" style="height: 300px; width: auto; overflow:auto;">
+  Följande material har checkats in <div *ngIf="(data.package && !(data.package == '')); else noPackage"> i paket {{data.package}} </div><ng-template #noPackage> löst </ng-template> på hylla {{data.shelf}} i {{data.storage_room}}: <br>
+  <mat-chip-list #chipList>
+    <mat-chip *ngFor="let material of data.selectedMaterials">
+      <app-material-page [material_number]='material'></app-material-page>
+      <br>
+    </mat-chip>
+  </mat-chip-list>
+  
+</div>
+
+<div mat-dialog-actions *ngIf="checkOutConfirmed">
+    <button style="float:right; " class="btn" mat-raised-button [mat-dialog-close]="data">Tillbaka</button>
+  </div>
