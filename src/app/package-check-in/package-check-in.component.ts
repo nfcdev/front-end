@@ -153,6 +153,11 @@ export class PackageCheckInComponent implements OnInit {
   }
 }
 
+export interface Duplicate {
+  package_number: String;
+  storage_room: String;
+}
+
 @Component({
   selector: 'app-package-check-in-dialog',
   templateUrl: './package-check-in-dialog.component.html',
@@ -170,6 +175,10 @@ export class PackageCheckInDialogComponent implements OnInit {
   packages: string[];
 
   filteredOptions: Observable<PackageInfo[]>;
+
+  duplicatePackages: Duplicate[] = [];
+
+  hasDuplicate = false;
 
 
 
@@ -239,6 +248,44 @@ export class PackageCheckInDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onCheckOut() : void {
+    let hasDuplicate = false;
+
+
+    this.data.packageMaterials.forEach( (val, key, arr )=> {
+      this.dataService.sendGetRequest('/article?package_number=' + val).subscribe( (data: any []) => {
+
+        if(data[0].status === 'checked_in'){
+
+          let temp: Duplicate = {package_number: val, storage_room: data[0].storage_room};
+          this.duplicatePackages.push(temp);
+          hasDuplicate = true;
+
+          
+
+        }
+
+        if(hasDuplicate){
+          this.hasDuplicate = hasDuplicate;
+
+        } else if (!hasDuplicate && Object.is(arr.length - 1, key)) {
+
+          this.onConfirm();
+        }
+      });
+      
+    });
+    
+
+    
+    
+  }
+
+  onCancelDuplicate () : void {
+    this.duplicatePackages = [];
+    this.hasDuplicate = false;
+    
+  }
 
 
   onConfirm(): void {

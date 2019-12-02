@@ -1,37 +1,26 @@
-<h1 style="display:inline-block"  mat-dialog-title *ngIf="!checkOutConfirmed">Checka in paket</h1> 
+<h1 style="display:inline-block" mat-dialog-title *ngIf="!checkOutConfirmed">Checka in paket</h1>
 <button style="float:right" mat-raised-button (click)="onNoClick()" *ngIf="!checkOutConfirmed">X</button>
 
 <div mat-dialog-content [formGroup]="checkInPackageForm">
-  <div
-    class="packageCheckInForm"
-    style="height:100%; overflow:auto;"
-    *ngIf="!checkOutConfirmed"
-  >
+  <div class="packageCheckInForm" style="height:100%; overflow:auto;" *ngIf="!checkOutConfirmed && !hasDuplicate">
 
-  <mat-form-field>
-    <input
-        class="form-control"
-        name="package"
-        formControlName="package"
-        matInput
-        [(ngModel)]="data.package"
-        placeholder="Paket"
-        (keyup.enter)="addPackage(data.package); data.package =''"
-      />
-  </mat-form-field>
-  <button mat-button (click)="addPackage(data.package); data.package=''">+</button>
+    <mat-form-field>
+      <input class="form-control" name="package" formControlName="package" matInput [(ngModel)]="data.package"
+        placeholder="Paket" (keyup.enter)="addPackage(data.package); data.package =''" />
+    </mat-form-field>
+    <button mat-button (click)="addPackage(data.package); data.package=''">+</button>
 
-  <mat-chip-list #chipList>
-    <mat-chip *ngFor="let package of data.packageMaterials">
-      <app-package-page [package]='package'></app-package-page>
-      <mat-icon matChipRemove (click)="removePackage(package)">cancel</mat-icon>
-      <br>
-    </mat-chip>
-  </mat-chip-list>
-  <br>
+    <mat-chip-list #chipList>
+      <mat-chip *ngFor="let package of data.packageMaterials">
+        <app-package-page [package]='package'></app-package-page>
+        <mat-icon matChipRemove (click)="removePackage(package)">cancel</mat-icon>
+        <br>
+      </mat-chip>
+    </mat-chip-list>
+    <br>
 
 
-   <!-- <mat-form-field>
+    <!-- <mat-form-field>
       <input
         class="form-control"
         formControlName="reference_number"
@@ -49,43 +38,24 @@
       <mat-list-item *ngFor="let material of materials">
         <br>
         <mat-list-item> {{material.material_number}} ({{material.package}}) </mat-list-item>
-     </mat-list-item>
+      </mat-list-item>
     </mat-form-field>
     <br />
 
     <mat-form-field>
-      <input
-        class="form-control"
-        type="text"
-        matInput
-        required
-        formControlName="area"
-        [(ngModel)]="data.area"
-        placeholder="Avdelning"
-      />
+      <input class="form-control" type="text" matInput required formControlName="area" [(ngModel)]="data.area"
+        placeholder="Avdelning" />
     </mat-form-field>
     <br />
 
     <mat-form-field>
-      <input
-        class="form-control"
-        type="text"
-        matInput
-        required
-        formControlName="storage_room"
-        [(ngModel)]="data.storage_room"
-        placeholder="Rum"
-      />
+      <input class="form-control" type="text" matInput required formControlName="storage_room"
+        [(ngModel)]="data.storage_room" placeholder="Rum" />
     </mat-form-field>
     <br />
 
     <mat-form-field>
-      <mat-select
-        formControlName="shelf"
-        [(ngModel)]="data.shelf"
-        name="shelf"
-        placeholder="Hylla"
-      >
+      <mat-select formControlName="shelf" [(ngModel)]="data.shelf" name="shelf" placeholder="Hylla">
         <mat-option *ngFor="let sh of shelves" [value]="sh">
           {{ sh.shelfName }}
         </mat-option>
@@ -94,27 +64,33 @@
     <br />
 
     <mat-form-field>
-        <textarea matInput class="form-control" formControlName="comment" [(ngModel)]="data.comment" name="comment"
-          placeholder="Lämna en anteckning"></textarea>
-      </mat-form-field>
+      <textarea matInput class="form-control" formControlName="comment" [(ngModel)]="data.comment" name="comment"
+        placeholder="Lämna en anteckning"></textarea>
+    </mat-form-field>
     <br />
   </div>
   <div class="packageConfirmation" *ngIf="checkOutConfirmed">
-    Paket {{ data.package }} har checkats in på hylla {{ data.shelf.shelfName }} i
-    {{ data.storage_room }}.
+    Följande paket har checkats in på hylla {{ data.shelf.shelfName }} i rum
+    {{ data.storage_room }}:
+    <mat-chip-list #chipList>
+      <div *ngFor="let pck of data.packageMaterials">
+        <mat-chip>
+          <app-package-page [package]='pck'></app-package-page>
+          <br>
+        </mat-chip>
+      </div>
+    </mat-chip-list>
   </div>
+  
 </div>
 
 <div mat-dialog-actions>
-  <div class="packageCheckInButtons" *ngIf="!checkOutConfirmed">
+  <div class="packageCheckInButtons" *ngIf="!checkOutConfirmed && !hasDuplicate">
     <button mat-raised-button (click)="onNoClick()">Avbryt</button>
-    
-    <button
-      class="btn"
-      mat-raised-button
+
+    <button class="btn" mat-raised-button
       [disabled]="checkInPackageForm.pristine || checkInPackageForm.invalid || data.packageMaterials.length == 0"
-      cdkFocusInitial
-      (click)="onConfirm()">
+      cdkFocusInitial (click)="onCheckOut()">
       Checka in
     </button>
     <br />
@@ -124,4 +100,15 @@
       Tillbaka
     </button>
   </div>
+</div>
+
+
+<div mat-dialog-content *ngIf="hasDuplicate && !checkOutConfirmed" >
+  <div *ngFor="let dupe of duplicatePackages" style="color: red">
+    Paket <app-package-page [package]='dupe.package_number'></app-package-page> är för
+    närvarande incheckat i rum {{dupe.storage_room}}
+  </div>
+  <div style="color: red">Vill du trots det checka in paketet i rum {{data.storage_room}}?</div>
+  <button mat-raised-button (click)=onCancelDuplicate()>Avbryt</button>
+  <button mat-raised-button (click)=onConfirm()>CHECKA IN</button>
 </div>
