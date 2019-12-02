@@ -8,9 +8,10 @@
 
 <div mat-dialog-content style="position:relative" [formGroup]="checkInForm" *ngIf="!checkOutConfirmed">
   
-  <mat-form-field *ngIf="!newData" >
-    <input class="form-control" name="reference_number" formControlName="reference_number" matInput
-      [(ngModel)]="data.reference_number" placeholder="Diarienummer">
+  <mat-form-field readonly>
+  
+    <input class="form-control" name="Diarienummer" matInput required formControlName="reference_number"
+      [(ngModel)]="reference_number" placeholder="Diarienummer" readonly>
   </mat-form-field>
   <mat-label class="newReference" style="float:right"> Nytt ärende*</mat-label>
   <!-- <mat-form-field>

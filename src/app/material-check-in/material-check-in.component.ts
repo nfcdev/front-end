@@ -11,11 +11,11 @@ import { DataService } from "../data.service"
 export interface DialogData {
   material_number: any;
   reference_number: string;
-  branch: String;
-  storage_room: String;
-  shelf: String;
-  package: String;
-  comment: String;
+  branch: string;
+  storage_room: string;
+  shelf: string;
+  package: string;
+  comment: string;
   placement: any;
 }
 
@@ -35,7 +35,10 @@ export interface Package {
   packageName: String;
   packageId: number;
 }
+export interface package_shelf{
+  shelf: string;
 
+}
 export interface DialogData{
   selectedMaterials: String[];
   preChosen: boolean;
@@ -134,7 +137,7 @@ export class MaterialCheckInDialogComponent {
   reference_number: string;
   shelves: Shelf[];
   packages: Package[];
-
+  materialExists: boolean;
   newData: boolean =true;
 
   
@@ -211,9 +214,10 @@ export class MaterialCheckInDialogComponent {
   //For check in of existing items
    for (var mat of this.data.selectedMaterials) {
     
-    var article_data ={"material_number": mat,
-                        "reference_number": this.reference_number,
-                      "description":""}
+    var article_data ={"material_number": mat,  
+                      "description":"",
+                      "comment": "",
+                      "package": ""}
 
     var post_data = {"material_number": mat,
                     "storage_room": this.storage_room_id,
@@ -223,28 +227,42 @@ export class MaterialCheckInDialogComponent {
       //If comment is added then add it to data for post-request
       if (this.data.comment !== "" && this.data.comment !== undefined) {
         post_data["comment"] = this.data.comment;
+        article_data["comment"] =this.data.comment;
+        article_data["description"] =this.data.comment;
       }else{
-        post_data["comment"] = ""
+        post_data["comment"] = "";
+        article_data["comment"] ="";
+        article_data["description"] ="";
       }
 
       //If package is added then add it to data for post-request
       if (this.data.package !== "" && this.data.package !== undefined) {
         post_data["package"] = this.data.package;
-      }
+        article_data["current_storage_room"]= this.storage_room_id
+        
+       this.dataService.sendGetRequest("/package/package_number/"+ this.data.package).subscribe((data: any[])=>{
+        article_data["package"] = data["id"];
+         // article_data["shelf"] =data["shelf"];
+          
+          console.log(article_data)
 
-      if (this.data.reference_number!= "" && this.data.reference_number != undefined){
-          article_data["reference_number"] = this.data.reference_number;
-        console.log(this.data.reference_number)
+       })
+      } else {
+        article_data["shelf"] = this.getShelfId(this.data.shelf)
+        article_data["storage_room"]= this.storage_room_id
+        
       }
+      
+    }
+    if (!this.newData){
       console.log(article_data)
-      this.dataService.sendPostRequest("/article", article_data).subscribe((data: any[])=>{
+      this.dataService.sendPostRequest("/article/register", article_data).subscribe((data: any[])=>{
       })
-
+    }else {
+      console.log(this.newData)
       this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[])=>{
       })
-
     }
-
 
    }
 
@@ -262,25 +280,24 @@ export class MaterialCheckInDialogComponent {
   addMaterial(newMaterial : string) : void {
     
     this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe( (data: DialogData)=>{
-        console.log(data);
       if (data[0] != undefined ){
       this.newData = true;
     } else{
       this.newData = false;
     }
     console.log(this.newData)
-    
+    this.reference_number=newMaterial.substring(0,6);
     //this.addCase(newMaterial); TODO: FIX THIS WHEN YOU CAN EITHER GET ID OR REQUEST WITH MATERIAL_NO
     if (!this.data.selectedMaterials.includes(newMaterial)) { 
       if(newMaterial && newMaterial.length > 0) {
         this.data.selectedMaterials.push(newMaterial);
         this.checkInForm.controls['material_number'].reset()
       }
-      
     } else {
       // duplicate
     }
   })
+  console.log(this.data.selectedMaterials)
   }
 
 

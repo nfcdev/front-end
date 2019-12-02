@@ -2,203 +2,210 @@
 
 
     <div class="manageSystemHeader">
-        <mat-grid-list cols="5" rowHeight="50px">
+        <mat-grid-list cols="1" rowHeight="50px">
             <mat-grid-tile>
-                <h3>Avdelning</h3>
-            </mat-grid-tile>
-            <mat-grid-tile>
-                <h3>Rum</h3>
-            </mat-grid-tile>
-            <mat-grid-tile>
-                <h3>Hylla</h3>
-            </mat-grid-tile>
-            <mat-grid-tile>
-                <h3>Användare</h3>
-            </mat-grid-tile>
-            <mat-grid-tile>
-                <h3>Admin</h3>
+                <h1>Hantera system</h1>
             </mat-grid-tile>
         </mat-grid-list>
     </div>
 
-
-    <mat-grid-list cols="5" rowHeight="600px">
-        <!-- Manage branches -->
-        <mat-grid-tile>
-            <div class="manageSystemTile">
-                <div class="system-list" style="height:500px;">
-                    <mat-chip-list #chipList>
-                        <mat-chip *ngFor="let branch of branches">
-                            {{branch}}
-                            <mat-icon matChipRemove (click)="removeBranchConfirmation(branch)">cancel</mat-icon>
-                            <br>
-                        </mat-chip>
-                    </mat-chip-list>
-                </div>
-                <form class="example-form">
-                    <mat-form-field class="example-full-width">
-                        <input #newBranch class="add-new" matInput placeholder="Ny avdelning"
-                            (keyup.enter)="addBranch(newBranch.value); newBranch.value='' ">
-                    </mat-form-field>
-                    <button type="button" mat-button
-                        (click)="addBranch(newBranch.value); newBranch.value='' ">+</button>
-                </form>
-            </div>
-        </mat-grid-tile>
-
-        <!-- Manage rooms -->
-        <mat-grid-tile>
-            <div class="manageSystemTile">
-                <form>
-                    <mat-form-field>
-                        <mat-select id="branchSelect" [(ngModel)]="chosenBranchInRoom" name="choose_branch"
-                            placeholder="Välj avdelning">
-                            <mat-option *ngFor="let br of branches" [value]="br">
-                                {{br}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </form>
-
-                <div class="system-list" style="height:450px;">
-                    <mat-chip-list #chipList>
-                        <div *ngFor="let room of rooms">
-                            <div *ngIf="room.branch == chosenBranchInRoom">
-                                <mat-chip>
-                                    {{room.room}}
-                                    <mat-icon matChipRemove
-                                        (click)="removeRoomConfirmation(room.room, chosenBranchInRoom);">cancel
-                                    </mat-icon>
+    <div class="mangeSystemContainer" style="height: auto; overflow-y:scroll;">
+        <mat-accordion multi="true" class="example-headers-align">
+            <!-- Branches (Avdelningar) -->
+            <ng-container>
+                <mat-expansion-panel closed>
+                    <mat-expansion-panel-header style="text-align: center;">
+                        <h2>
+                            Avdelningar
+                        </h2>
+                    </mat-expansion-panel-header>
+                    <ng-template matExpansionPanelContent>
+                        <div class="system-list">
+                            <mat-chip-list #chipList>
+                                <mat-chip *ngFor="let branch of branches">
+                                    {{branch}}
+                                    <mat-icon matChipRemove (click)="removeBranchConfirmation(branch)">cancel</mat-icon>
+                                    <br>
                                 </mat-chip>
-
-                            </div>
+                            </mat-chip-list>
                         </div>
-                    </mat-chip-list>
-                </div>
-                <form class="example-form">
-                    <mat-form-field class="example-full-width">
+                        <div class="form-list">
+                            <form class="example-form">
+                                <mat-form-field class="example-full-width">
+                                    <input #newBranch class="add-new" matInput placeholder="Ny avdelning"
+                                        (keyup.enter)="addBranch(newBranch.value); newBranch.value='' ">
+                                </mat-form-field>
+                                <button type="button" mat-button
+                                    (click)="addBranch(newBranch.value); newBranch.value='' ">+</button>
+                            </form>
+                        </div>
+                    </ng-template>
+                </mat-expansion-panel>
+            </ng-container>
 
-                        <input #newRoom class="add-new" matInput placeholder="Nytt rum"
-                            (keyup.enter)="addRoom(newRoom.value); newRoom.value='' ">
-                    </mat-form-field>
-                    <button type="button" mat-button (click)="addRoom(newRoom.value); newRoom.value='' ">+</button>
-                </form>
-            </div>
-        </mat-grid-tile>
+            <!-- Storagerooms (Rum) -->
+            <ng-container>
+                <mat-expansion-panel closed>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h2>
+                                Rum
+                            </h2>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ng-template matExpansionPanelContent>
+                        <div class="system-list">
+                            <mat-chip-list #chipList>
+                                <div *ngFor="let room of rooms">
+                                    <div *ngIf="room.branch == chosenBranchInRoom">
+                                        <mat-chip>
+                                            {{room.room}}
+                                            <mat-icon matChipRemove
+                                                (click)="removeRoomConfirmation(room.room, chosenBranchInRoom);">cancel
+                                            </mat-icon>
+                                        </mat-chip>
+        
+                                    </div>
+                                </div>
+                            </mat-chip-list>
+                        </div>
+                        <div class="form-list">
+                            <form>
+                                <mat-form-field>
+                                    <mat-select id="branchSelect" [(ngModel)]="chosenBranchInRoom" name="choose_branch"
+                                        placeholder="Välj avdelning">
+                                        <mat-option *ngFor="let br of branches" [value]="br">
+                                            {{br}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </form>
+                            <form class="example-form">
+                                <mat-form-field class="example-full-width">
+            
+                                    <input #newRoom class="add-new" matInput placeholder="Nytt rum"
+                                        (keyup.enter)="addRoom(newRoom.value); newRoom.value='' ">
+                                </mat-form-field>
+                                <button type="button" mat-button (click)="addRoom(newRoom.value); newRoom.value='' ">+</button>
+                            </form>
+                        </div>
+                    </ng-template>
+                </mat-expansion-panel>
+            </ng-container>
 
-        <!-- Manage shelves -->
-        <mat-grid-tile>
-            <div class="manageSystemTile">
-                <form>
-                    <mat-form-field>
-                        <mat-select id="branchSelectForShelf" [(ngModel)]="chosenBranchInShelf" name="branch_for_shelf"
-                            placeholder="Välj avdelning" (ngModelChange)="chosenRoomInShelf='' ">
-                            <mat-option *ngFor="let br of branches" [value]="br">
-                                {{br}}
-                            </mat-option>
-                        </mat-select><br>
-                    </mat-form-field>
-                </form>
+            <!-- Shelves (Hyllor) -->
+            <ng-container>
+                <mat-expansion-panel closed>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h2>
+                                Hyllor
+                            </h2>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ng-template matExpansionPanelContent>
+                        <div class="system-list">
+                            <mat-chip-list #chipList>
+                                <div *ngFor="let shelf of shelves">
+                                    <div *ngIf="shelf.branch == chosenBranchInShelf && shelf.room == chosenRoomInShelf">
+                                        <mat-chip>
+                                            {{shelf.shelf}}
+                                            <mat-icon matChipRemove
+                                                (click)="removeShelfConfirmation(shelf.shelf, chosenRoomInShelf, chosenBranchInShelf)">
+                                                cancel</mat-icon>
+                                        </mat-chip>
+        
+                                    </div>
+                                </div>
+                            </mat-chip-list>
+                        </div>
+                        <div class="form-list">
+                            <form>
+                                <mat-form-field>
+                                    <mat-select id="branchSelectForShelf" [(ngModel)]="chosenBranchInShelf" name="branch_for_shelf"
+                                        placeholder="Välj avdelning" (ngModelChange)="chosenRoomInShelf='' ">
+                                        <mat-option *ngFor="let br of branches" [value]="br">
+                                            {{br}}
+                                        </mat-option>
+                                    </mat-select><br>
+                                </mat-form-field>
+                            </form>
+            
+                            <form>
+                                <mat-form-field>
+            
+                                    <mat-select id="roomSelectForShelf" [(ngModel)]="chosenRoomInShelf" name="room_for_shelf"
+                                        placeholder="Välj rum">
+                                        <ng-container *ngFor="let rm of rooms">
+                                            <ng-container *ngIf="rm.branch == chosenBranchInShelf">
+                                                <mat-option [value]="rm.room">
+                                                    {{rm.room}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+                            </form>
+                            
+                            <form class="example-form">
+                                <mat-form-field class="example-full-width">
+                                    <input #newShelf class="add-new" matInput placeholder="Ny hylla"
+                                        (keyup.enter)="addShelf(newShelf.value); newShelf.value='' ">
+                                </mat-form-field>
+                                <button mat-button type="button" (click)="addShelf(newShelf.value); newShelf.value='' ">+</button>
+            
+                            </form>
+                        </div>
+                    </ng-template>
+                </mat-expansion-panel>
+            </ng-container>
 
-                <form>
-                    <mat-form-field>
-
-                        <mat-select id="roomSelectForShelf" [(ngModel)]="chosenRoomInShelf" name="room_for_shelf"
-                            placeholder="Välj rum">
-                            <ng-container *ngFor="let rm of rooms">
-                                <ng-container *ngIf="rm.branch == chosenBranchInShelf">
-                                    <mat-option [value]="rm.room">
-                                        {{rm.room}}
-                                    </mat-option>
-                                </ng-container>
-                            </ng-container>
-                        </mat-select>
-                    </mat-form-field>
-                </form>
-                <div class="system-list" style="height:385px;">
-                    <mat-chip-list #chipList>
-                        <div *ngFor="let shelf of shelves">
-                            <div *ngIf="shelf.branch == chosenBranchInShelf && shelf.room == chosenRoomInShelf">
-                                <mat-chip>
-                                    {{shelf.shelf}}
-                                    <mat-icon matChipRemove
-                                        (click)="removeShelfConfirmation(shelf.shelf, chosenRoomInShelf, chosenBranchInShelf)">
-                                        cancel</mat-icon>
+            <!-- Handle users -->
+            <ng-container>
+                <mat-expansion-panel closed>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h2>
+                                Användare
+                            </h2>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ng-template matExpansionPanelContent>
+                        <!-- Content -->
+                        <div class="user-list" style="float: left;">
+                            <p style="text-align: left;">
+                                Välj användare som ska bli admins:
+                            </p>
+                            <mat-chip-list #chipList>
+                                <mat-chip *ngFor="let user of users" (click)="selectUser(user)">
+                                    {{user}}
+                                    <br>
                                 </mat-chip>
-
-                            </div>
+                            </mat-chip-list>
                         </div>
-                    </mat-chip-list>
-                </div>
-                <!--  <ul class="system-list">
-                    <div *ngFor="let shelf of shelves">
-                        <div *ngIf="shelf.branch == chosenBranchInShelf
-                    && shelf.room == chosenRoomInShelf">
-                            <li>
-                                {{shelf.shelf}}
-                                <button mat-button (click)="removeShelfConfirmation(shelf.shelf, chosenRoomInShelf, chosenBranchInShelf);">X</button>
-                            </li>
+                        <div class="user-list" style ="float: right;">
+                            <p style="text-align: left;">
+                                Användare som ska bli admins:
+                            </p>
+                            <mat-chip-list #chipList>
+                                <mat-chip *ngFor="let user of selectedUsers">
+                                    {{user}}
+                                    <mat-icon matChipRemove (click)="unSelectUser(user)">cancel</mat-icon>
+                                    <br>
+                                </mat-chip>
+                            </mat-chip-list>             
                         </div>
-                    </div>
-                </ul>-->
-                <form class="example-form">
-                    <mat-form-field class="example-full-width">
-                        <input #newShelf class="add-new" matInput placeholder="Ny hylla"
-                            (keyup.enter)="addShelf(newShelf.value); newShelf.value='' ">
-                    </mat-form-field>
-                    <button mat-button type="button" (click)="addShelf(newShelf.value); newShelf.value='' ">+</button>
+                        <button mat-raised-button typ="button" style="text-align: center; align-items: center; padding: 5px;" (click)="upgradeUsers()">
+                            Uppgradera användare
+                        </button>                      
+                    </ng-template>
+                </mat-expansion-panel>
+            </ng-container>
 
-                </form>
-            </div>
-        </mat-grid-tile>
+        </mat-accordion>
+    </div>
+    
 
-        <!-- Manage users -->
-        <mat-grid-tile>
-            <div class="manageSystemTile">
-                <div class="system-list" style="height:500px;">
-                    <mat-chip-list #chipList>
-                        <mat-chip *ngFor="let user of users">
-                            {{user}}
-                            <mat-icon matChipRemove (click)="removeUserConfirmation(user)">cancel</mat-icon>
-                            <br>
-                        </mat-chip>
-                    </mat-chip-list>
-                </div>
-                <form class="example-form">
-                    <mat-form-field class="example-full-width">
-
-                        <input #newUser class="add-new" matInput placeholder="Ny användare"
-                            (keyup.enter)="addUser(newUser.value); newUser.value='' ">
-                    </mat-form-field>
-                    <button mat-button type="button" (click)="addUser(newUser.value); newUser.value='' ">+</button>
-                </form>
-            </div>
-        </mat-grid-tile>
-
-        <!-- Manage admins -->
-        <mat-grid-tile>
-            <div class="manageSystemTile">
-                <div class="system-list" style="height:500px;">
-                    <mat-chip-list #chipList>
-                        <mat-chip *ngFor="let admin of admins">
-                            {{admin}}
-                            <mat-icon matChipRemove (click)="removeAdminConfirmation(admin)">cancel</mat-icon>
-                            <br>
-                        </mat-chip>
-                    </mat-chip-list>
-                </div>
-                <form class="example-form">
-                    <mat-form-field class="example-full-width">
-
-                        <input #newAdmin class="add-new" matInput placeholder="Ny admin"
-                            (keyup.enter)="addAdmin(newAdmin.value); newAdmin.value='' ">
-                    </mat-form-field>
-                    <button type="button" mat-button (click)="addAdmin(newAdmin.value); newAdmin.value='' ">+</button>
-                </form>
-            </div>
-        </mat-grid-tile>
-
-    </mat-grid-list>
     <div class="alerts">
         <ngb-alert *ngIf="branchConfirmationMessage" type="warning" (close)="branchConfirmationMessage = null">
             {{ branchConfirmationMessage }}
