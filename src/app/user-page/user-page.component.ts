@@ -59,19 +59,6 @@ export class UserPageComponent implements OnInit {
 
     // TODO: Get unnacounted time from back-end
 
-    this.dataService.sendGetRequest("/user/me").subscribe((data: UserData) => {
-      console.log(data);
-      this.user = data;
-      console.log(this.user);
-      this.unaccountedTime = this.user.unaccountedTime;
-      console.log(this.unaccountedTime);
-    })
-
-
-    // TODO: Get materials related to this.user here
-    this.dataService.sendGetRequest("/user/material").subscribe((data: MaterialData[]) => {
-      this.materials = data;
-    })
 
 
     const dialogRef = this.dialog.open(UserPageDialogComponent, {
@@ -83,7 +70,6 @@ export class UserPageComponent implements OnInit {
        user: this.user,
       }
     });
-
     dialogRef.afterClosed().subscribe(result => {
 
       if(result != null ){
@@ -102,10 +88,22 @@ export class UserPageComponent implements OnInit {
       this.user = user;
 
     });
-    
-    //TODO: Hämta unaccounted time och spata till data.unaccounted time.
 
-    //TODO: 
+    this.dataService.sendGetRequest("/user/me").subscribe((data: UserData) => {
+      console.log(data);
+      this.user = data;
+      console.log(this.user);
+      this.unaccountedTime = this.user.unaccountedTime;
+      console.log(this.unaccountedTime);
+    })
+
+
+    this.dataService.sendGetRequest("/user/material").subscribe((data: MaterialData[]) => {
+      console.log(data);
+      this.materials = data;
+      console.log(this.materials);
+    })
+
 
   }
 
@@ -122,6 +120,7 @@ export class UserPageDialogComponent {
     private allDialogRef: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     ) {
+      console.log(data.materials);
     }
 
     // Runs when X-button is clicked
