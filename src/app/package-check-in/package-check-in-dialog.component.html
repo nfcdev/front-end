@@ -2,13 +2,31 @@
 <button style="float:right" mat-raised-button (click)="onNoClick()" *ngIf="!checkOutConfirmed">X</button>
 
 <div mat-dialog-content [formGroup]="checkInPackageForm">
-  <div class="packageCheckInForm" style="height:100%; overflow:auto;" *ngIf="!checkOutConfirmed && !hasDuplicate">
-
-    <mat-form-field>
-      <input class="form-control" name="package" formControlName="package" matInput [(ngModel)]="data.package"
-        placeholder="Paket" (keyup.enter)="addPackage(data.package); data.package =''" />
+  
+  <div
+    class="packageCheckInForm"
+    style="height:100%; overflow:auto;"
+    *ngIf="!checkOutConfirmed"
+  >
+  <mat-form-field>
+      <input class="form-control" name="Diarienummer" matInput formControlName="reference_number"
+        [(ngModel)]="data.reference_number" placeholder="Diarienummer">
     </mat-form-field>
-    <button mat-button (click)="addPackage(data.package); data.package=''">+</button>
+    <button mat-button (click)="addNewPackage(data.reference_number)">+</button>
+    <br>
+  <mat-form-field>
+   
+    <input
+        class="form-control"
+        name="package"
+        formControlName="package"
+        matInput
+        [(ngModel)]="data.package"
+        placeholder="Paket"
+        (keyup.enter)="addPackage(data.package); data.package =''"
+      />
+  </mat-form-field>
+  <button mat-button (click)="addPackage(data.package); data.package=''">+</button>
 
     <mat-chip-list #chipList>
       <mat-chip *ngFor="let package of data.packageMaterials">
@@ -88,18 +106,34 @@
   <div class="packageCheckInButtons" *ngIf="!checkOutConfirmed && !hasDuplicate">
     <button mat-raised-button (click)="onNoClick()">Avbryt</button>
 
-    <button class="btn" mat-raised-button
-      [disabled]="checkInPackageForm.pristine || checkInPackageForm.invalid || data.packageMaterials.length == 0"
-      cdkFocusInitial (click)="onCheckOut()">
+   <!-- <button class="btn" mat-raised-button
+      [disabled]="checkInPackageForm.pristine "
+      cdkFocusInitial (click)="onCheckOut()">-->
+    
+    
+    <button *ngIf="!checkOutConfirmed"
+      class="btn"
+      mat-raised-button
+      [disabled]="checkInPackageForm.pristine"
+      cdkFocusInitial
+      (click)="onConfirm()">
       Checka in
     </button>
     <br />
-  </div>
+    <!--<button 
+      class="btn"
+      mat-raised-button
+      cdkFocusInitial
+      (click)="onConfirmPackage()">
+      Checka in det
+    </button>
+    <br />-->
+  
   <div class="confirmationButtons" *ngIf="checkOutConfirmed">
     <button mat-raised-button style="float: right;" [mat-dialog-close]="data">
       Tillbaka
     </button>
-  </div>
+  
 </div>
 
 

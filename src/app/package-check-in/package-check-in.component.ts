@@ -74,6 +74,7 @@ export class PackageCheckInComponent implements OnInit {
   packages: string[];
   preChosen = false;
 
+  reference_number: string;
   storage_room: String;
   branch: String;
 
@@ -112,6 +113,7 @@ export class PackageCheckInComponent implements OnInit {
         preChosen: this.preChosen,
         packageMaterials: this.packages,
         packageInfo: this.packageInfo,
+        reference_number: this.reference_number ,
 
       }
     });
@@ -168,6 +170,7 @@ export class PackageCheckInDialogComponent implements OnInit {
   checkInPackageForm: FormGroup;
   storage_room_id: Number;
   branch_id: Number;
+  reference_number: string;
 
   shelves: Shelf[];
   materials: TableArticleDataItem[] = [];
@@ -230,7 +233,7 @@ export class PackageCheckInDialogComponent implements OnInit {
     this.checkInPackageForm = this.fb.group({
       package: [''],
       //material_number: ['', Validators.required],
-      //reference_number: ['', Validators.required],
+      reference_number: ['', Validators.required],
       area: [{ value: '', disabled: true }],
       storage_room: [{ value: '', disabled: true }],
       shelf: ['', Validators.required],
@@ -304,10 +307,23 @@ export class PackageCheckInDialogComponent implements OnInit {
       if (this.data.comment !== "" && this.data.comment !== null) {
         post_data["comment"] = this.data.comment;
       }
-      this.dataService.sendPostRequest("/package/check-in", post_data).subscribe((data: any[])=>{
+
+      var package_post_data= {"reference_number":this.reference_number,
+                           "storage_room": this.storage_room_id,
+                          "shelf": this.data.shelf.shelfId};
+                          console.log(package_post_data)
+
+      this.dataService.sendPostRequest("/package", package_post_data).subscribe((data: any[])=>{
       })
+      //this.dataService.sendPostRequest("/package/check-in", post_data).subscribe((data: any[])=>{
+      //})
 
     }
+  }
+
+  onConfirmPackage(): void{
+    this.checkOutConfirmed = true;
+    console.log("skiten funkar")
   }
 
   getShelfId(chosenShelfName) : number {
@@ -329,6 +345,22 @@ export class PackageCheckInDialogComponent implements OnInit {
       // duplicate
     }
   }
+
+  addNewPackage(reference : string) : void {
+    console.log(reference)
+    this.dataService.sendGetRequest("/case?reference_number="+reference).subscribe( (dataPackage: any[])=>{
+    
+      for (var d of dataPackage){
+        if (d.reference_number.includes(reference)){
+        this.reference_number= reference;
+        console.log(this.reference_number)
+      }
+    }
+  })
+  
+  
+  
+}
 
   addMaterials() {
     for (var pg of this.data.packageMaterials){
