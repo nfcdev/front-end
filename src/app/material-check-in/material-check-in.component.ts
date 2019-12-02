@@ -139,6 +139,7 @@ export class MaterialCheckInDialogComponent {
   packages: Package[];
   materialExists: boolean;
   newData: boolean =true;
+  newCase: boolean = false;
 
   
 
@@ -238,11 +239,10 @@ export class MaterialCheckInDialogComponent {
       //If package is added then add it to data for post-request
       if (this.data.package !== "" && this.data.package !== undefined) {
         post_data["package"] = this.data.package;
-        article_data["current_storage_room"]= this.storage_room_id
+        article_data["storage_room"]= this.storage_room_id
         
        this.dataService.sendGetRequest("/package/package_number/"+ this.data.package).subscribe((data: any[])=>{
         article_data["package"] = data["id"];
-         // article_data["shelf"] =data["shelf"];
           
           console.log(article_data)
 
@@ -285,9 +285,18 @@ export class MaterialCheckInDialogComponent {
     } else{
       this.newData = false;
     }
-    console.log(this.newData)
+    
     this.reference_number=newMaterial.substring(0,6);
-    //this.addCase(newMaterial); TODO: FIX THIS WHEN YOU CAN EITHER GET ID OR REQUEST WITH MATERIAL_NO
+    this.dataService.sendGetRequest("/case?reference_number="+this.reference_number).subscribe( (data: any[])=>{
+      for (var d of data){
+        if (this.reference_number.includes(d.reference_number)){
+          this.newCase=false;
+          break;
+        } else{
+          this.newCase = true;
+        }
+      }
+    })
     if (!this.data.selectedMaterials.includes(newMaterial)) { 
       if(newMaterial && newMaterial.length > 0) {
         this.data.selectedMaterials.push(newMaterial);
@@ -329,6 +338,9 @@ export class MaterialCheckInDialogComponent {
     this.data.selectedMaterials.forEach((item, index) => {
       if (item === material) this.data.selectedMaterials.splice(index, 1);
     });
+    this.reference_number = "";
+    this.newCase = false;
+    this.newData = true;
   }
 
   sleep(ms) {

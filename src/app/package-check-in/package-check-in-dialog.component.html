@@ -7,7 +7,11 @@
     style="height:100%; overflow:auto;"
     *ngIf="!checkOutConfirmed"
   >
-
+  <mat-form-field>
+      <input class="form-control" name="Diarienummer" matInput formControlName="reference_number"
+        [(ngModel)]="reference_number" placeholder="Diarienummer">
+    </mat-form-field>
+    <button mat-button (click)="addNewPackage(data.package); data.package=''">+</button>
   <mat-form-field>
     <input
         class="form-control"

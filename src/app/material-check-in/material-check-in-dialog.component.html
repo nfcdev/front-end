@@ -6,14 +6,13 @@
 <h1 mat-dialog-title>Checka in material</h1>
 
 
-<div mat-dialog-content style="position:relative" [formGroup]="checkInForm" *ngIf="!checkOutConfirmed">
+<div mat-dialog-content class="wrapper" style="position:relative" [formGroup]="checkInForm" *ngIf="!checkOutConfirmed">
   
   <mat-form-field readonly>
-  
     <input class="form-control" name="Diarienummer" matInput required formControlName="reference_number"
       [(ngModel)]="reference_number" placeholder="Diarienummer" readonly>
   </mat-form-field>
-  <mat-label class="newReference" style="float:right"> Nytt ärende*</mat-label>
+  <mat-label *ngIf=newCase class="newReference"> Nytt ärende*</mat-label>
   <!-- <mat-form-field>
     <input class="form-control"
     formControlName="reference_number" matInput
@@ -27,6 +26,7 @@
       (keyup.enter)="addMaterial(data.material_number); data.material_number =''">
   </mat-form-field>
   <button mat-button (click)="addMaterial(data.material_number); data.material_number=''">+</button>
+  <mat-label *ngIf=!newData class="newReference" > Nytt material*</mat-label>
 
   <mat-chip-list #chipList>
     <mat-chip *ngFor="let material of data.selectedMaterials">

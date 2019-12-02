@@ -78,6 +78,7 @@ export class PackageCheckInComponent implements OnInit {
   branch: String;
 
   packageInfo: PackageInfo[];
+  reference_number: string;
 
 
 
@@ -107,6 +108,7 @@ export class PackageCheckInComponent implements OnInit {
       // send in data to form to be filled automatically TODO: send in room computer is in
       data:
       {
+        reference_number: this.reference_number,
         area: this.branch,
         storage_room: this.storage_room,
         preChosen: this.preChosen,
@@ -282,6 +284,20 @@ export class PackageCheckInDialogComponent implements OnInit {
       // duplicate
     }
   }
+
+  addNewPackage(reference : string) : void {
+    if (!this.data.packageMaterials.includes(reference)) {
+      if(reference && reference.length > 0) {
+        var package_post_data = {"reference_number": reference,
+        "storage_room": this.storage_room_id,
+        "shelf": this.data.shelf.shelfId}
+      }
+      
+    } else {
+      // duplicate
+    }
+  
+}
 
   addMaterials() {
     for (var pg of this.data.packageMaterials){
