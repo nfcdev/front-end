@@ -89,7 +89,7 @@
     <button mat-raised-button (click)="onNoClick()">Avbryt</button>
 
     <button class="btn" mat-raised-button
-      [disabled]="checkInPackageForm.pristine || checkInPackageForm.invalid || data.packageMaterials.length == 0"
+      [disabled]="checkInPackageForm.pristine || checkInPackageForm.invalid || data.packageMaterials.length == 0"
       cdkFocusInitial (click)="onCheckOut()">
       Checka in
     </button>

@@ -9,7 +9,7 @@ import {map, startWith} from 'rxjs/operators';
 import { StorageRoomStore } from '../storage-room/storage-room-store';
 import { StorageRoomService } from '../storage-room/storage-room.service';
 import { DataService } from "../data.service"
-import { TableArticleDataItem } from '../table-article-data/table-article-data-datasource'
+import { TableArticleDataItem } from '../table-article-data/table-article-data-datasource'
 
 
 export interface DialogData {
