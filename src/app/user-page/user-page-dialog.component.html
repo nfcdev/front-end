@@ -1,9 +1,11 @@
 <h1 mat-dialog-title style="text-align:center; text-decoration: underline;">Användare: {{data.user?.shortcode}} <button style="float: right;" mat-raised-button (click)="onNoClick()">X</button></h1>
 
 
-<p><b>Oförklarlig tid</b> {{data.unaccountedTime}}</p>
+<span><b>Oförklarad tid:</b> </span><span *ngIf="data.user.unaccountedTime != undefined">{{data.user.unaccountedTime}}</span> <span *ngIf="data.user.unaccountedTime == undefined"> 0</span>
+<br>
+<br>
 <b>Utcheckade material</b><br>
-<div mat-dialog-content>
+<div mat-dialog-content *ngIf="materials != undefined">
     <div class="userMaterialList">
         <mat-chip-list #chipList>
             <mat-chip *ngFor="let material of data.materials">
@@ -14,6 +16,8 @@
     </div>
     
 </div>
+
+<p *ngIf="materials == undefined">Du har för närvarande inga material utcheckade.</p>
 <div mat-dialog-actions style="float: right;">
         <button style="float: right;" mat-raised-button [mat-dialog-close]="data">Logga ut</button>
 </div>

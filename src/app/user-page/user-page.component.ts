@@ -5,16 +5,36 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { AuthenticationService } from '../auth/authService';
 import { Router } from '@angular/router';
+import { DataService } from '../data.service'
 
+
+export interface MaterialData {
+  material_number: string;
+  reference_number: string;
+  branch: string;
+  storage_room: string;
+  shelf: string;
+  package_number: string;
+  status: string;
+  timestamp: number;
+  last_modified: number;
+}
+
+export interface UserData {
+  id: number;
+  shortcode: string;
+  role: string;
+  unaccountedTime: number;
+}
 
 export interface DialogData{
-  materials: string[];
+  materials: MaterialData[];
   user: any;
   unaccountedTime: string;
 }
 
 // Temporary test data
-const MATERIALS: string[] = ['55123123', '42123123', '33123123', '42123123', '7723123333', '33123123', '21123'];
+//const MATERIALS: string[] = ['55123123', '42123123', '33123123', '42123123', '7723123333', '33123123', '21123'];
 
 
 @Component({
@@ -23,21 +43,35 @@ const MATERIALS: string[] = ['55123123', '42123123', '33123123', '42123123', '77
   styleUrls: ['./user-page.component.less']
 })
 export class UserPageComponent implements OnInit {
-  materials: string[] = MATERIALS;
-  user : any;
-  unaccountedTime: string;
+
+  materials: MaterialData[];
+  user : UserData;
+  unaccountedTime: number;
+
   constructor(public dialog: MatDialog,
     private authService: AuthenticationService,
     private router: Router,
+    private dataService: DataService,
     ) { }
 
 
   openDialog(): void {
 
     // TODO: Get unnacounted time from back-end
-    // TODO: Get materials related to this.user here
-    this.unaccountedTime = '21d 2h 3m';
 
+    this.dataService.sendGetRequest("/user/me").subscribe((data: UserData) => {
+      console.log(data);
+      this.user = data;
+      console.log(this.user);
+      this.unaccountedTime = this.user.unaccountedTime;
+      console.log(this.unaccountedTime);
+    })
+
+
+    // TODO: Get materials related to this.user here
+    this.dataService.sendGetRequest("/user/material").subscribe((data: MaterialData[]) => {
+      this.materials = data;
+    })
 
 
     const dialogRef = this.dialog.open(UserPageDialogComponent, {
@@ -47,15 +81,12 @@ export class UserPageComponent implements OnInit {
       {
        materials: this.materials,
        user: this.user,
-       unaccountedTime : this.unaccountedTime
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
 
-    
-
-      if(result != null ){ 
+      if(result != null ){
         this.authService.logout();
         this.router.navigateByUrl("/");
       } else {
@@ -72,6 +103,10 @@ export class UserPageComponent implements OnInit {
 
     });
     
+    //TODO: Hämta unaccounted time och spata till data.unaccounted time.
+
+    //TODO: 
+
   }
 
 }

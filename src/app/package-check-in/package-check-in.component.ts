@@ -9,7 +9,7 @@ import {map, startWith} from 'rxjs/operators';
 import { StorageRoomStore } from '../storage-room/storage-room-store';
 import { StorageRoomService } from '../storage-room/storage-room.service';
 import { DataService } from "../data.service"
-import { TableArticleDataItem } from '../table-article-data/table-article-data-datasource'
+import { TableArticleDataItem } from '../table-article-data/table-article-data-datasource'
 
 
 export interface DialogData {
@@ -78,7 +78,6 @@ export class PackageCheckInComponent implements OnInit {
   branch: String;
 
   packageInfo: PackageInfo[];
-  reference_number: string;
 
 
 
@@ -108,7 +107,6 @@ export class PackageCheckInComponent implements OnInit {
       // send in data to form to be filled automatically TODO: send in room computer is in
       data:
       {
-        reference_number: this.reference_number,
         area: this.branch,
         storage_room: this.storage_room,
         preChosen: this.preChosen,
@@ -155,6 +153,11 @@ export class PackageCheckInComponent implements OnInit {
   }
 }
 
+export interface Duplicate {
+  package_number: String;
+  storage_room: String;
+}
+
 @Component({
   selector: 'app-package-check-in-dialog',
   templateUrl: './package-check-in-dialog.component.html',
@@ -172,6 +175,10 @@ export class PackageCheckInDialogComponent implements OnInit {
   packages: string[];
 
   filteredOptions: Observable<PackageInfo[]>;
+
+  duplicatePackages: Duplicate[] = [];
+
+  hasDuplicate = false;
 
 
 
@@ -241,6 +248,44 @@ export class PackageCheckInDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onCheckOut() : void {
+    let hasDuplicate = false;
+
+
+    this.data.packageMaterials.forEach( (val, key, arr )=> {
+      this.dataService.sendGetRequest('/article?package_number=' + val).subscribe( (data: any []) => {
+
+        if(data[0].status === 'checked_in'){
+
+          let temp: Duplicate = {package_number: val, storage_room: data[0].storage_room};
+          this.duplicatePackages.push(temp);
+          hasDuplicate = true;
+
+          
+
+        }
+
+        if(hasDuplicate){
+          this.hasDuplicate = hasDuplicate;
+
+        } else if (!hasDuplicate && Object.is(arr.length - 1, key)) {
+
+          this.onConfirm();
+        }
+      });
+      
+    });
+    
+
+    
+    
+  }
+
+  onCancelDuplicate () : void {
+    this.duplicatePackages = [];
+    this.hasDuplicate = false;
+    
+  }
 
 
   onConfirm(): void {
@@ -284,20 +329,6 @@ export class PackageCheckInDialogComponent implements OnInit {
       // duplicate
     }
   }
-
-  addNewPackage(reference : string) : void {
-    if (!this.data.packageMaterials.includes(reference)) {
-      if(reference && reference.length > 0) {
-        var package_post_data = {"reference_number": reference,
-        "storage_room": this.storage_room_id,
-        "shelf": this.data.shelf.shelfId}
-      }
-      
-    } else {
-      // duplicate
-    }
-  
-}
 
   addMaterials() {
     for (var pg of this.data.packageMaterials){

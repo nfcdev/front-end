@@ -1,36 +1,44 @@
 <div class="page">
-  <div class="page-component">
-    <!-- <app-room-and-branch-name></app-room-and-branch-name> -->
-    <div class="button-row">
-      <div class="button">
-        <app-search-bar [articleTable]="articleTable"></app-search-bar>
-      </div>
+  <br>
+  <div class="page-component" style="height: 200px;">
+      <div class="search-grid">
+        <div class="button">
+          <app-search-bar [articleTable]="articleTable"></app-search-bar>
+        </div>
 
-      <div class="button" [hidden]="viewOnly">
+        <div>
+          <div class="row">
+            <div class="button" [hidden]="viewOnly">
 
-        <app-manage-system-dialog></app-manage-system-dialog>
-      </div>
+              <app-manage-system-dialog></app-manage-system-dialog>
+            </div>
+          </div>
 
-      <div class="button">
-        <app-data-visualization></app-data-visualization>
+          <div class="row">
+            <div class="button">
+              <app-data-visualization></app-data-visualization>
+            </div>
+          </div>
+          <div class="row">
+            <div class="button" [hidden]="viewOnly">
+              <app-check-in-drop-down></app-check-in-drop-down>
+            </div>
+          
+            <div class="button" [hidden]="viewOnly">
+              <button mat-raised-button [matMenuTriggerFor]="checkOutMenu">
+                Checka Ut
+              </button>
+              <mat-menu #checkOutMenu="matMenu">
+                <app-material-check-out></app-material-check-out>
+                <app-check-out-preselected></app-check-out-preselected>
+              </mat-menu>
+            </div>
+          </div>
+        </div>
       </div>
+    <br>
+    <br>
 
-      <!-- <app-storage-event-form></app-storage-event-form> -->
-      <!-- <div><app-check-in-form></app-check-in-form></div> -->
-      <div class="button" [hidden]="viewOnly">
-        <app-check-in-drop-down></app-check-in-drop-down>
-      </div>
-
-      <div class="button" [hidden]="viewOnly">
-        <button mat-raised-button [matMenuTriggerFor]="checkOutMenu">
-          Checka Ut
-        </button>
-        <mat-menu #checkOutMenu="matMenu">
-          <app-material-check-out></app-material-check-out>
-          <app-check-out-preselected></app-check-out-preselected>
-        </mat-menu>
-      </div>
-    </div>
   </div>
 
   <div class="page-component">

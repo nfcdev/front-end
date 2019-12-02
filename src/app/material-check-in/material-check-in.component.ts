@@ -123,6 +123,10 @@ export class MaterialCheckInComponent implements OnInit {
 
 
 }
+export interface Duplicate {
+  material_number: String;
+  storage_room: String;
+}
 
 @Component({
   selector: 'app-material-check-in-dialog',
@@ -140,6 +144,10 @@ export class MaterialCheckInDialogComponent {
   materialExists: boolean;
   newData: boolean =true;
   newCase: boolean = false;
+
+  duplicateMaterials: Duplicate[] = [];
+
+  hasDuplicate: boolean = false;
 
   
 
@@ -184,7 +192,7 @@ export class MaterialCheckInDialogComponent {
     // create variables and validators for form fields
     this.checkInForm = this.fb.group({
       material_number: [''],
-      reference_number: ['', Validators.required], //Should always be pre-filled?
+     // reference_number: [''], //Should always be pre-filled?
       branch: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
       shelf: ['', Validators.required],
@@ -205,6 +213,36 @@ export class MaterialCheckInDialogComponent {
   onBackButton() : void {
     this.dialogRef.close();
   }
+  onCheckOut() : void {
+    let hasDuplicate = false;
+
+    this.data.selectedMaterials.forEach( (val, key, arr )=> {
+      this.dataService.sendGetRequest('/article?material_number=' + val).subscribe( (data: any []) => {
+        if(data[0].status === 'checked_in'){
+          let temp: Duplicate = {material_number: val, storage_room: data[0].storage_room};
+          this.duplicateMaterials.push(temp);
+          hasDuplicate = true;
+
+          
+
+        }
+
+        if(hasDuplicate){
+          this.hasDuplicate = hasDuplicate;
+        } else if (!hasDuplicate && Object.is(arr.length - 1, key)) { // no duplicate
+          this.onConfirm();
+        }
+      });
+    });
+  
+    
+  }
+  onCancelDuplicate () : void {
+    this.duplicateMaterials = [];
+    this.hasDuplicate = false;
+    
+  }
+
 
   onConfirm() : void {
     this.checkOutConfirmed = true;

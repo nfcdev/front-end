@@ -6,13 +6,16 @@
 <h1 mat-dialog-title>Checka in material</h1>
 
 
-<div mat-dialog-content class="wrapper" style="position:relative" [formGroup]="checkInForm" *ngIf="!checkOutConfirmed">
+<div mat-dialog-content class="wrapper" style="position:relative" [formGroup]="checkInForm" *ngIf="!checkOutConfirmed && !hasDuplicate">
   
   <mat-form-field readonly>
     <input class="form-control" name="Diarienummer" matInput required formControlName="reference_number"
       [(ngModel)]="reference_number" placeholder="Diarienummer" readonly>
   </mat-form-field>
   <mat-label *ngIf=newCase class="newReference"> Nytt ärende*</mat-label>
+
+    
+
   <!-- <mat-form-field>
     <input class="form-control"
     formControlName="reference_number" matInput
@@ -80,9 +83,19 @@
     <button mat-raised-button (click)="onNoClick()">Avbryt</button>
     <button class="btn" mat-raised-button
       [disabled]="checkInForm.pristine || checkInForm.invalid || data.selectedMaterials.length == 0" cdkFocusInitial
-      (click)="onConfirm()">Checka in</button>
+      (click)="onCheckOut()">Checka in</button>
     <br>
   </div>
+</div>
+
+<div mat-dialog-content *ngIf="hasDuplicate && !checkOutConfirmed"> 
+  <div *ngFor="let dupe of duplicateMaterials" style="color: red">
+    Material <app-material-page [material_number]='dupe.material_number'></app-material-page> är för 
+    närvarande incheckat i rum {{dupe.storage_room}}
+  </div>
+  <div style="color: red">Vill du trots det checka in materialet i rum {{data.storage_room}}?</div>
+  <button mat-raised-button  (click)=onCancelDuplicate() >Avbryt</button>
+  <button mat-raised-button (click)=onConfirm()>CHECKA IN</button>
 </div>
 
 <div mat-dialog-content *ngIf="checkOutConfirmed" style="height: 300px; width: auto; overflow:auto;">

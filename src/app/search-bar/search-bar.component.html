@@ -1,3 +1,4 @@
+
 <form class="search-component" [formGroup]="checkInForm" (ngSubmit)="onSubmit()">
     <!--mat-form-field>
         <mat-select [(ngModel)]="category" required formControlName="category" placeholder="Kategori">
@@ -8,6 +9,8 @@
     </mat-form-field>
     <br-->
     <!-- Creates the search-bar component as well as the chip list -->
+ <div class="row">
+
     <div class="search-field">
         <mat-form-field>
             <!-- <mat-chip-list #chipList>
@@ -26,6 +29,7 @@
         </button>
         <br>
 
+
         <mat-checkbox class="search-component" [(ngModel)]="activeMaterials" [ngModelOptions]="{standalone: true}"
             (change)="changeActive()">
             Aktiva material
@@ -35,15 +39,17 @@
             Inaktiva material
         </mat-checkbox>
     </div>
+</div>
 
+    <div class="row" style="height: 100px;">
 
-    <mat-chip-list class="chip-list" #chipList>
-        <mat-chip *ngFor="let option of options" [selectable]="selectable" [removable]="removable"
-            (removed)="remove(option)">
-            {{option.value}}
-            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-        </mat-chip>
-    </mat-chip-list>
-
+      <mat-chip-list class="chip-list" #chipList>
+          <mat-chip *ngFor="let option of options" [selectable]="selectable" [removable]="removable"
+              (removed)="remove(option)">
+              {{option.value}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+      </mat-chip-list>
+    </div>
 
 </form>
