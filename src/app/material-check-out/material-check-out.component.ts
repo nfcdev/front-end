@@ -139,6 +139,7 @@ export class MaterialCheckOutDialogComponent implements OnInit{
         post_data["comment"] = this.comment;
       }
 
+      console.log(post_data);
       this.dataService.sendPostRequest("/article/check-out", post_data).subscribe((data: any[])=>{
       })
 
