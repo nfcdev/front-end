@@ -192,7 +192,7 @@ export class MaterialCheckInDialogComponent {
     // create variables and validators for form fields
     this.checkInForm = this.fb.group({
       material_number: [''],
-     // reference_number: [''], //Should always be pre-filled?
+     reference_number: [''], //Should always be pre-filled?
       branch: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
       shelf: ['', Validators.required],
@@ -215,7 +215,7 @@ export class MaterialCheckInDialogComponent {
   }
   onCheckOut() : void {
     let hasDuplicate = false;
-
+    if (this.newData){
     this.data.selectedMaterials.forEach( (val, key, arr )=> {
       this.dataService.sendGetRequest('/article?material_number=' + val).subscribe( (data: any []) => {
         if(data[0].status === 'checked_in'){
@@ -232,9 +232,12 @@ export class MaterialCheckInDialogComponent {
         } else if (!hasDuplicate && Object.is(arr.length - 1, key)) { // no duplicate
           this.onConfirm();
         }
+      
       });
     });
-  
+    }else{
+      this.onConfirm();
+    }
     
   }
   onCancelDuplicate () : void {
