@@ -103,6 +103,12 @@ import {
   PackageCheckOutComponent,
   PackageCheckOutDialogComponent
 } from "./package-check-out/package-check-out.component";
+import { VisualisationMainComponent } from './visualisation-main/visualisation-main.component';
+import { VisuBarChartComponent } from './visu-bar-chart/visu-bar-chart.component';
+import { VisuPieChartComponent } from './visu-pie-chart/visu-pie-chart.component';
+import { VisuLineChartComponent } from './visu-line-chart/visu-line-chart.component';
+import { VisuPolarAreaChartComponent } from './visu-polar-area-chart/visu-polar-area-chart.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -141,7 +147,12 @@ import {
     PackageCheckOutComponent,
     PackageCheckOutDialogComponent,
     CasePageComponent,
-    CasePageDialogComponent
+    CasePageDialogComponent,
+    VisualisationMainComponent,
+    VisuBarChartComponent,
+    VisuPieChartComponent,
+    VisuLineChartComponent,
+    VisuPolarAreaChartComponent
   ],
   imports: [
     MatDatepickerModule,
@@ -173,7 +184,8 @@ import {
     MatListModule,
     MatTooltipModule,
     MatExpansionModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    ChartsModule
   ],
   providers: [
     MatDatepickerModule,
