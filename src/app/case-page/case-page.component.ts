@@ -14,6 +14,7 @@ export interface DialogData {
   case_info: CaseInfo;
   materials: any[];
   branchData: Branch[];
+  checkedOutMaterials: any[];
 }
 
 
@@ -68,6 +69,8 @@ export class CasePageComponent implements OnInit {
 
   data: any;
 
+  checkedOutMaterials: any[];
+
   constructor(public dialog: MatDialog,
     private dataService: DataService) { }
 
@@ -85,7 +88,7 @@ export class CasePageComponent implements OnInit {
     let timeAddedMin: number = Number.POSITIVE_INFINITY;
     let lastModMax: number = Number.NEGATIVE_INFINITY;
     // Calculates time created and last modified
-    this.materials.forEach((mat) => {
+    this.data.forEach((mat) => {
       if (mat.timestamp < timeAddedMin) {
         timeAddedMin = mat.timestamp;
       }
@@ -155,94 +158,114 @@ export class CasePageComponent implements OnInit {
   }
 
   openDialog(): void {
-    this.materials = this.data;
+    let checkedOutTemp: any[] = [];
+    let checkedInTemp: any[] = [];
+    this.data.forEach((mat) => {
+      if (mat.status == 'checked_out') {
+        checkedOutTemp.push(mat);
+        console.log('utcheckad');
+      } else {
+        checkedInTemp.push(mat);
+        console.log('incheckad');
+      }
+    });
+
+    if(checkedInTemp.length > 0){
+      this.materials = checkedInTemp;
+    } 
+    if(checkedOutTemp.length > 0 ){
+      this.checkedOutMaterials = checkedOutTemp;
+    }
+    
+    console.log(this.materials);
+    console.log(this.checkedOutMaterials)
     // TODO: Get information about the case from the back end here and then send it to the dialog
-    this.case_info = {
-      created_date: '20190123 11.02',
-      time_active: '21d 2h 3min', last_modified: '21d 2h 3min'
-    };
-
-
+    console.log('test');
+    this.case_info = {created_date : '20190202 11.02', time_active: '21d 3h 2m', last_modified: '17d 2h 3m'};
     this.getCaseInfo();
 
+    if (this.materials && this.materials.length > 0) {
+      
 
-    this.branches = [];
-    this.storage_rooms = [];
-    this.shelves = [];
-    this.packages = [];
-    this.branchData = [];
-    // ---------- This code allows us to draw the accordion ------------------------------------------------
 
-    // Finds the unique branches, rooms etc.
-    this.branches = this.materials
-      .map(item => item.branch)
-      .filter((value, index, self) => self.indexOf(value) === index);
-    this.storage_rooms = this.materials
-      .map(item => item.storage_room)
-      .filter((value, index, self) => self.indexOf(value) === index);
-    this.shelves = this.materials
-      .map(item => item.shelf)
-      .filter((value, index, self) => self.indexOf(value) === index);
-    this.packages = this.materials
-      .map(item => item.package)
-      .filter((value, index, self) => self.indexOf(value) === index);
+      this.branches = [];
+      this.storage_rooms = [];
+      this.shelves = [];
+      this.packages = [];
+      this.branchData = [];
+      // ---------- This code allows us to draw the accordion ------------------------------------------------
 
-    //Loops through, for each branch determines which rooms belong there, then which shelves belong in that rooms etc...
-    this.branches.forEach((branch) => {
-      let tempBranch: Branch = { name: branch, storage_rooms: [] };
-      let uniqueRooms: string[] = [];
-      this.materials.forEach((box) => {
-        if (box.branch === branch) {
-          let tempRoom: StorageRoom = { name: box.storage_room, shelves: [] };
-          if (!uniqueRooms.includes(box.storage_room)) {
-            // Find rooms in that branch
-            this.storage_rooms.forEach((storage_room) => {
-              let uniqueShelves: string[] = [];
-              this.materials.forEach((box1) => {
-                if (box1.branch === branch && box1.storage_room === storage_room
-                  && box.storage_room === storage_room) {
-                  let tempShelf: Shelf = { name: box1.shelf, packages: [] };
-                  if (!uniqueShelves.includes(box1.shelf)) {
-                    //Find packages in that shelf
-                    this.shelves.forEach((shelf) => {
-                      let uniquePackages: string[] = [];
-                      this.materials.forEach((box2) => {
-                        if (box2.branch === branch && box2.storage_room === storage_room && box2.shelf === shelf
-                          && box1.shelf === shelf) {
-                          let tempPackage: Package = { name: box2.package, materials: [] };
-                          if (!uniquePackages.includes(box2.package)) {
-                            //Find materials in that package
-                            this.packages.forEach((pack) => {
-                              this.materials.forEach((box3) => {
-                                if (box3.branch === branch && box3.storage_room === storage_room &&
-                                  box3.shelf === shelf && box3.package === pack
-                                  && box2.package === pack) {
-                                  tempPackage.materials.push(box3.material_number);
-                                }
+      // Finds the unique branches, rooms etc.
+      this.branches = this.materials
+        .map(item => item.branch)
+        .filter((value, index, self) => self.indexOf(value) === index);
+      this.storage_rooms = this.materials
+        .map(item => item.storage_room)
+        .filter((value, index, self) => self.indexOf(value) === index);
+      this.shelves = this.materials
+        .map(item => item.shelf)
+        .filter((value, index, self) => self.indexOf(value) === index);
+      this.packages = this.materials
+        .map(item => item.package)
+        .filter((value, index, self) => self.indexOf(value) === index);
+
+      //Loops through, for each branch determines which rooms belong there, then which shelves belong in that rooms etc...
+      this.branches.forEach((branch) => {
+        let tempBranch: Branch = { name: branch, storage_rooms: [] };
+        let uniqueRooms: string[] = [];
+        this.materials.forEach((box) => {
+          if (box.branch === branch) {
+            let tempRoom: StorageRoom = { name: box.storage_room, shelves: [] };
+            if (!uniqueRooms.includes(box.storage_room)) {
+              // Find rooms in that branch
+              this.storage_rooms.forEach((storage_room) => {
+                let uniqueShelves: string[] = [];
+                this.materials.forEach((box1) => {
+                  if (box1.branch === branch && box1.storage_room === storage_room
+                    && box.storage_room === storage_room) {
+                    let tempShelf: Shelf = { name: box1.shelf, packages: [] };
+                    if (!uniqueShelves.includes(box1.shelf)) {
+                      //Find packages in that shelf
+                      this.shelves.forEach((shelf) => {
+                        let uniquePackages: string[] = [];
+                        this.materials.forEach((box2) => {
+                          if (box2.branch === branch && box2.storage_room === storage_room && box2.shelf === shelf
+                            && box1.shelf === shelf) {
+                            let tempPackage: Package = { name: box2.package, materials: [] };
+                            if (!uniquePackages.includes(box2.package)) {
+                              //Find materials in that package
+                              this.packages.forEach((pack) => {
+                                this.materials.forEach((box3) => {
+                                  if (box3.branch === branch && box3.storage_room === storage_room &&
+                                    box3.shelf === shelf && box3.package === pack
+                                    && box2.package === pack) {
+                                    tempPackage.materials.push(box3.material_number);
+                                  }
+                                });
                               });
-                            });
-                            tempShelf.packages.push(tempPackage);
+                              tempShelf.packages.push(tempPackage);
 
-                            uniquePackages.push(box2.package);
+                              uniquePackages.push(box2.package);
+                            }
                           }
-                        }
+                        });
                       });
-                    });
-                    tempRoom.shelves.push(tempShelf);
+                      tempRoom.shelves.push(tempShelf);
 
-                    uniqueShelves.push(box1.shelf);
+                      uniqueShelves.push(box1.shelf);
+                    }
                   }
-                }
+                });
               });
-            });
-            tempBranch.storage_rooms.push(tempRoom);
-            uniqueRooms.push(box.storage_room);
+              tempBranch.storage_rooms.push(tempRoom);
+              uniqueRooms.push(box.storage_room);
+            }
           }
-        }
-      });
+        });
 
-      this.branchData.push(tempBranch);
-    });
+        this.branchData.push(tempBranch);
+      });
+    }
 
     // -------------------------------------------------------------------------------------------------------------
 
@@ -254,7 +277,8 @@ export class CasePageComponent implements OnInit {
       {
         reference_number: this.reference_number,
         case_info: this.case_info,
-        branchData: this.branchData
+        branchData: this.branchData,
+        checkedOutMaterials: this.checkedOutMaterials
 
       }
     });
