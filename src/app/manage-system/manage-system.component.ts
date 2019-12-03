@@ -440,7 +440,7 @@ export class ManageSystemComponent implements OnInit {
     this.dataService.sendGetRequest("/user").subscribe((getUsers: DataUser []) => {
       for (let i=0; i < this.selectedUsers.length; i++) {
         let tempUser: DataUser = getUsers.find(it => it.shortcode === this.selectedUsers[i]);
-        this.dataService.sendPutRequest("/user", {"shortcode": tempUser.shortcode , "role": tempUser.role}).subscribe(data => {
+        this.dataService.sendPutRequest("/user", {"shortcode": tempUser.shortcode , "role": "admin"}).subscribe(data => {
           console.log(data);
         })
       }
