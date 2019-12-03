@@ -17,6 +17,8 @@ export interface DialogData {
   package: string;
   comment: string;
   placement: any;
+  selectedMaterials: String[];
+  preChosen: boolean;
 }
 
 export interface Room {
@@ -27,6 +29,22 @@ export interface Shelf {
   shelfName: String;
   shelfId: number;
 }
+
+export interface DataShelf {
+  current_storage_room: number;
+  id: number;
+  shelf_name: string;
+}
+
+export interface DataPackage {
+  id: number;
+  package_number: string;
+  shelf: number;
+  case: number;
+  current_storage_room: number;
+  unpacked: boolean;
+}
+
 export interface Area {
   areaName: String;
   areaId: number;
@@ -48,11 +66,6 @@ export interface packageData{
     current_storage_room: number
 
 }
-export interface DialogData{
-  selectedMaterials: String[];
-  preChosen: boolean;
-}
-
 
 @Component({
   selector: 'app-material-check-in',
@@ -68,6 +81,8 @@ export class MaterialCheckInComponent implements OnInit {
 
   storage_room: String;
   branch: String;
+
+  materialsAreSameCase: boolean = true;
 
 
   constructor(
@@ -86,33 +101,42 @@ export class MaterialCheckInComponent implements OnInit {
       this.materials = [] as String[];
     }
 
-    const dialogRef = this.dialog.open(MaterialCheckInDialogComponent, {
-      width: '500px',
-      height:'550px',
-      
-
-      data:
-      {branch: this.branch,
-      storage_room: this.storage_room,
-      selectedMaterials: this.materials,
-      preChosen: this.preChosen
+    // Check if the input materials belong to the same case
+    for (let i=0; i < this.materials.length -1; i++) {
+      if (this.materials[i].substring(0,6) !== this.materials[i+1].substring(0,6)) {
+        this.materialsAreSameCase = false;
       }
-    });
+    }
+    var dialogRef;
 
+    if (this.materialsAreSameCase) {
+      dialogRef = this.dialog.open(MaterialCheckInDialogComponent, {
+        width: '500px',
+        height:'550px',
+          
+        data:
+        {branch: this.branch,
+        storage_room: this.storage_room,
+        selectedMaterials: this.materials,
+        preChosen: this.preChosen
+        }
+      });
+    } else {
+      dialogRef = this.dialog.open(FaultyMaterialMessageComponent);
+      this.materialsAreSameCase = true;
+    }  
     // runs every time we close the Modal or submit
     dialogRef.afterClosed().subscribe(result => {
-
-      console.log('The dialog was closed');
-
       if(result != null ){ // if user presses cancel the result is null. TODO: better solution for checking this
 
-       // reset material list
+        // reset material list
       this.materials = [];
       } else {
         console.log('Empty result');
       }
 
-    });
+    });      
+    
   }
 
   ngOnInit() {
@@ -157,9 +181,7 @@ export class MaterialCheckInDialogComponent {
 
   duplicateMaterials: Duplicate[] = [];
 
-  hasDuplicate: boolean = false;
-
-  
+  hasDuplicate: boolean = false;  
 
 
   constructor(
@@ -173,9 +195,21 @@ export class MaterialCheckInDialogComponent {
           this.storage_room_id = currentRoom.id;
       });
 
+      // // Check if the input materials belong to the same case
+      // for (let i=0; i < this.data.selectedMaterials.length -1; i++) {
+      //   if (this.data.selectedMaterials[i].substring(0,6) !== this.data.selectedMaterials[i+1].substring(0,6)) {
+      //     this.materialsAreSameCase = false;
+      //   }
+      // }
+
+      // if (this.materialsAreSameCase) {
+      //   this.reference_number = this.data.selectedMaterials[0].substring(0,6);
+      // }
+
+
       //Get the shelves that belong to the current storage room
-      this.dataService.sendGetRequest("/shelf/storageroom/" + this.storage_room_id).subscribe((data: any[])=>{
-        var tmp_shelves = []
+      this.dataService.sendGetRequest("/shelf/storageroom/" + this.storage_room_id).subscribe((data: DataShelf[])=>{
+        var tmp_shelves: Shelf[] = []
         for (var d of data) {
           var tmp: Shelf = {"shelfName": d.shelf_name,
                             "shelfId": d.id}
@@ -184,9 +218,12 @@ export class MaterialCheckInDialogComponent {
         this.shelves = tmp_shelves;
       })
 
+      console.log("Detta är datan:" );
+      console.log(this.data);
+
       //Get the packages that belong to the current room
-      this.dataService.sendGetRequest("/package/storageroom/" + this.storage_room_id).subscribe((data: any[])=>{
-        var tmp_packages = []
+      this.dataService.sendGetRequest("/package/storageroom/" + this.storage_room_id).subscribe((data: DataPackage[])=>{
+        var tmp_packages: Package [] = [];
         for (var d of data) {
           var tmp: Package = {"packageName": d.package_number,
                             "packageId": d.id}
@@ -440,5 +477,13 @@ export class MaterialCheckInDialogComponent {
     }
   }
 
+}
+
+@Component({
+  selector: 'app-material-check-in-faultymessage',
+  templateUrl: './material-check-in-faultymessage.component.html',
+})
+export class FaultyMaterialMessageComponent {
+  constructor() {}
 }
 
