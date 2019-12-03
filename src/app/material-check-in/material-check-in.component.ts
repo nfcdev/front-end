@@ -89,7 +89,6 @@ export class MaterialCheckInComponent implements OnInit {
     const dialogRef = this.dialog.open(MaterialCheckInDialogComponent, {
       width: '500px',
       height:'550px',
-      
 
       data:
       {branch: this.branch,
