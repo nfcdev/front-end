@@ -362,6 +362,8 @@ export class MaterialCheckInDialogComponent {
         this.data.selectedMaterials.push(newMaterial);
         this.checkInForm.controls['material_number'].reset()
       }
+    } else {
+      // duplicate
     }
   })
   console.log(this.data.selectedMaterials)
@@ -433,8 +435,8 @@ export class MaterialCheckInDialogComponent {
         var tmp: Shelf = {"shelfName": this.getShelfName(data.shelf),
                           "shelfId": data.shelf}
         this.shelves = [{"shelfName": "", "shelfId": 0}]
-        this.data.shelf = this.shelves[0].shelfName;
         this.shelves.push(tmp);
+        this.data.shelf = this.shelves[1].shelfName;
       })
     }
   }
