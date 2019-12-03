@@ -145,7 +145,7 @@ export class PackageCheckInDialogComponent implements OnInit {
   hasPackage: boolean=false;
   newPackage: string;
 
-  shelves: Shelf[];
+  shelves: Shelf[] = [{"shelfName": "", "shelfId": 0}];
   materials: TableArticleDataItem[] = [];
   packages: string[];
   filteredOptions: Observable<PackageInfo[]>;
@@ -167,9 +167,8 @@ export class PackageCheckInDialogComponent implements OnInit {
       for (var d of data) {
         var tmp: Shelf = {"shelfName": d.shelf_name,
                           "shelfId": d.id}
-        tmp_shelves.push(tmp);
+        this.shelves.push(tmp);
       }
-      this.shelves = tmp_shelves;
     })
     
     this.createForm();
