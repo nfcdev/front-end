@@ -15,10 +15,22 @@
     width:15rem;
     opacity: 0;
 }
-.page-component {
-    margin: 50px;
-    width:80%;
 
+.search-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+.page-component {
+
+    width:80%;
+    align-items: center;
 }
 
 .page {
@@ -39,7 +51,9 @@
 .button-row {
     display: flex;
     flex-direction: row;
-    justify-content: centre;
-    position: absolute;
-    right: 10%;
+    align-content: space-between;
+    flex-wrap: wrap;
+    flex-grow: 0;     /* do not grow   - initial value: 0 */
+    flex-shrink: 0;   /* do not shrink - initial value: 1 */
+    flex-basis: 25em; /* width/height  - initial value: auto */
 }

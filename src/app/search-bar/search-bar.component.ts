@@ -5,16 +5,15 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DataService } from '../data.service'
 import { TableArticleDataComponent } from '../table-article-data/table-article-data.component'
 import { AnimationFrameScheduler } from 'rxjs/internal/scheduler/AnimationFrameScheduler';
-import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { log } from 'util';
 
 //import { dataSource, transformData } from '../table-article-data/table-article-data.component'
 
 
 // This creates the type "option" which collects the data from the search
 export interface Option {
-  name: string;
   value: string;
-  category: string;
 }
 
 
@@ -30,12 +29,6 @@ export interface ArticleData {
   last_modified: number;
 }
 
-
-export interface Category {
-  category: string;
-  name: string;
-}
-
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
@@ -44,13 +37,6 @@ export interface Category {
 })
 export class SearchBarComponent {
 
-  searchCategory: Category[] = [{ "category": "Materialnummer", "name": "material_number" },
-  { "category": "Diarienummer", "name": "reference_number" },
-  { "category": "Rum", "name": "storage_room" },
-  { "category": "Hylla", "name": "shelf" },
-  { "category": "Paket", "name": "package_number" }];
-
-  category: string;
   visible = true;
   selectable = true;
   removable = true;
@@ -65,33 +51,24 @@ export class SearchBarComponent {
 
 
   constructor(private dataService: DataService,
-              private fb: FormBuilder) 
-              { 
-                this.createForm();
-              }
+    private fb: FormBuilder) {
+    this.createForm();
+  }
 
-    createForm() {
-      // create variables and validators for form fields
-      this.checkInForm = this.fb.group({
-        category: ['', Validators.required],
-        searchcomponent: [''],
-      });
-  
-    }
+  createForm() {
+    // create variables and validators for form fields
+    this.checkInForm = this.fb.group({
+      searchcomponent: [''],
+    });
+
+  }
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
     // Add our input searchoption
-    if ((value || '').trim() && this.category !== undefined) {
+    if ((value || '').trim()) {
 
-      var cat: Category[] = this.searchCategory.filter(obj => {
-        if (obj.category === this.category) {
-          return obj;
-        }
-      })
-
-
-      var option: Option = { value: value.trim(), name: cat[0].name, category: cat[0].category }
+      var option: Option = { value: value.trim() }
 
       this.options.push(option);
 
@@ -126,7 +103,7 @@ export class SearchBarComponent {
     this.search();
   }
 
-    // Triggers each time checkbox "inactiveMaterials" is changed
+  // Triggers each time checkbox "inactiveMaterials" is changed
   changeInactive() {
     this.activeMaterials = !this.inactiveMaterials;
     this.search();
@@ -136,7 +113,7 @@ export class SearchBarComponent {
     //Loop through options + create string
     var query: String = "?";
     for (var opt of this.options) {
-      query = query + opt.name + "=" + opt.value + "&";
+      query = query + "q" + "=" + opt.value + "&";
     }
 
     return query;
@@ -147,8 +124,8 @@ export class SearchBarComponent {
       return ["checked_in", "checked_out"];
     }
 
-    if (this.inactiveMaterials) {
-      return ["discarded", "processed"];
+    if (this.inactiveMaterials) {
+      return ["discarded", "processed", "incorporated"];
     }
   }
 
@@ -165,7 +142,7 @@ export class SearchBarComponent {
 
   getSearchData(query) {
 
-    this.dataService.sendGetRequest("/article" + query).subscribe((data: ArticleData[]) => {
+    this.dataService.sendGetRequest("/article/search" + query).subscribe((data: ArticleData[]) => {
       this.searchData = this.filterStatus(data);
       this.articleTable.setTableData(this.searchData);
     })

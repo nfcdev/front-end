@@ -6,16 +6,16 @@ import { MaterialCheckBoxService } from '../table-article-data/material-check-bo
 import { StorageRoomStore } from "../storage-room/storage-room-store";
 import { StorageRoomService } from "../storage-room/storage-room.service";
 import { DataService } from "../data.service"
-import { variable } from '@angular/compiler/src/output/output_ast';
+
 
 export interface DialogData {
   material_number: any;
-  reference_number: number;
-  branch: String;
-  storage_room: String;
-  shelf: String;
-  package: String;
-  comment: String;
+  reference_number: string;
+  branch: string;
+  storage_room: string;
+  shelf: string;
+  package: string;
+  comment: string;
   placement: any;
 }
 
@@ -35,7 +35,10 @@ export interface Package {
   packageName: String;
   packageId: number;
 }
+export interface package_shelf{
+  shelf: string;
 
+}
 export interface DialogData{
   selectedMaterials: String[];
   preChosen: boolean;
@@ -120,6 +123,10 @@ export class MaterialCheckInComponent implements OnInit {
 
 
 }
+export interface Duplicate {
+  material_number: String;
+  storage_room: String;
+}
 
 @Component({
   selector: 'app-material-check-in-dialog',
@@ -131,9 +138,16 @@ export class MaterialCheckInDialogComponent {
   checkInForm: FormGroup;
   storage_room_id: Number;
   branch_id: Number;
-
+  reference_number: string;
   shelves: Shelf[];
   packages: Package[];
+  materialExists: boolean;
+  newData: boolean =true;
+  newCase: boolean = false;
+
+  duplicateMaterials: Duplicate[] = [];
+
+  hasDuplicate: boolean = false;
 
   
 
@@ -178,7 +192,7 @@ export class MaterialCheckInDialogComponent {
     // create variables and validators for form fields
     this.checkInForm = this.fb.group({
       material_number: [''],
-      reference_number: ['', Validators.required], //Should always be pre-filled?
+     reference_number: [''], //Should always be pre-filled?
       branch: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
       shelf: ['', Validators.required],
@@ -199,6 +213,39 @@ export class MaterialCheckInDialogComponent {
   onBackButton() : void {
     this.dialogRef.close();
   }
+  onCheckOut() : void {
+    let hasDuplicate = false;
+    if (this.newData){
+    this.data.selectedMaterials.forEach( (val, key, arr )=> {
+      this.dataService.sendGetRequest('/article?material_number=' + val).subscribe( (data: any []) => {
+        if(data[0].status === 'checked_in'){
+          let temp: Duplicate = {material_number: val, storage_room: data[0].storage_room};
+          this.duplicateMaterials.push(temp);
+          hasDuplicate = true;
+
+          
+
+        }
+
+        if(hasDuplicate){
+          this.hasDuplicate = hasDuplicate;
+        } else if (!hasDuplicate && Object.is(arr.length - 1, key)) { // no duplicate
+          this.onConfirm();
+        }
+      
+      });
+    });
+    }else{
+      this.onConfirm();
+    }
+    
+  }
+  onCancelDuplicate () : void {
+    this.duplicateMaterials = [];
+    this.hasDuplicate = false;
+    
+  }
+
 
   onConfirm() : void {
     this.checkOutConfirmed = true;
@@ -209,7 +256,10 @@ export class MaterialCheckInDialogComponent {
   //For check in of existing items
    for (var mat of this.data.selectedMaterials) {
     
-
+    var article_data ={"material_number": mat,  
+                      "description":"",
+                      "comment": "",
+                      "package": ""}
 
     var post_data = {"material_number": mat,
                     "storage_room": this.storage_room_id,
@@ -217,20 +267,43 @@ export class MaterialCheckInDialogComponent {
                     };
 
       //If comment is added then add it to data for post-request
-      if (this.data.comment !== "" && this.data.comment !== null) {
+      if (this.data.comment !== "" && this.data.comment !== undefined) {
         post_data["comment"] = this.data.comment;
+        article_data["comment"] =this.data.comment;
+        article_data["description"] =this.data.comment;
+      }else{
+        post_data["comment"] = "";
+        article_data["comment"] ="";
+        article_data["description"] ="";
       }
 
       //If package is added then add it to data for post-request
       if (this.data.package !== "" && this.data.package !== undefined) {
         post_data["package"] = this.data.package;
-      }
+        article_data["storage_room"]= this.storage_room_id
+        
+       this.dataService.sendGetRequest("/package/package_number/"+ this.data.package).subscribe((data: any[])=>{
+        article_data["package"] = data["id"];
+          
+          console.log(article_data)
 
+       })
+      } else {
+        article_data["shelf"] = this.getShelfId(this.data.shelf)
+        article_data["storage_room"]= this.storage_room_id
+        
+      }
+      
+    }
+    if (!this.newData){
+      console.log(article_data)
+      this.dataService.sendPostRequest("/article/register", article_data).subscribe((data: any[])=>{
+      })
+    }else {
+      console.log(this.newData)
       this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[])=>{
       })
-
     }
-
 
    }
 
@@ -246,17 +319,37 @@ export class MaterialCheckInDialogComponent {
   }
 
   addMaterial(newMaterial : string) : void {
-    //this.addCase(newMaterial); TODO: FIX THIS WHEN YOU CAN EITHER GET ID OR REQUEST WITH MATERIAL_NO
+    
+    this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe( (data: DialogData)=>{
+      if (data[0] != undefined ){
+      this.newData = true;
+    } else{
+      this.newData = false;
+    }
+    
+    this.reference_number=newMaterial.substring(0,6);
+    this.dataService.sendGetRequest("/case?reference_number="+this.reference_number).subscribe( (data: any[])=>{
+      for (var d of data){
+        if (this.reference_number.includes(d.reference_number)){
+          this.newCase=false;
+          break;
+        } else{
+          this.newCase = true;
+        }
+      }
+    })
     if (!this.data.selectedMaterials.includes(newMaterial)) { 
       if(newMaterial && newMaterial.length > 0) {
         this.data.selectedMaterials.push(newMaterial);
         this.checkInForm.controls['material_number'].reset()
-
       }
     } else {
       // duplicate
     }
+  })
+  console.log(this.data.selectedMaterials)
   }
+
 
   getShelfId(chosenShelfName) : number {
     for (var shelf of this.shelves) {
@@ -286,6 +379,9 @@ export class MaterialCheckInDialogComponent {
     this.data.selectedMaterials.forEach((item, index) => {
       if (item === material) this.data.selectedMaterials.splice(index, 1);
     });
+    this.reference_number = "";
+    this.newCase = false;
+    this.newData = true;
   }
 
   sleep(ms) {

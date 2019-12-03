@@ -1,61 +1,55 @@
-<form [formGroup]="checkInForm" (ngSubmit)="onSubmit()">
 
-
-    <mat-form-field>
-        <mat-select
-        [(ngModel)]="category" required formControlName="category" placeholder="Kategori">
+<form class="search-component" [formGroup]="checkInForm" (ngSubmit)="onSubmit()">
+    <!--mat-form-field>
+        <mat-select [(ngModel)]="category" required formControlName="category" placeholder="Kategori">
             <mat-option *ngFor="let cat of searchCategory" [value]="cat.category">
-            {{cat.category}}
+                {{cat.category}}
             </mat-option>
         </mat-select>
     </mat-form-field>
-    <br>
-        
-
-
+    <br-->
     <!-- Creates the search-bar component as well as the chip list -->
-   <div class="search-field">
-    <mat-form-field class="search-component">
-        <!-- <mat-chip-list #chipList>
+ <div class="row">
+
+    <div class="search-field">
+        <mat-form-field>
+            <!-- <mat-chip-list #chipList>
             <mat-chip *ngFor="let option of options" [selectable] = "selectable"
                     [removable]="removable" (removed)="remove(option)">
                 {{option.name}} ({{option.category}})
                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
             </mat-chip> -->
-            <input matInput placeholder="Sök..."
-                    [matChipInputFor]="chipList"
-                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                    (matChipInputTokenEnd)="add($event)"
-                    formControlName="searchcomponent"
-                    >
-        <!-- </mat-chip-list> -->
-    </mat-form-field>
-    <button mat-raised-button class="clear-component" id="clear">
-        Rensa
-    </button>
+            <input matInput placeholder="Sök..." [matChipInputFor]="chipList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
+                formControlName="searchcomponent">
+            <!-- </mat-chip-list> -->
+        </mat-form-field>
+        <button mat-raised-button class="clear-component" id="clear">
+            Rensa
+        </button>
+        <br>
 
-    <mat-checkbox class="search-component" 
-        [(ngModel)]="activeMaterials" 
-        [ngModelOptions]="{standalone: true}"
-        (change)="changeActive()">
-        Aktiva material
-    </mat-checkbox>
-    <mat-checkbox class="search-component" 
-        [(ngModel)]="inactiveMaterials" 
-        [ngModelOptions]="{standalone: true}"
-        (change)="changeInactive()">
-        Inaktiva material
-    </mat-checkbox>
+
+        <mat-checkbox class="search-component" [(ngModel)]="activeMaterials" [ngModelOptions]="{standalone: true}"
+            (change)="changeActive()">
+            Aktiva material
+        </mat-checkbox>
+        <mat-checkbox class="search-component" [(ngModel)]="inactiveMaterials" [ngModelOptions]="{standalone: true}"
+            (change)="changeInactive()">
+            Inaktiva material
+        </mat-checkbox>
     </div>
+</div>
 
+    <div class="row" style="height: 100px;">
 
-    <mat-chip-list #chipList>
-            <mat-chip *ngFor="let option of options" [selectable] = "selectable"
-                    [removable]="removable" (removed)="remove(option)">
-                {{option.value}} ({{option.category}})
-                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-            </mat-chip>
-</mat-chip-list>
-
+      <mat-chip-list class="chip-list" #chipList>
+          <mat-chip *ngFor="let option of options" [selectable]="selectable" [removable]="removable"
+              (removed)="remove(option)">
+              {{option.value}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+      </mat-chip-list>
+    </div>
 
 </form>

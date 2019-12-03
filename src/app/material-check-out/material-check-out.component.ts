@@ -9,7 +9,7 @@ import { DataService } from '../data.service'
 export interface DialogData{
   selectedMaterials: string[];
   preChosen: boolean;
-  material_number: any;
+  material_number: string;
   status: string;
 }
 
@@ -139,6 +139,7 @@ export class MaterialCheckOutDialogComponent implements OnInit{
         post_data["comment"] = this.comment;
       }
 
+      console.log(post_data);
       this.dataService.sendPostRequest("/article/check-out", post_data).subscribe((data: any[])=>{
       })
 

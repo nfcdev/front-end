@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 
 export interface DialogData {
   action: number;
-  material_number: number;
+  material_number: string;
   comment: string;
   shelf: string;
   package: string;
