@@ -13,7 +13,7 @@ import { TableArticleDataItem } from '../table-article-data/table-article-data-d
 import { HttpHeaderResponse } from '@angular/common/http';
 export interface DialogData {
   package: string;
-  reference_number: number;
+  reference_number: string;
   packageMaterials: string[];
   area: string;
   storage_room: string;
