@@ -15,8 +15,8 @@ export class VisuPieChartComponent implements OnInit {
   public pieChartOptions: ChartOptions = {
     responsive: true,
   };
-  public pieChartLabels: Label[] = ['Vapen', 'Bio', 'Finger', 'Drog'];
-  public pieChartData: SingleDataSet = [300, 500, 200, 300];
+  public pieChartLabels: Label[] = ['In-checkad', 'Ut-checkad'];
+  public pieChartData: SingleDataSet = [1, 1];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
   public pieChartPlugins = [];
@@ -25,26 +25,18 @@ export class VisuPieChartComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.sendGetRequest("/article").subscribe((data: any[])=>{
-     let noOfVapen = 0;
-     let noOfDNA = 0;
-     let noOfFinger = 0;
-     let noOfBio = 0;
+      let checkedIn = 0;
+      let checkedOut = 0;
       data.forEach(dataRow => {
-        console.log(dataRow.branch);
-        if (dataRow.branch == 'Vapen'){
-          noOfVapen++;
-          this.pieChartData[0] = noOfVapen;
-        } else if (dataRow.branch == 'Bio-analys'){
-          noOfBio++;
-          this.pieChartData[1] = noOfBio;
-        } else if (dataRow.branch == 'Finger'){
-          noOfFinger++;
-          this.pieChartData[2] = noOfFinger;
-        } else if (dataRow.branch == 'DNA'){
-          noOfDNA++;
-          this.pieChartData[3] = noOfDNA;
+        console.log(dataRow.status);
+        if (dataRow.status === "checked_out") {
+          checkedOut++;
+        } else if (dataRow.status === "checked_in") {
+          checkedIn++;
         }
+        
       });
+      this.pieChartData = [checkedIn, checkedOut];
       this.chart.chart.update();
     })
   }

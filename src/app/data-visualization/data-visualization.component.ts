@@ -17,9 +17,11 @@ export class DataVisualizationComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DataVisualizationDialogComponent, {
-      height: '400px',
-      width: '600px',
-      data: {text: "Här kommer visualisering av data att presenteras, exempelvis:" }
+      height: '98%',
+      width: '100vw',
+      position: {top: '10px', right: '10px'},
+      maxWidth: '95vw',
+      panelClass: 'full-screen-model',
     });
 
     dialogRef.afterClosed().subscribe(result => {

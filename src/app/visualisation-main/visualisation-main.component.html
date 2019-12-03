@@ -1,20 +1,15 @@
-
-    <h1>Data Visualisering!</h1>
-    <br>
-    <br>
     <br><br>
     <div class="gridList">
         <mat-grid-list cols="2" rowHeight="2:1">
                 <mat-grid-tile>
                     <div class="column">
-                        <mat-grid-tile-header>Line chart, items in each department over time
-                        </mat-grid-tile-header>
-                        <app-visu-line-chart></app-visu-line-chart>
+                        <mat-grid-tile-header>Items in each department</mat-grid-tile-header>
+                        <app-visu-polar-area-chart></app-visu-polar-area-chart>
                     </div>
                 </mat-grid-tile>
                 <mat-grid-tile>
                     <div class="column">
-                        <mat-grid-tile-header>Total items in each department currently</mat-grid-tile-header> 
+                        <mat-grid-tile-header>Total items checked-in or checked-out</mat-grid-tile-header> 
                         <app-visu-pie-chart></app-visu-pie-chart>
                     </div>
                 </mat-grid-tile>
@@ -26,8 +21,8 @@
                 </mat-grid-tile>
                 <mat-grid-tile>
                     <div class="column">
-                        <mat-grid-tile-header>Items in each department</mat-grid-tile-header>
-                        <app-visu-polar-area-chart></app-visu-polar-area-chart>
+                        <mat-grid-tile-header>Line chart, items in each department over time</mat-grid-tile-header>
+                        <app-visu-line-chart></app-visu-line-chart>
                     </div>
                 </mat-grid-tile>
         </mat-grid-list>
