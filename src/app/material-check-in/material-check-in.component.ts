@@ -39,6 +39,15 @@ export interface package_shelf{
   shelf: string;
 
 }
+export interface packageData{
+  
+    id: number,
+    package_number: string,
+    shelf: number,
+    case: number,
+    current_storage_room: number
+
+}
 export interface DialogData{
   selectedMaterials: String[];
   preChosen: boolean;
@@ -144,6 +153,7 @@ export class MaterialCheckInDialogComponent {
   materialExists: boolean;
   newData: boolean =true;
   newCase: boolean = false;
+  package_id: Number;
 
   duplicateMaterials: Duplicate[] = [];
 
@@ -259,11 +269,10 @@ export class MaterialCheckInDialogComponent {
     var article_data ={"material_number": mat,  
                       "description":"",
                       "comment": "",
-                      "package": ""}
+   }
 
     var post_data = {"material_number": mat,
-                    "storage_room": this.storage_room_id,
-                    "shelf": this.getShelfId(this.data.shelf)
+                    "storage_room": this.storage_room_id
                     };
 
       //If comment is added then add it to data for post-request
@@ -279,31 +288,42 @@ export class MaterialCheckInDialogComponent {
 
       //If package is added then add it to data for post-request
       if (this.data.package !== "" && this.data.package !== undefined) {
-        post_data["package"] = this.data.package;
+        
         article_data["storage_room"]= this.storage_room_id
         
-       this.dataService.sendGetRequest("/package/package_number/"+ this.data.package).subscribe((data: any[])=>{
-        article_data["package"] = data["id"];
+       this.dataService.sendGetRequest("/package/package_number/"+ this.data.package).subscribe((data: packageData)=>{
+        this.package_id = data["id"];
+        article_data["package"]=this.package_id;
+        post_data["package"] = this.package_id; 
+         
+        if (!this.newData){
           
-          console.log(article_data)
-
+          this.dataService.sendPostRequest("/article/register", article_data).subscribe((data: any[])=>{
+          })
+        }else {
+          console.log(post_data)
+          this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[])=>{
+          })
+        }
        })
       } else {
+        post_data["shelf"] = this.getShelfId(this.data.shelf)
         article_data["shelf"] = this.getShelfId(this.data.shelf)
         article_data["storage_room"]= this.storage_room_id
-        
+        if (!this.newData){
+          console.log(typeof article_data["package"])
+            console.log(article_data); 
+          this.dataService.sendPostRequest("/article/register", article_data).subscribe((data: any[])=>{
+          })
+        }else {
+          console.log(post_data)
+          this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[])=>{
+          })
+        }
       }
       
     }
-    if (!this.newData){
-      console.log(article_data)
-      this.dataService.sendPostRequest("/article/register", article_data).subscribe((data: any[])=>{
-      })
-    }else {
-      console.log(this.newData)
-      this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[])=>{
-      })
-    }
+    
 
    }
 
