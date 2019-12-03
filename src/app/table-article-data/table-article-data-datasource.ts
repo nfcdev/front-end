@@ -72,6 +72,7 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
 
     return data.sort((a, b) => {
       const isAsc = this.sort.direction === 'asc';
+      
       switch (this.sort.active) {
         case 'case_nr': return compare(+a.reference_number, +b.reference_number, isAsc);
         case 'article_nr': return compare(a.material_number, b.material_number, isAsc);
@@ -79,7 +80,8 @@ export class TableArticleDataDataSource extends DataSource<TableArticleDataItem>
         case 'branch': return compare(a.branch, b.branch, isAsc);
         case 'storage_room': return compare(a.storage_room, b.storage_room, isAsc);
         case 'shelf': return compare(a.shelf, b.shelf, isAsc);
-        case 'last_modified': return compare(+a.last_modified, +b.last_modified, isAsc);
+        case 'last_modified':
+          return compare(Date.parse(a.last_modified.toString()), Date.parse(b.last_modified.toString()), isAsc);
 
         default: return 0;
       }
