@@ -89,7 +89,6 @@ export class MaterialCheckInComponent implements OnInit {
     const dialogRef = this.dialog.open(MaterialCheckInDialogComponent, {
       width: '500px',
       height:'550px',
-      
 
       data:
       {branch: this.branch,
@@ -148,8 +147,8 @@ export class MaterialCheckInDialogComponent {
   storage_room_id: Number;
   branch_id: Number;
   reference_number: string;
-  shelves: Shelf[];
-  packages: Package[];
+  shelves: Shelf[] = [{"shelfName": "", "shelfId": 0}];
+  packages: Package[] = [{"packageName": "", "packageId": 0}];
   materialExists: boolean;
   newData: boolean =true;
   newCase: boolean = false;
@@ -179,9 +178,8 @@ export class MaterialCheckInDialogComponent {
         for (var d of data) {
           var tmp: Shelf = {"shelfName": d.shelf_name,
                             "shelfId": d.id}
-          tmp_shelves.push(tmp);
+          this.shelves.push(tmp);
         }
-        this.shelves = tmp_shelves;
       })
 
       //Get the packages that belong to the current room
@@ -190,9 +188,9 @@ export class MaterialCheckInDialogComponent {
         for (var d of data) {
           var tmp: Package = {"packageName": d.package_number,
                             "packageId": d.id}
-          tmp_packages.push(tmp);
+          this.packages.push(tmp);
         }
-        this.packages = tmp_packages;
+        //this.packages = tmp_packages;
       })
 
       this.createForm();
@@ -202,7 +200,7 @@ export class MaterialCheckInDialogComponent {
     // create variables and validators for form fields
     this.checkInForm = this.fb.group({
       material_number: [''],
-     reference_number: [''], //Should always be pre-filled?
+      reference_number: [''], //Should always be pre-filled?
       branch: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
       shelf: ['', Validators.required],
@@ -412,15 +410,15 @@ export class MaterialCheckInDialogComponent {
     //Sleep needed because focusout-event triggers before data is submitted
     await this.sleep(150);
     var shelf_id = this.getShelfId(this.data.shelf);
-    if (shelf_id !== undefined) {
+    if (shelf_id !== undefined && this.data.shelf !== "") {
       this.dataService.sendGetRequest("/package/shelf/" + shelf_id).subscribe((data: any[])=>{
         var tmp_packages = []
+        this.packages = [{"packageName": "", "packageId": 0}]
         for (var d of data) {
           var tmp: Package = {"packageName": d.package_number,
                             "packageId": d.id}
-          tmp_packages.push(tmp);
+          this.packages.push(tmp);
         }
-        this.packages = tmp_packages;
       })
    }
   }
@@ -429,13 +427,14 @@ export class MaterialCheckInDialogComponent {
     //Sleep needed because focusout-event triggers before data is submitted
     await this.sleep(150);
     var package_id = this.getPackageId(this.data.package);
-    if (package_id !== undefined) {
+    if (package_id !== undefined && this.data.package !== "" )  {
       this.dataService.sendGetRequest("/package/" + package_id).subscribe((data: any)=>{
         var package_shelf = data.shelf
         var tmp_shelves = []
         var tmp: Shelf = {"shelfName": this.getShelfName(data.shelf),
                           "shelfId": data.shelf}
-        this.shelves = [tmp];
+        this.shelves = [{"shelfName": "", "shelfId": 0}]
+        this.shelves.push(tmp);
       })
     }
   }
