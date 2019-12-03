@@ -24,7 +24,7 @@ export interface Room {
   roomId: number;
 }
 export interface Shelf {
-  shelfName: String;
+  shelfName: string;
   shelfId: number;
 }
 export interface Area {
@@ -181,10 +181,11 @@ export class MaterialCheckInDialogComponent {
           this.shelves.push(tmp);
         }
       })
-
+      console.log(this.storage_room_id);
       //Get the packages that belong to the current room
       this.dataService.sendGetRequest("/package/storageroom/" + this.storage_room_id).subscribe((data: any[])=>{
         var tmp_packages = []
+        console.log("Packages i SR: " + data);
         for (var d of data) {
           var tmp: Package = {"packageName": d.package_number,
                             "packageId": d.id}
@@ -377,7 +378,7 @@ export class MaterialCheckInDialogComponent {
     }
   }
 
-  getShelfName(chosenShelfId) : String {
+  getShelfName(chosenShelfId) : string {
     for (var shelf of this.shelves) {
       if (chosenShelfId === shelf.shelfId) {
         return shelf.shelfName;
@@ -435,6 +436,7 @@ export class MaterialCheckInDialogComponent {
                           "shelfId": data.shelf}
         this.shelves = [{"shelfName": "", "shelfId": 0}]
         this.shelves.push(tmp);
+        this.data.shelf = this.shelves[1].shelfName;
       })
     }
   }
