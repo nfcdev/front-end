@@ -10,7 +10,7 @@ import { DataService } from '../data.service';
 })
 export class VisuPolarAreaChartComponent implements OnInit {
 
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+  @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
 
   public polarAreaChartLabels: Label[] = ['Vapen', 'Bio', 'Finger', 'Drog', 'Brand'];
   public polarAreaChartData: SingleDataSet = [50, 80, 40, 60, 20];
@@ -21,18 +21,18 @@ export class VisuPolarAreaChartComponent implements OnInit {
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    let LabelList : Label[] = [];
+    let LabelList: Label[] = [];
     let branchIDList = [];
     let DataList: SingleDataSet = [];
-    this.dataService.sendGetRequest("/branch").subscribe((data: any[])=>{
+    this.dataService.sendGetRequest("/branch").subscribe((data: any[]) => {
       console.log(data);
       data.forEach(dataRow => {
         LabelList.push(dataRow.name)
         branchIDList.push(dataRow.id);
       });
       this.polarAreaChartLabels = LabelList;
-      for (var id of branchIDList){
-        this.dataService.sendGetRequest("/article/branch/"+ id ).subscribe((data: any[])=>{
+      for (var id of branchIDList) {
+        this.dataService.sendGetRequest("/article/branch/" + id).subscribe((data: any[]) => {
           DataList.push(data.length);
         })
       }

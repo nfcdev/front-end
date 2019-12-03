@@ -10,7 +10,7 @@ import { DataService } from '../data.service';
 })
 export class VisuPieChartComponent implements OnInit {
 
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+  @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
 
   public pieChartOptions: ChartOptions = {
     responsive: true,
@@ -24,7 +24,7 @@ export class VisuPieChartComponent implements OnInit {
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    this.dataService.sendGetRequest("/article").subscribe((data: any[])=>{
+    this.dataService.sendGetRequest("/article").subscribe((data: any[]) => {
       let checkedIn = 0;
       let checkedOut = 0;
       data.forEach(dataRow => {
@@ -34,7 +34,7 @@ export class VisuPieChartComponent implements OnInit {
         } else if (dataRow.status === "checked_in") {
           checkedIn++;
         }
-        
+
       });
       this.pieChartData = [checkedIn, checkedOut];
       this.chart.chart.update();
