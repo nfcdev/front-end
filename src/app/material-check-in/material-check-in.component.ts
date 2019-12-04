@@ -230,11 +230,11 @@ export class MaterialCheckInDialogComponent {
         console.log("Hämtat alla paket");
         if (this.reference_number) {
           for (var p of data) {
-            this.dataService.sendGetRequest("/case/" + p.case).subscribe((getCase: Case) => {
+            this.dataService.sendGetRequest("/case/" + p.case).subscribe((getCase: Case []) => {
               console.log("Kollat ett paket");
               console.log(getCase);
               console.log(this.reference_number);
-              if (getCase.reference_number === this.reference_number) {
+              if (getCase[0].reference_number === this.reference_number) {
                 console.log("Pushar paket");
                 this.packages.push({packageName: p.package_number, packageId: p.id});
               }
