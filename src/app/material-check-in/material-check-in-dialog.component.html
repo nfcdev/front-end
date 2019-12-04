@@ -30,6 +30,7 @@
   </mat-form-field>
   <button mat-button (click)="addMaterial(data.material_number); data.material_number=''">+</button>
   <mat-label *ngIf=!newData class="newReference" > Nytt material*</mat-label>
+  <mat-label *ngIf=!validInputMaterial class="newReference" style="color:red;" > <br>Ej korrekt materialnummer*</mat-label>
 
   <mat-chip-list #chipList>
     <mat-chip *ngFor="let material of data.selectedMaterials">
@@ -62,16 +63,24 @@
     </mat-select>
   </mat-form-field>
   <br>
-
-  <mat-form-field>
+  <mat-form-field [hidden]="newPackageBox">
     <mat-select formControlName="package" [(ngModel)]="data.package" name="package" placeholder="Paket">
       <mat-option *ngFor="let pg of packages" [value]="pg.packageName">
         {{pg.packageName}}
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field [hidden]="!newPackageBox">
+      <input matInput class="form-control" formControlName="package" 
+      [(ngModel)]="data.package" name="package" placeholder="Paket"
+      (keyup.enter)="addNewPackage(data.package)">
+  </mat-form-field>
+  <mat-label *ngIf=newPackage class="newReference" > Nytt paket*</mat-label>
   <br>
-
+  <mat-checkbox [(ngModel)]="newPackageBox" [ngModelOptions]="{standalone: true}" [labelPosition]="after">
+    Nytt paket:
+  </mat-checkbox>
+  <br>
   <mat-form-field>
     <textarea matInput class="form-control" formControlName="comment" [(ngModel)]="data.comment" name="comment"
       placeholder="Lämna en anteckning"></textarea>

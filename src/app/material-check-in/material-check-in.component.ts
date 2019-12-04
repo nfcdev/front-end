@@ -182,7 +182,10 @@ export class MaterialCheckInDialogComponent {
   materialExists: boolean;
   newData: boolean =true;
   newCase: boolean = false;
+  newPackage: boolean = false;
+  validInputMaterial: boolean = true;
   package_id: Number;
+  newPackageBox: boolean;
 
   duplicateMaterials: Duplicate[] = [];
 
@@ -251,7 +254,7 @@ export class MaterialCheckInDialogComponent {
       branch: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
       shelf: ['', Validators.required],
-      package: [''],
+      package: [{value: '', disabled: this.newPackage}],
       comment: ['']
     });
 
@@ -387,16 +390,22 @@ export class MaterialCheckInDialogComponent {
     if (Number(material.substring(0,6)) && material.substring(6,7) === '-' && Number(material.substring(7))) { // Checks format
       if (this.data.selectedMaterials[0]) { // If we already have materials selected
         if (this.data.selectedMaterials[0].substring(0,6) === material.substring(0,6)) { // Checks that it is the right case
-          return true;
+          this.validInputMaterial = true;
         } else {
-          return false;
+          this.validInputMaterial = false;
         }
       } else { // If there are no materials selected, ergo a new material
-        return true;
+        this.validInputMaterial = true;
       }
     } else {
-      return false;
+      this.validInputMaterial = false;
     }
+    return this.validInputMaterial;
+  }
+
+  addNewPackage(newPackage: string) : void {
+    this.newPackage = true;
+    this.checkInForm.get('package').disable();
   }
 
   addMaterial(newMaterial : string) : void {
@@ -428,6 +437,8 @@ export class MaterialCheckInDialogComponent {
         // duplicate
       }
       })
+    } else {
+
     }
 
     
