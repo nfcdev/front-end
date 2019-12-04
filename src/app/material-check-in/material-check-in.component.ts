@@ -58,13 +58,16 @@ export interface package_shelf{
 
 }
 export interface packageData{
-  
     id: number,
     package_number: string,
     shelf: number,
     case: number,
     current_storage_room: number
+}
 
+export interface Case {
+  id: number;
+  reference_number: string;
 }
 
 @Component({
@@ -109,7 +112,7 @@ export class MaterialCheckInComponent implements OnInit {
     }
     var dialogRef;
 
-    if (this.materialsAreSameCase) {
+    if (this.materialsAreSameCase) { // Opens the normal dialog for checking in material(s)
       dialogRef = this.dialog.open(MaterialCheckInDialogComponent, {
         width: '500px',
         height:'550px',
@@ -121,7 +124,7 @@ export class MaterialCheckInComponent implements OnInit {
         preChosen: this.preChosen
         }
       });
-    } else {
+    } else { // Opens a warningmessage when trying to check in materials from different cases
       dialogRef = this.dialog.open(FaultyMaterialMessageComponent);
       this.materialsAreSameCase = true;
     }  
@@ -133,6 +136,7 @@ export class MaterialCheckInComponent implements OnInit {
       this.materials = [];
       } else {
         console.log('Empty result');
+        this.materialsAreSameCase = true;
       }
 
     });      
@@ -173,7 +177,8 @@ export class MaterialCheckInDialogComponent {
   branch_id: Number;
   reference_number: string;
   shelves: Shelf[];
-  packages: Package[];
+  packages: Package[] = [];
+  dataPackages: DataPackage [];
   materialExists: boolean;
   newData: boolean =true;
   newCase: boolean = false;
@@ -195,16 +200,13 @@ export class MaterialCheckInDialogComponent {
           this.storage_room_id = currentRoom.id;
       });
 
-      // // Check if the input materials belong to the same case
-      // for (let i=0; i < this.data.selectedMaterials.length -1; i++) {
-      //   if (this.data.selectedMaterials[i].substring(0,6) !== this.data.selectedMaterials[i+1].substring(0,6)) {
-      //     this.materialsAreSameCase = false;
-      //   }
-      // }
-
-      // if (this.materialsAreSameCase) {
-      //   this.reference_number = this.data.selectedMaterials[0].substring(0,6);
-      // }
+      // Earlier control when opening the dialog makes sure that the materials all belong to
+      // the same case. The first 6 digits of the materialnumber is also the reference_number
+      // which is why we can set the reference_number as the substring of the first material 
+      // selected. 
+      if (this.data.selectedMaterials[0]) {
+        this.reference_number = this.data.selectedMaterials[0].substring(0,6);
+      }
 
 
       //Get the shelves that belong to the current storage room
@@ -223,14 +225,24 @@ export class MaterialCheckInDialogComponent {
 
       //Get the packages that belong to the current room
       this.dataService.sendGetRequest("/package/storageroom/" + this.storage_room_id).subscribe((data: DataPackage[])=>{
-        var tmp_packages: Package [] = [];
-        for (var d of data) {
-          var tmp: Package = {"packageName": d.package_number,
-                            "packageId": d.id}
-          tmp_packages.push(tmp);
+        // Sets dataPackages to all the packages available in current room
+        this.dataPackages = data;
+        console.log("Hämtat alla paket");
+        if (this.reference_number) {
+          for (var p of data) {
+            this.dataService.sendGetRequest("/case/" + p.case).subscribe((getCase: Case) => {
+              console.log("Kollat ett paket");
+              console.log(getCase);
+              console.log(this.reference_number);
+              if (getCase.reference_number === this.reference_number) {
+                console.log("Pushar paket");
+                this.packages.push({packageName: p.package_number, packageId: p.id});
+              }
+            })
+          }
         }
-        this.packages = tmp_packages;
       })
+      
 
       this.createForm();
     }
@@ -375,35 +387,54 @@ export class MaterialCheckInDialogComponent {
     return true;
   }
 
-  addMaterial(newMaterial : string) : void {
-    
-    this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe( (data: DialogData)=>{
-      if (data[0] != undefined ){
-      this.newData = true;
-    } else{
-      this.newData = false;
-    }
-    
-    this.reference_number=newMaterial.substring(0,6);
-    this.dataService.sendGetRequest("/case?reference_number="+this.reference_number).subscribe( (data: any[])=>{
-      for (var d of data){
-        if (this.reference_number.includes(d.reference_number)){
-          this.newCase=false;
-          break;
-        } else{
-          this.newCase = true;
+  validMaterial(material: string): boolean {
+    if (Number(material.substring(0,6)) && material.substring(6,7) === '-' && Number(material.substring(7))) { // Checks format
+      if (this.data.selectedMaterials[0]) { // If we already have materials selected
+        if (this.data.selectedMaterials[0].substring(0,6) === material.substring(0,6)) { // Checks that it is the right case
+          return true;
+        } else {
+          return false;
         }
-      }
-    })
-    if (!this.data.selectedMaterials.includes(newMaterial)) { 
-      if(newMaterial && newMaterial.length > 0) {
-        this.data.selectedMaterials.push(newMaterial);
-        this.checkInForm.controls['material_number'].reset()
+      } else { // If there are no materials selected, ergo a new material
+        return true;
       }
     } else {
-      // duplicate
+      return false;
     }
-  })
+  }
+
+  addMaterial(newMaterial : string) : void {
+    if (this.validMaterial(newMaterial)) {
+      this.dataService.sendGetRequest("/article?material_number="+newMaterial).subscribe( (data: DialogData)=>{
+        if (data[0] != undefined ){
+        this.newData = true;
+      } else{
+        this.newData = false;
+      }
+      
+      this.reference_number=newMaterial.substring(0,6);
+      this.dataService.sendGetRequest("/case?reference_number="+this.reference_number).subscribe( (data: any[])=>{
+        for (var d of data){
+          if (this.reference_number.includes(d.reference_number)){
+            this.newCase=false;
+            break;
+          } else{
+            this.newCase = true;
+          }
+        }
+      })
+      if (!this.data.selectedMaterials.includes(newMaterial)) { 
+        if(newMaterial && newMaterial.length > 0) {
+          this.data.selectedMaterials.push(newMaterial);
+          this.checkInForm.controls['material_number'].reset()
+        }
+      } else {
+        // duplicate
+      }
+      })
+    }
+
+    
   console.log(this.data.selectedMaterials)
   }
 
@@ -445,37 +476,61 @@ export class MaterialCheckInDialogComponent {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async updatePackages() {
-    //Sleep needed because focusout-event triggers before data is submitted
-    await this.sleep(150);
-    var shelf_id = this.getShelfId(this.data.shelf);
-    if (shelf_id !== undefined) {
-      this.dataService.sendGetRequest("/package/shelf/" + shelf_id).subscribe((data: any[])=>{
-        var tmp_packages = []
-        for (var d of data) {
-          var tmp: Package = {"packageName": d.package_number,
-                            "packageId": d.id}
-          tmp_packages.push(tmp);
-        }
-        this.packages = tmp_packages;
-      })
-   }
+  // packageSelected(selectedPackage: Package) {
+  //   console.log(selectedPackage);
+  //   var tempId = this.dataPackages.find(it=>it.id === selectedPackage.packageId).shelf;
+  //   var tempName = this.shelves.find(it=>it.shelfId===tempId).shelfName;
+  //   this.shelves = [{shelfId: tempId , shelfName: tempName }];
+  //   console.log("Uppdaterat hyllor!")
+  //   // this.dataService.sendGetRequest("/package/package_number/" + selectedPackage.packageName).subscribe((getPackage: DataPackage) => {
+  //   //   this.shelves = []; 
+  //   //   var tmp: Shelf = this.shelves.find(it => it.shelfId === getPackage.shelf);
+  //   //   this.shelves = [tmp];
+  //   //   console.log("Updated the paket döh");
+  //   // })
+  // }
+
+  shelfSelected(selectedShelf: Shelf) {
+    var tempPackages: Package [] = [];
+    for (var p of this.dataPackages) {
+      if (p.shelf === selectedShelf.shelfId) {
+        tempPackages.push({packageId: p.id, packageName: p.package_number});
+      }
+    }
+    this.packages = tempPackages;
   }
 
-  async updateShelf() {
-    //Sleep needed because focusout-event triggers before data is submitted
-    await this.sleep(150);
-    var package_id = this.getPackageId(this.data.package);
-    if (package_id !== undefined) {
-      this.dataService.sendGetRequest("/package/" + package_id).subscribe((data: any)=>{
-        var package_shelf = data.shelf
-        var tmp_shelves = []
-        var tmp: Shelf = {"shelfName": this.getShelfName(data.shelf),
-                          "shelfId": data.shelf}
-        this.shelves = [tmp];
-      })
-    }
-  }
+  // async updatePackages() {
+  //   //Sleep needed because focusout-event triggers before data is submitted
+  //   await this.sleep(150);
+  //   var shelf_id = this.getShelfId(this.data.shelf);
+  //   if (shelf_id !== undefined) {
+  //     this.dataService.sendGetRequest("/package/shelf/" + shelf_id).subscribe((data: any[])=>{
+  //       var tmp_packages = []
+  //       for (var d of data) {
+  //         var tmp: Package = {"packageName": d.package_number,
+  //                           "packageId": d.id}
+  //         tmp_packages.push(tmp);
+  //       }
+  //       this.packages = tmp_packages;
+  //     })
+  //  }
+  // }
+
+  // async updateShelf() {
+  //   //Sleep needed because focusout-event triggers before data is submitted
+  //   // await this.sleep(150);
+  //   var package_id = this.getPackageId(this.data.package);
+  //   if (package_id !== undefined) {
+  //     this.dataService.sendGetRequest("/package/" + package_id).subscribe((data: DataPackage)=>{
+  //       console.log(data);
+  //       var tmp: Shelf = {"shelfName": this.getShelfName(data.shelf),
+  //                         "shelfId": data.shelf}
+  //       console.log(tmp);
+  //       this.shelves.push(tmp);
+  //     })
+  //   }
+  // }
 
 }
 
