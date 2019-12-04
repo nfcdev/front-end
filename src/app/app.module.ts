@@ -1,3 +1,4 @@
+import {TextFieldModule} from '@angular/cdk/text-field';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material';
 
@@ -155,6 +156,7 @@ import { ChartsModule } from 'ng2-charts';
     VisuPolarAreaChartComponent
   ],
   imports: [
+    TextFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
     BrowserModule,

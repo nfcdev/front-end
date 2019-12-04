@@ -83,7 +83,8 @@
     </div>-->
     <div *ngIf="!checkOutConfirmed">
     <mat-form-field>
-        <textarea matInput class="form-control" name="comment"
+        <br>
+        <textarea cdkTextareaAutosize matInput class="form-control" name="comment"
         formControlName="comment" [(ngModel)]="comment" placeholder="Lämna en anteckning"></textarea>
     </mat-form-field>
     </div>
