@@ -479,41 +479,44 @@ export class MaterialCheckInDialogComponent {
       if (p.shelf === selectedShelf.shelfId) {
         tempPackages.push({packageId: p.id, packageName: p.package_number});
       }
-  async updatePackages() {
-    //Sleep needed because focusout-event triggers before data is submitted
-    await this.sleep(150);
-    var shelf_id = this.getShelfId(this.data.shelf);
-    if (shelf_id !== undefined && this.data.shelf !== "") {
-      this.dataService.sendGetRequest("/package/shelf/" + shelf_id).subscribe((data: any[])=>{
-        var tmp_packages = []
-        this.packages = [{"packageName": "", "packageId": 0}]
-        for (var d of data) {
-          var tmp: Package = {"packageName": d.package_number,
-                            "packageId": d.id}
-          this.packages.push(tmp);
-        }
-      })
-   }
-  }
-
-  async updateShelf() {
-    //Sleep needed because focusout-event triggers before data is submitted
-    await this.sleep(150);
-    var package_id = this.getPackageId(this.data.package);
-    if (package_id !== undefined && this.data.package !== "" )  {
-      this.dataService.sendGetRequest("/package/" + package_id).subscribe((data: any)=>{
-        var package_shelf = data.shelf
-        var tmp_shelves = []
-        var tmp: Shelf = {"shelfName": this.getShelfName(data.shelf),
-                          "shelfId": data.shelf}
-        this.shelves = [{"shelfName": "", "shelfId": 0}]
-        this.shelves.push(tmp);
-        this.data.shelf = this.shelves[1].shelfName;
-      })
-
     }
-    this.packages = tempPackages;
   }
+
+  // async updatePackages() {
+  //   //Sleep needed because focusout-event triggers before data is submitted
+  //   await this.sleep(150);
+  //   var shelf_id = this.getShelfId(this.data.shelf);
+  //   if (shelf_id !== undefined && this.data.shelf !== "") {
+  //     this.dataService.sendGetRequest("/package/shelf/" + shelf_id).subscribe((data: any[])=>{
+  //       var tmp_packages = []
+  //       this.packages = [{"packageName": "", "packageId": 0}]
+  //       for (var d of data) {
+  //         var tmp: Package = {"packageName": d.package_number,
+  //                           "packageId": d.id}
+  //         this.packages.push(tmp);
+  //       }
+  //     })
+  //  }
+  // }
+
+  // async updateShelf() {
+  //   //Sleep needed because focusout-event triggers before data is submitted
+  //   await this.sleep(150);
+  //   var package_id = this.getPackageId(this.data.package);
+  //   if (package_id !== undefined && this.data.package !== "" )  {
+  //     this.dataService.sendGetRequest("/package/" + package_id).subscribe((data: any)=>{
+  //       var package_shelf = data.shelf
+  //       var tmp_shelves = []
+  //       var tmp: Shelf = {"shelfName": this.getShelfName(data.shelf),
+  //                         "shelfId": data.shelf}
+  //       this.shelves = [{"shelfName": "", "shelfId": 0}]
+  //       this.shelves.push(tmp);
+  //       this.data.shelf = this.shelves[1].shelfName;
+  //     })
+
+  //   }
+  //   this.packages = tempPackages;
+  // }
 
   // async updatePackages() {
   //   //Sleep needed because focusout-event triggers before data is submitted
