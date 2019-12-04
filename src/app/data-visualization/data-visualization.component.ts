@@ -38,7 +38,10 @@ export class DataVisualizationComponent implements OnInit {
     });
   }
 
+
+
 }
+
 
 @Component({
   selector: 'app-data-visualization-dialog',

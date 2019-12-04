@@ -6,6 +6,23 @@ import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { StorageRoomStore } from '../storage-room/storage-room-store'
 import { DataService } from '../data.service'
 
+
+export interface ArticleData {
+  material_number: string;
+  reference_number: string;
+  branch: string;
+  storage_room: string;
+  shelf: string;
+  package_number: string;
+  status: string;
+  timestamp: number;
+  last_modified: number;
+}
+export interface ShelfData {
+  id: number;
+  shelf_name: string;
+  current_storage_room: number;
+}
 export interface DialogData{
   selectedMaterials: string[];
   preChosen: boolean;
@@ -139,12 +156,43 @@ export class MaterialCheckOutDialogComponent implements OnInit{
         post_data["comment"] = this.comment;
       }
 
-      console.log(post_data);
-      this.dataService.sendPostRequest("/article/check-out", post_data).subscribe((data: any[])=>{
-      })
 
+      switch (this.data.status) {
+        case "Utcheckat":
+          this.dataService.sendPostRequest("/article/check-out", post_data).subscribe((data: any[])=>{
+          })
+          break;
+        case "Införlivat":
+          console.log(mat);
+          this.dataService.sendGetRequest("/article?material_number="+mat).subscribe((data: ArticleData)=>{
+            var shelf_name = data[0].shelf;
+            this.dataService.sendGetRequest("/shelf/storageroom/"+post_data.storage_room).subscribe((data: ShelfData[])=>{
+              for (var shelf of data) {
+                if (shelf.shelf_name === shelf_name) {
+                  post_data["shelf"] = shelf.id;
+                }
+              }
+              console.log(post_data);
+              this.dataService.sendPostRequest("/article/incorporate", post_data).subscribe((data: any[])=>{
+              })
+            })
+          })
+
+          break;
+        case "Kasserat":
+          this.dataService.sendPostRequest("/article/discard", post_data).subscribe((data: any[])=>{
+          })
+          break;
+        case "Åter":
+          this.dataService.sendPostRequest("/article/process", post_data).subscribe((data: any[])=>{
+          })
+          break;
+        default:
+          this.dataService.sendPostRequest("/article/check-out", post_data).subscribe((data: any[])=>{
+        })
+
+      }
     }
-
   }
 
   addMaterial(newMaterial : string) : void {

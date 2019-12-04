@@ -26,7 +26,7 @@ export interface Room {
   roomId: number;
 }
 export interface Shelf {
-  shelfName: String;
+  shelfName: string;
   shelfId: number;
 }
 
@@ -176,8 +176,8 @@ export class MaterialCheckInDialogComponent {
   storage_room_id: Number;
   branch_id: Number;
   reference_number: string;
-  shelves: Shelf[];
-  packages: Package[] = [];
+  shelves: Shelf[] = [{"shelfName": "", "shelfId": 0}];
+  packages: Package[] = [{"packageName": "", "packageId": 0}];
   dataPackages: DataPackage [];
   materialExists: boolean;
   newData: boolean =true;
@@ -215,13 +215,9 @@ export class MaterialCheckInDialogComponent {
         for (var d of data) {
           var tmp: Shelf = {"shelfName": d.shelf_name,
                             "shelfId": d.id}
-          tmp_shelves.push(tmp);
+          this.shelves.push(tmp);
         }
-        this.shelves = tmp_shelves;
       })
-
-      console.log("Detta är datan:" );
-      console.log(this.data);
 
       //Get the packages that belong to the current room
       this.dataService.sendGetRequest("/package/storageroom/" + this.storage_room_id).subscribe((data: DataPackage[])=>{
@@ -251,7 +247,7 @@ export class MaterialCheckInDialogComponent {
     // create variables and validators for form fields
     this.checkInForm = this.fb.group({
       material_number: [''],
-     reference_number: [''], //Should always be pre-filled?
+      reference_number: [''], //Should always be pre-filled?
       branch: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
       shelf: ['', Validators.required],
@@ -447,7 +443,7 @@ export class MaterialCheckInDialogComponent {
     }
   }
 
-  getShelfName(chosenShelfId) : String {
+  getShelfName(chosenShelfId) : string {
     for (var shelf of this.shelves) {
       if (chosenShelfId === shelf.shelfId) {
         return shelf.shelfName;
@@ -476,19 +472,6 @@ export class MaterialCheckInDialogComponent {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  // packageSelected(selectedPackage: Package) {
-  //   console.log(selectedPackage);
-  //   var tempId = this.dataPackages.find(it=>it.id === selectedPackage.packageId).shelf;
-  //   var tempName = this.shelves.find(it=>it.shelfId===tempId).shelfName;
-  //   this.shelves = [{shelfId: tempId , shelfName: tempName }];
-  //   console.log("Uppdaterat hyllor!")
-  //   // this.dataService.sendGetRequest("/package/package_number/" + selectedPackage.packageName).subscribe((getPackage: DataPackage) => {
-  //   //   this.shelves = []; 
-  //   //   var tmp: Shelf = this.shelves.find(it => it.shelfId === getPackage.shelf);
-  //   //   this.shelves = [tmp];
-  //   //   console.log("Updated the paket döh");
-  //   // })
-  // }
 
   shelfSelected(selectedShelf: Shelf) {
     var tempPackages: Package [] = [];
@@ -496,6 +479,38 @@ export class MaterialCheckInDialogComponent {
       if (p.shelf === selectedShelf.shelfId) {
         tempPackages.push({packageId: p.id, packageName: p.package_number});
       }
+  async updatePackages() {
+    //Sleep needed because focusout-event triggers before data is submitted
+    await this.sleep(150);
+    var shelf_id = this.getShelfId(this.data.shelf);
+    if (shelf_id !== undefined && this.data.shelf !== "") {
+      this.dataService.sendGetRequest("/package/shelf/" + shelf_id).subscribe((data: any[])=>{
+        var tmp_packages = []
+        this.packages = [{"packageName": "", "packageId": 0}]
+        for (var d of data) {
+          var tmp: Package = {"packageName": d.package_number,
+                            "packageId": d.id}
+          this.packages.push(tmp);
+        }
+      })
+   }
+  }
+
+  async updateShelf() {
+    //Sleep needed because focusout-event triggers before data is submitted
+    await this.sleep(150);
+    var package_id = this.getPackageId(this.data.package);
+    if (package_id !== undefined && this.data.package !== "" )  {
+      this.dataService.sendGetRequest("/package/" + package_id).subscribe((data: any)=>{
+        var package_shelf = data.shelf
+        var tmp_shelves = []
+        var tmp: Shelf = {"shelfName": this.getShelfName(data.shelf),
+                          "shelfId": data.shelf}
+        this.shelves = [{"shelfName": "", "shelfId": 0}]
+        this.shelves.push(tmp);
+        this.data.shelf = this.shelves[1].shelfName;
+      })
+
     }
     this.packages = tempPackages;
   }

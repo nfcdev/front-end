@@ -62,6 +62,24 @@ export class SearchBarComponent {
     });
 
   }
+
+  swedishToEnglish(value: string) :string {
+    switch(value.toLowerCase() as any) {
+      case "incheckad":
+        return "checked_in"
+      case "utcheckad":
+        return "checked_out"
+      case "införlivat":
+        return "incorporated"
+      case "kasserat":
+        return "discarded";
+      case "åter":
+        return "processed";
+      default:
+        return value;
+      }
+  }
+
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
@@ -69,6 +87,7 @@ export class SearchBarComponent {
     if ((value || '').trim()) {
 
       var option: Option = { value: value.trim() }
+      option.value = option.value;
 
       this.options.push(option);
 
@@ -113,7 +132,7 @@ export class SearchBarComponent {
     //Loop through options + create string
     var query: String = "?";
     for (var opt of this.options) {
-      query = query + "q" + "=" + opt.value + "&";
+      query = query + "q" + "=" + this.swedishToEnglish(opt.value) + "&";
     }
 
     return query;
