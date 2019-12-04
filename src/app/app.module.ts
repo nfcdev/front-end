@@ -27,7 +27,8 @@ import {
 } from "./storage-event-form/storage-event-form.component";
 import {
   MaterialCheckInComponent,
-  MaterialCheckInDialogComponent
+  MaterialCheckInDialogComponent,
+  FaultyMaterialMessageComponent
 } from "./material-check-in/material-check-in.component";
 
 import { DataVisualizationDialogComponent } from "./data-visualization/data-visualization.component";
@@ -125,6 +126,7 @@ import { ChartsModule } from 'ng2-charts';
     CheckInDropDownComponent,
     MaterialPageComponent,
     MaterialPageDialogComponent,
+    FaultyMaterialMessageComponent,
     PackagePageComponent,
     PackagePageDialogComponent,
     ShelfPageComponent,
@@ -214,7 +216,8 @@ import { ChartsModule } from 'ng2-charts';
     PackageCheckInDialogComponent,
     UserPageDialogComponent,
     PackageCheckOutDialogComponent,
-    CasePageDialogComponent
+    CasePageDialogComponent,
+    FaultyMaterialMessageComponent
   ]
 })
 export class AppModule {}
