@@ -72,7 +72,7 @@
   </mat-form-field>
   <mat-label *ngIf=newPackage class="newReference" > Nytt paket*</mat-label>
   <br>
-  <mat-checkbox [(ngModel)]="newPackageBox" [ngModelOptions]="{standalone: true}" [labelPosition]="after" 
+  <mat-checkbox [(ngModel)]="newPackageBox" [ngModelOptions]="{standalone: true}" 
      (change)="addNewPackage(data.package)">
     Nytt paket:
   </mat-checkbox>
