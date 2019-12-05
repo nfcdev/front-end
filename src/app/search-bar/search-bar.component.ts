@@ -7,6 +7,8 @@ import { TableArticleDataComponent } from '../table-article-data/table-article-d
 import { AnimationFrameScheduler } from 'rxjs/internal/scheduler/AnimationFrameScheduler';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { log } from 'util';
+import { MaterialCheckBoxService } from '../table-article-data/material-check-box.service';
+import { SelectionModel } from '@angular/cdk/collections';
 
 //import { dataSource, transformData } from '../table-article-data/table-article-data.component'
 
@@ -51,7 +53,8 @@ export class SearchBarComponent {
 
 
   constructor(private dataService: DataService,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private materialCheckOutService: MaterialCheckBoxService) {
     this.createForm();
   }
 
@@ -119,12 +122,14 @@ export class SearchBarComponent {
   // Triggers each time checkbox "activeMaterials" is changed
   changeActive() {
     this.inactiveMaterials = !this.activeMaterials;
+    this.articleTable.resetSelection();
     this.search();
   }
 
   // Triggers each time checkbox "inactiveMaterials" is changed
   changeInactive() {
     this.activeMaterials = !this.inactiveMaterials;
+    this.articleTable.resetSelection();
     this.search();
   }
 
