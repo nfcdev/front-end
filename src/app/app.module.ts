@@ -1,5 +1,5 @@
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material';
 
 
 import { BrowserModule } from "@angular/platform-browser";
@@ -111,6 +111,7 @@ import { VisuLineChartComponent } from './visu-line-chart/visu-line-chart.compon
 import { VisuPolarAreaChartComponent } from './visu-polar-area-chart/visu-polar-area-chart.component';
 import { ChartsModule } from 'ng2-charts';
 import { MatPageVisuComponent } from './mat-page-visu/mat-page-visu.component';
+import { TableDataService } from './table-article-data/table-data-service';
 
 @NgModule({
   declarations: [
@@ -201,7 +202,8 @@ import { MatPageVisuComponent } from './mat-page-visu/mat-page-visu.component';
     AuthenticationService,
     StorageRoomStore,
     BranchStore,
-    MaterialCheckBoxService
+    MaterialCheckBoxService,
+    TableDataService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -222,4 +224,4 @@ import { MatPageVisuComponent } from './mat-page-visu/mat-page-visu.component';
     FaultyMaterialMessageComponent
   ]
 })
-export class AppModule {}
+export class AppModule { }
