@@ -62,7 +62,7 @@
     <mat-form-field>
       <br>
       <textarea cdkTextareaAutosize readonly = "{{hasReference}}" matInput class="form-control" formControlName="comment" [(ngModel)]="data.comment" name="comment"
-        placeholder="Lämna en anteckning"></textarea>
+        placeholder="Lämna en anteckning" #input maxlength="255"></textarea>
     </mat-form-field>
     <br />
   </div>
