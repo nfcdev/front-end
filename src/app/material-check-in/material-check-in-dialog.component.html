@@ -78,8 +78,9 @@
   </mat-checkbox>
   <br>
   <mat-form-field>
-    <textarea matInput class="form-control" formControlName="comment" [(ngModel)]="data.comment" name="comment"
-      placeholder="Lämna en anteckning"></textarea>
+  <br>
+    <textarea cdkTextareaAutosize matInput class="form-control" formControlName="comment" [(ngModel)]="data.comment" name="comment"
+      placeholder="Lämna en anteckning" #input maxlength="255"></textarea>
   </mat-form-field>
   <br>
 

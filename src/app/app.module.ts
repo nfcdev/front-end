@@ -1,5 +1,7 @@
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material';
+import {TextFieldModule} from '@angular/cdk/text-field';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material';
+
 
 
 import { BrowserModule } from "@angular/platform-browser";
@@ -160,6 +162,7 @@ import { TableDataService } from './table-article-data/table-data-service';
     MatPageVisuComponent
   ],
   imports: [
+    TextFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
     BrowserModule,
