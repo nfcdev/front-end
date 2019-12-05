@@ -30,6 +30,7 @@
   </mat-form-field>
   <button mat-button (click)="addMaterial(data.material_number); data.material_number=''">+</button>
   <mat-label *ngIf=!newData class="newReference" > Nytt material*</mat-label>
+  <mat-label *ngIf=!validInputMaterial class="newReference" style="color:red;" > <br>Ej korrekt materialnummer*</mat-label>
 
   <mat-chip-list #chipList>
     <mat-chip *ngFor="let material of data.selectedMaterials">
@@ -52,27 +53,30 @@
   </mat-form-field>
   <br>
 
-  <mat-form-field>
-    <mat-select formControlName="package" [(ngModel)]="data.package" name="package" placeholder="Paket"
-      (focusout)="updateShelf()">
-      <mat-option *ngFor="let pg of packages" [value]="pg.packageName">
-        {{pg.packageName}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <br>
+  <!--(focusout)="updateShelf()"  -->
 
   <mat-form-field>
-    <mat-select formControlName="shelf" [(ngModel)]="data.shelf" name="shelf" placeholder="Hylla"
-      (focusout)="updatePackages()">
-      <mat-option *ngFor="let sh of shelves" [value]="sh.shelfName">
+    <mat-select formControlName="shelf" [(ngModel)]="data.shelf" name="shelf" placeholder="Hylla">
+      <mat-option *ngFor="let sh of shelves" [value]="sh.shelfName" (focusout)="shelfSelected(sh)">
         {{sh.shelfName}}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <br>
-
-
+  <mat-form-field [hidden]="newPackageBox">
+    <mat-select formControlName="package" [(ngModel)]="data.package" name="package" placeholder="Paket">
+      <mat-option *ngFor="let pg of packages" [value]="pg.packageName">
+        {{pg.packageName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-label *ngIf=newPackage class="newReference" > Nytt paket*</mat-label>
+  <br>
+  <mat-checkbox [(ngModel)]="newPackageBox" [ngModelOptions]="{standalone: true}" 
+     (change)="addNewPackage(data.package)">
+    Nytt paket:
+  </mat-checkbox>
+  <br>
   <mat-form-field>
   <br>
     <textarea cdkTextareaAutosize matInput class="form-control" formControlName="comment" [(ngModel)]="data.comment" name="comment"
@@ -100,7 +104,7 @@
 </div>
 
 <div mat-dialog-content *ngIf="checkOutConfirmed" style="height: 300px; width: auto; overflow:auto;">
-  Följande material har checkats in <div *ngIf="(data.package && !(data.package == '')); else noPackage"> i paket {{data.package}} </div><ng-template #noPackage> löst </ng-template> på hylla {{data.shelf}} i {{data.storage_room}}: <br>
+  Följande material har checkats in <div *ngIf="((data.package && !(data.package == '')) || newPackage); else noPackage"> i paket {{data.package}} </div><ng-template #noPackage> löst </ng-template> på hylla {{data.shelf}} i {{data.storage_room}}: <br>
   <mat-chip-list #chipList>
     <mat-chip *ngFor="let material of data.selectedMaterials">
       <app-material-page [material_number]='material'></app-material-page>

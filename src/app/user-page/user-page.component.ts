@@ -24,7 +24,7 @@ export interface UserData {
   id: number;
   shortcode: string;
   role: string;
-  unaccountedTime: number;
+  unaccounted_time: number;
 }
 
 export interface DialogData{
@@ -93,7 +93,7 @@ export class UserPageComponent implements OnInit {
       console.log(data);
       this.user = data;
       console.log(this.user);
-      this.unaccountedTime = this.user.unaccountedTime;
+      this.unaccountedTime = this.user.unaccounted_time;
       console.log(this.unaccountedTime);
     })
 

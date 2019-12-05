@@ -294,10 +294,9 @@ this.dataService.sendPostRequest("/package", package_post_data).subscribe((data:
   }
 
   addNewPackage(reference : string) : void {
-        this.reference_number= reference;
-        this.hasReference=true;
-        
-      }
+    this.reference_number= reference;
+    this.hasReference=true;    
+  }
     
 
 
