@@ -240,27 +240,33 @@ export class MaterialCheckInDialogComponent {
     })
 
     //Get the packages that belong to the current room
+
+
+    this.updatePackages();
+    this.createForm();
+  }
+
+
+  updatePackages() {
     this.dataService.sendGetRequest("/package/storageroom/" + this.storage_room_id).subscribe((data: DataPackage[]) => {
       // Sets dataPackages to all the packages available in current room
       this.dataPackages = data;
       console.log("Hämtat alla paket");
       if (this.reference_number) {
         for (var p of data) {
-          this.dataService.sendGetRequest("/case/" + p.case).subscribe((getCase: Case[]) => {
+          const tmpPackage = p;
+          this.dataService.sendGetRequest("/case/" + tmpPackage.case).subscribe((getCase: Case[]) => {
             console.log("Kollat ett paket");
             console.log(getCase);
             console.log(this.reference_number);
             if (getCase[0].reference_number === this.reference_number) {
               console.log("Pushar paket");
-              this.packages.push({ packageName: p.package_number, packageId: p.id });
+              this.packages.push({ packageName: tmpPackage.package_number, packageId: tmpPackage.id });
             }
           })
         }
       }
     })
-
-
-    this.createForm();
   }
 
   createForm() {
@@ -412,7 +418,6 @@ export class MaterialCheckInDialogComponent {
 
   }
 
-
   addCase(currentMaterial: string): boolean {
     this.dataService.sendGetRequest("/article/" + currentMaterial).subscribe((data: any[]) => {
       console.log(data);
@@ -485,7 +490,7 @@ export class MaterialCheckInDialogComponent {
 
     }
 
-
+    this.updatePackages();
     console.log(this.data.selectedMaterials)
   }
 
