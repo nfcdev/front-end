@@ -45,6 +45,13 @@ export interface DataPackage {
   unpacked: boolean;
 }
 
+export interface PostDataPackage {
+  package_number: string;
+  current_storage_room: number;
+  shelf: number;
+  id: number;
+}
+
 export interface Area {
   areaName: String;
   areaId: number;
@@ -177,13 +184,18 @@ export class MaterialCheckInDialogComponent {
   storage_room_id: Number;
   branch_id: Number;
   reference_number: string;
-  shelves: Shelf[] = [{"shelfName": "", "shelfId": 0}];
-  packages: Package[] = [{"packageName": "", "packageId": 0}];
+  // shelves: Shelf[] = [{"shelfName": "", "shelfId": 0}];
+  shelves: Shelf[] = [];
+  // packages: Package[] = [{"packageName": "", "packageId": 0}];
+  packages: Package [] = [];
   dataPackages: DataPackage [];
   materialExists: boolean;
   newData: boolean =true;
   newCase: boolean = false;
+  newPackage: boolean = false;
+  validInputMaterial: boolean = true;
   package_id: Number;
+  newPackageBox: boolean;
 
   duplicateMaterials: Duplicate[] = [];
 
@@ -278,9 +290,6 @@ export class MaterialCheckInDialogComponent {
           let temp: Duplicate = {material_number: val, storage_room: data[0].storage_room};
           this.duplicateMaterials.push(temp);
           hasDuplicate = true;
-
-          
-
         }
 
         if(hasDuplicate){
@@ -333,11 +342,30 @@ export class MaterialCheckInDialogComponent {
       }
 
       //If package is added then add it to data for post-request
-      if (this.data.package !== "" && this.data.package !== undefined) {
+      if (this.newPackage) {
+        article_data["storage_room"]= this.storage_room_id;
+        const packageData = {"reference_number": this.reference_number,
+                             "current_storage_room": this.storage_room_id,
+                             "shelf": this.getShelfId(this.data.shelf)};
+        console.log(packageData);
+        this.dataService.sendPostRequest("/package", packageData).subscribe((data: PostDataPackage)=> {         
+          article_data["package"] = data.id;
+          post_data["package"] = data.id;
+          this.data.package = data.package_number;
+          if (!this.newData) {
+            this.dataService.sendPostRequest("/article/register", article_data).subscribe((data: any [])=> {});
+          } else {
+            console.log("Skickar in skiten");
+            console.log(post_data);
+            this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data:any [])=> {});
+          }
+        })
+
+      } else if (this.data.package !== "" && this.data.package !== undefined) {
         
         article_data["storage_room"]= this.storage_room_id
         
-       this.dataService.sendGetRequest("/package/package_number/"+ this.data.package).subscribe((data: packageData)=>{
+        this.dataService.sendGetRequest("/package/package_number/"+ this.data.package).subscribe((data: packageData)=>{
         this.package_id = data["id"];
         article_data["package"]=this.package_id;
         post_data["package"] = this.package_id; 
@@ -388,17 +416,30 @@ export class MaterialCheckInDialogComponent {
     if (Number(material.substring(0,6)) && material.substring(6,7) === '-' && Number(material.substring(7))) { // Checks format
       if (this.data.selectedMaterials[0]) { // If we already have materials selected
         if (this.data.selectedMaterials[0].substring(0,6) === material.substring(0,6)) { // Checks that it is the right case
-          return true;
+          this.validInputMaterial = true;
         } else {
-          return false;
+          this.validInputMaterial = false;
         }
       } else { // If there are no materials selected, ergo a new material
-        return true;
+        this.validInputMaterial = true;
       }
     } else {
-      return false;
+      this.validInputMaterial = false;
+    }
+    return this.validInputMaterial;
+  }
+
+  addNewPackage(newPackage: string) : void {
+    if (this.newPackage) {
+      this.newPackage = false;
+      this.checkInForm.get('package').enable();
+    } else {
+      this.newPackage = true;
+      this.checkInForm.get('package').disable();
+      this.checkInForm.get('package').setValue('');
     }
   }
+
 
   addMaterial(newMaterial : string) : void {
     if (this.validMaterial(newMaterial)) {
@@ -429,6 +470,8 @@ export class MaterialCheckInDialogComponent {
         // duplicate
       }
       })
+    } else {
+
     }
 
     
