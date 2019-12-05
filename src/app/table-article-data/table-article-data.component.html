@@ -11,7 +11,7 @@
                           [indeterminate]="selection.hasValue() && !isAllSelected()">
             </mat-checkbox>
           </th>
-          <td mat-cell *matCellDef="let row">
+          <td mat-cell *matCellDef="let row" checkbox>
             <mat-checkbox (click)="$event.stopPropagation()"
                           (change)="$event ? selection.toggle(row) : null"
                           [checked]="selection.isSelected(row)">
@@ -22,45 +22,45 @@
 
     <!-- Name Column -->
     <ng-container matColumnDef="case_nr">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Diarienummer</th>
-      <td mat-cell *matCellDef="let row"><app-case-page [reference_number]='row.reference_number'></app-case-page>
-
+      <th mat-header-cell  *matHeaderCellDef style="align-items:center" mat-sort-header arrowPosition="after">&nbsp;  &nbsp;Diarienummer</th>
+      <td mat-cell *matCellDef="let row" ><app-case-page [reference_number]='row.reference_number'></app-case-page>
     </ng-container>
 
     <!-- Id Column -->
     <ng-container matColumnDef="article_nr">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Materialnummer</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>&nbsp;  &nbsp;Materialnummer</th>
       <td mat-cell *matCellDef="let row" class="bold"><app-material-page [material_number]='row.material_number'></app-material-page></td>
     </ng-container>
 
     <ng-container matColumnDef="package_nr">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Paket</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>&nbsp;  &nbsp;Paket</th>
       <td mat-cell *matCellDef="let row"><app-package-page [package]='row.package_number'></app-package-page>
     </ng-container>
 
     <ng-container matColumnDef="branch">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Avdelning</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>&nbsp;  &nbsp;Avdelning</th>
       <td mat-cell *matCellDef="let row">{{row.branch}}</td>
     </ng-container>
 
     <ng-container matColumnDef="storage_room">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Rum</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>&nbsp;  &nbsp;Rum</th>
       <td mat-cell *matCellDef="let row">{{row.storage_room}}</td>
     </ng-container>
 
     <ng-container matColumnDef="shelf">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Hylla</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>&nbsp;  &nbsp;Hylla</th>
       <td mat-cell *matCellDef="let row" class="bold"><app-shelf-page [shelf]='row.shelf' [storage_room]='row.storage_room'></app-shelf-page></td>
     </ng-container>
 
     <ng-container matColumnDef="last_modified">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Senast ändrad</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>&nbsp;  &nbsp;Senast ändrad</th>
       <td mat-cell *matCellDef="let row">{{row.last_modified}}</td>
     </ng-container>
 
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+   
   </table>
 
   <mat-paginator #paginator
