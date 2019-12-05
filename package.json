@@ -1,10 +1,6 @@
 {
   "name": "front-end",
-<<<<<<< HEAD
-  "version": "0.5.0",
-=======
-  "version": "0.6.0",
->>>>>>> 8eb2f423e805f52201dda807264ab934b14e0f3a
+  "version": "0.7.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 9001 --host 0.0.0.0 --poll=2000",
@@ -31,9 +27,11 @@
     "@ng-bootstrap/ng-bootstrap": "^5.1.4",
     "@ngtools/webpack": "^1.2.4",
     "chai": "^4.2.0",
+    "chart.js": "^2.9.3",
     "hammerjs": "^2.0.8",
     "ip": "^1.1.5",
     "mocha": "^6.2.2",
+    "ng2-charts": "^2.3.0",
     "rxjs": "^6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

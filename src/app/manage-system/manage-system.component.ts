@@ -253,6 +253,9 @@ export class ManageSystemComponent implements OnInit {
         // Saves the new branch to back-end and updates the branch-list in front-end.
         this.dataService.sendPostRequest("/branch", {"name": newBranch}).subscribe(data=>{ console.log(data)});
         this.branches.push(newBranch);
+        this.dataService.sendGetRequest("/branch").subscribe((getBranches: DataBranch [] )=> {
+          this.dataBranches = getBranches;
+        });
         this.changeSuccessMessage('Du har lagt till avdelning ' + newBranch + '.');
 
       } else {
@@ -307,6 +310,9 @@ export class ManageSystemComponent implements OnInit {
           // Add the new room to the database.
           this.dataService.sendPostRequest("/storageroom", {"name": newRoom, "branch": this.dataBranches.find(it => it.name == this.chosenBranchInRoom).id}).subscribe(data => {console.log(data)});
           this.rooms.push(temp);
+          this.dataService.sendGetRequest("/storageroom").subscribe((getRooms: DataRoom []) => {
+            this.dataRooms = getRooms;
+          });
           this.changeSuccessMessage('Du har lagt till rum ' + newRoom + '.');
         } else {
           this.changeFailedMessage('Rum ' + newRoom + ' finns redan i denna avdelning.');
@@ -332,7 +338,7 @@ export class ManageSystemComponent implements OnInit {
       this.roomToRemove = room;
       this.roomToRemoveBranch = branch;
     } else {
-      this.changeFailedMessage('Kan inte ta bort rum som innehåller incheckade material');
+      this.changeFailedMessage('Kan inte ta bort rum som innehåller hyllor.');
       this.clearConfirmations();
     }
 
@@ -371,6 +377,9 @@ export class ManageSystemComponent implements OnInit {
                                           + this.dataRooms.find(it => it.name === this.chosenRoomInShelf).id,
                                            {"shelf_name": newShelf}).subscribe();
           this.shelves.push(temp);
+          this.dataService.sendGetRequest("/shelf").subscribe((getShelves: DataShelf[]) => {
+            this.dataShelves = getShelves;
+          });
           this.changeSuccessMessage('Du har lagt till hylla ' + newShelf + '.');
         } else {
           this.changeFailedMessage('Hylla ' + newShelf + ' finns redan i detta rum');
@@ -440,7 +449,7 @@ export class ManageSystemComponent implements OnInit {
     this.dataService.sendGetRequest("/user").subscribe((getUsers: DataUser []) => {
       for (let i=0; i < this.selectedUsers.length; i++) {
         let tempUser: DataUser = getUsers.find(it => it.shortcode === this.selectedUsers[i]);
-        this.dataService.sendPutRequest("/user", {"shortcode": tempUser.shortcode , "role": tempUser.role}).subscribe(data => {
+        this.dataService.sendPutRequest("/user", {"shortcode": tempUser.shortcode , "role": "admin"}).subscribe(data => {
           console.log(data);
         })
       }

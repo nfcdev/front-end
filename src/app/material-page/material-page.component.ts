@@ -17,6 +17,7 @@ export interface EventTable {
   package: string;
   user: string;
   comment: string;
+  abnormal_activity: number;
 }
 
 // Material info fields
@@ -74,11 +75,11 @@ export class MaterialPageComponent implements OnInit {
       this.article_id = data[0].id;
 
       this.dataService.sendGetRequest('/storage-event/article/' + data[0].id).subscribe((events: any[]) => {
-        let sortedEvents : any [] = events.sort( (a, b ) => (a.timestamp > b.timestamp) ? 1 : -1);
+        let sortedEvents : any [] = events.sort( (a, b ) => (a.timestamp < b.timestamp) ? 1 : -1);
         sortedEvents.forEach( (event) => {
           let tempData : EventTable = {date: this.formatDateWithTime(new Date(event.timestamp*1000)), 
-            event: this.convertStatus(event.status), branch: event.branch, room : event.storage_room,
-          shelf: event.shelf, package: event.package, user: event.user, comment: event.comment};
+            event: this.convertStatus(event.action), branch: event.branch, room : event.storage_room,
+          shelf: event.shelf, package: event.package, user: event.user, comment: event.comment, abnormal_activity: event.abnormal_activity_flag };
           this.table_data.push(tempData);
         });
 
@@ -198,7 +199,7 @@ export class MaterialPageComponent implements OnInit {
   templateUrl: './material-page-dialog.component.html',
 })
 export class MaterialPageDialogComponent implements OnInit {
-  displayedColumns = ['comment', 'date', 'event', 'branch', 'room', 'shelf', 'package', 'user'];
+  displayedColumns = ['comment', 'date', 'event', 'branch', 'room', 'shelf', 'package', 'user', 'abnormal_activity'];
   dataSource = this.data.event_data;
   statuses: string[] = STATUSES;
 

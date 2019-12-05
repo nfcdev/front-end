@@ -27,7 +27,8 @@ import {
 } from "./storage-event-form/storage-event-form.component";
 import {
   MaterialCheckInComponent,
-  MaterialCheckInDialogComponent
+  MaterialCheckInDialogComponent,
+  FaultyMaterialMessageComponent
 } from "./material-check-in/material-check-in.component";
 
 import { DataVisualizationDialogComponent } from "./data-visualization/data-visualization.component";
@@ -103,6 +104,13 @@ import {
   PackageCheckOutComponent,
   PackageCheckOutDialogComponent
 } from "./package-check-out/package-check-out.component";
+import { VisualisationMainComponent } from './visualisation-main/visualisation-main.component';
+import { VisuBarChartComponent } from './visu-bar-chart/visu-bar-chart.component';
+import { VisuPieChartComponent } from './visu-pie-chart/visu-pie-chart.component';
+import { VisuLineChartComponent } from './visu-line-chart/visu-line-chart.component';
+import { VisuPolarAreaChartComponent } from './visu-polar-area-chart/visu-polar-area-chart.component';
+import { ChartsModule } from 'ng2-charts';
+import { MatPageVisuComponent } from './mat-page-visu/mat-page-visu.component';
 
 @NgModule({
   declarations: [
@@ -119,6 +127,7 @@ import {
     CheckInDropDownComponent,
     MaterialPageComponent,
     MaterialPageDialogComponent,
+    FaultyMaterialMessageComponent,
     PackagePageComponent,
     PackagePageDialogComponent,
     ShelfPageComponent,
@@ -141,7 +150,13 @@ import {
     PackageCheckOutComponent,
     PackageCheckOutDialogComponent,
     CasePageComponent,
-    CasePageDialogComponent
+    CasePageDialogComponent,
+    VisualisationMainComponent,
+    VisuBarChartComponent,
+    VisuPieChartComponent,
+    VisuLineChartComponent,
+    VisuPolarAreaChartComponent,
+    MatPageVisuComponent
   ],
   imports: [
     MatDatepickerModule,
@@ -173,7 +188,8 @@ import {
     MatListModule,
     MatTooltipModule,
     MatExpansionModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    ChartsModule
   ],
   providers: [
     MatDatepickerModule,
@@ -202,7 +218,8 @@ import {
     PackageCheckInDialogComponent,
     UserPageDialogComponent,
     PackageCheckOutDialogComponent,
-    CasePageDialogComponent
+    CasePageDialogComponent,
+    FaultyMaterialMessageComponent
   ]
 })
 export class AppModule {}

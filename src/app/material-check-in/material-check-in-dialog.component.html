@@ -6,7 +6,14 @@
 <h1 mat-dialog-title>Checka in material</h1>
 
 
-<div mat-dialog-content [formGroup]="checkInForm" *ngIf="!checkOutConfirmed && !hasDuplicate">
+<div mat-dialog-content class="wrapper" style="position:relative" [formGroup]="checkInForm" *ngIf="!checkOutConfirmed && !hasDuplicate">
+  
+  <mat-form-field readonly>
+    <input class="form-control" name="Diarienummer" matInput required formControlName="reference_number"
+      [(ngModel)]="reference_number" placeholder="Diarienummer" readonly>
+  </mat-form-field>
+  <mat-label *ngIf=newCase class="newReference"> Nytt ärende*</mat-label>
+
     
 
   <!-- <mat-form-field>
@@ -15,13 +22,14 @@
     [(ngModel)]="data.reference_number" placeholder="Diarienummer">
   </mat-form-field>
   <br> -->
-
+<br>
   <mat-form-field>
     <input class="form-control" name="material_number" formControlName="material_number" matInput
       [(ngModel)]="data.material_number" placeholder="Materialnummer"
       (keyup.enter)="addMaterial(data.material_number); data.material_number =''">
   </mat-form-field>
   <button mat-button (click)="addMaterial(data.material_number); data.material_number=''">+</button>
+  <mat-label *ngIf=!newData class="newReference" > Nytt material*</mat-label>
 
   <mat-chip-list #chipList>
     <mat-chip *ngFor="let material of data.selectedMaterials">
@@ -44,26 +52,25 @@
   </mat-form-field>
   <br>
 
-  <mat-form-field>
-    <mat-select formControlName="package" [(ngModel)]="data.package" name="package" placeholder="Paket"
-      (focusout)="updateShelf()">
-      <mat-option *ngFor="let pg of packages" [value]="pg.packageName">
-        {{pg.packageName}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <br>
+  <!--(focusout)="updateShelf()"  -->
 
   <mat-form-field>
-    <mat-select formControlName="shelf" [(ngModel)]="data.shelf" name="shelf" placeholder="Hylla"
-      (focusout)="updatePackages()">
-      <mat-option *ngFor="let sh of shelves" [value]="sh.shelfName">
+    <mat-select formControlName="shelf" [(ngModel)]="data.shelf" name="shelf" placeholder="Hylla">
+      <mat-option *ngFor="let sh of shelves" [value]="sh.shelfName" (focusout)="shelfSelected(sh)">
         {{sh.shelfName}}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <br>
 
+  <mat-form-field>
+    <mat-select formControlName="package" [(ngModel)]="data.package" name="package" placeholder="Paket">
+      <mat-option *ngFor="let pg of packages" [value]="pg.packageName">
+        {{pg.packageName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
 
   <mat-form-field>
     <textarea matInput class="form-control" formControlName="comment" [(ngModel)]="data.comment" name="comment"

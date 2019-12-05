@@ -5,11 +5,11 @@
 <br>
 <br>
 <b>Utcheckade material</b><br>
-<div mat-dialog-content *ngIf="materials != undefined">
+<div mat-dialog-content *ngIf="data.materials.length > 0">
     <div class="userMaterialList">
         <mat-chip-list #chipList>
             <mat-chip *ngFor="let material of data.materials">
-                <app-material-page [material_number]="material"></app-material-page>
+                <app-material-page [material_number]="material.material_number"></app-material-page>
                 <br>
             </mat-chip>
         </mat-chip-list>
@@ -17,7 +17,7 @@
     
 </div>
 
-<p *ngIf="materials == undefined">Du har för närvarande inga material utcheckade.</p>
+<p *ngIf="data.materials.length < 1">Du har för närvarande inga material utcheckade.</p>
 <div mat-dialog-actions style="float: right;">
         <button style="float: right;" mat-raised-button [mat-dialog-close]="data">Logga ut</button>
 </div>
