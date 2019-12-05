@@ -70,14 +70,10 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field [hidden]="!newPackageBox">
-      <input matInput class="form-control" formControlName="package" 
-      [(ngModel)]="data.package" name="package" placeholder="Paket"
-      (keyup.enter)="addNewPackage(data.package)">
-  </mat-form-field>
   <mat-label *ngIf=newPackage class="newReference" > Nytt paket*</mat-label>
   <br>
-  <mat-checkbox [(ngModel)]="newPackageBox" [ngModelOptions]="{standalone: true}" [labelPosition]="after">
+  <mat-checkbox [(ngModel)]="newPackageBox" [ngModelOptions]="{standalone: true}" [labelPosition]="after" 
+     (change)="addNewPackage(data.package)">
     Nytt paket:
   </mat-checkbox>
   <br>
@@ -107,7 +103,7 @@
 </div>
 
 <div mat-dialog-content *ngIf="checkOutConfirmed" style="height: 300px; width: auto; overflow:auto;">
-  Följande material har checkats in <div *ngIf="(data.package && !(data.package == '')); else noPackage"> i paket {{data.package}} </div><ng-template #noPackage> löst </ng-template> på hylla {{data.shelf}} i {{data.storage_room}}: <br>
+  Följande material har checkats in <div *ngIf="((data.package && !(data.package == '')) || newPackage); else noPackage"> i paket {{data.package}} </div><ng-template #noPackage> löst </ng-template> på hylla {{data.shelf}} i {{data.storage_room}}: <br>
   <mat-chip-list #chipList>
     <mat-chip *ngFor="let material of data.selectedMaterials">
       <app-material-page [material_number]='material'></app-material-page>
