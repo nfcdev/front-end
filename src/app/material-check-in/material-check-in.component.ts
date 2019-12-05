@@ -6,6 +6,7 @@ import { MaterialCheckBoxService } from '../table-article-data/material-check-bo
 import { StorageRoomStore } from "../storage-room/storage-room-store";
 import { StorageRoomService } from "../storage-room/storage-room.service";
 import { DataService } from "../data.service"
+import { TableDataService } from '../table-article-data/table-data-service';
 
 
 export interface DialogData {
@@ -100,6 +101,7 @@ export class MaterialCheckInComponent implements OnInit {
     public dialog: MatDialog,
     private storageRoomStore: StorageRoomStore,
     private storageRoomService: StorageRoomService,
+    private tableDataService: TableDataService
   ) { }
 
   openDialog(): void {
@@ -138,6 +140,8 @@ export class MaterialCheckInComponent implements OnInit {
     }
     // runs every time we close the Modal or submit
     dialogRef.afterClosed().subscribe(result => {
+      this.tableDataService.refreshData();
+
       if (result != null) { // if user presses cancel the result is null. TODO: better solution for checking this
 
         // reset material list
@@ -413,7 +417,6 @@ export class MaterialCheckInDialogComponent {
 
 
   }
-
 
   addCase(currentMaterial: string): boolean {
     this.dataService.sendGetRequest("/article/" + currentMaterial).subscribe((data: any[]) => {
