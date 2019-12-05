@@ -8,6 +8,7 @@ import { TableArticleDataDataSource, TableArticleDataItem } from './table-articl
 import { MaterialCheckBoxService } from './material-check-box.service';
 import { DataService } from '../data.service';
 import { StorageRoomStore } from '../storage-room/storage-room-store'
+import { TableDataService } from './table-data-service';
 
 
 
@@ -31,8 +32,9 @@ export class TableArticleDataComponent implements OnInit {
   constructor(
     private materialCheckOutService: MaterialCheckBoxService,
     private dataService: DataService,
+    private tableDataService: TableDataService
   ) {
-
+    this.tableDataService.setTable(this);
   }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -109,6 +111,14 @@ export class TableArticleDataComponent implements OnInit {
     this.selection.changed.subscribe(newSelection => {
       this.materialCheckOutService.update(this.selection);
     });
+  }
+
+
+  refresh() {
+    this.dataService.sendGetRequest("/article").subscribe((data: any[]) => {
+      data = this.filterActive(data);
+      this.setTableData(data);
+    })
   }
 
   resetSelection() {
