@@ -111,6 +111,11 @@ export class TableArticleDataComponent implements OnInit {
     });
   }
 
+  resetSelection() {
+
+    this.selection.clear();
+  }
+
 
   setTableData(data) {
     this.dataSource = new TableArticleDataDataSource(this.transformData(data));

@@ -76,7 +76,9 @@ export class MaterialCheckOutComponent implements OnInit {
 
       } else {
         console.log('Empty result');
+        
       }
+
     });
 
   }

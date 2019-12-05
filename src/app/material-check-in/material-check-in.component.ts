@@ -139,6 +139,7 @@ export class MaterialCheckInComponent implements OnInit {
         this.materialsAreSameCase = true;
       }
 
+
     });      
     
   }
