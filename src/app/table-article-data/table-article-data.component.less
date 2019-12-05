@@ -2,9 +2,24 @@
   width: 100%;
 }
 
-.mat-header-cell {
-  font-size: 16px;
+::ng-deep .mat-header-cell {
+  font-size: 18px;
   font-weight: bold;
   color: #336699;
   //background-color: #336699
+  text-align:center;
 }
+::ng-deep .mat-cell{
+  text-align-last:center;
+
+}
+::ng-deep .mat-checkbox{
+  display:flex;
+  justify-content: left;
+}
+
+::ng-deep .mat-sort-header-container {
+  display:flex;
+  justify-content: center;
+}
+

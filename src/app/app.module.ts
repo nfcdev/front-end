@@ -110,6 +110,7 @@ import { VisuPieChartComponent } from './visu-pie-chart/visu-pie-chart.component
 import { VisuLineChartComponent } from './visu-line-chart/visu-line-chart.component';
 import { VisuPolarAreaChartComponent } from './visu-polar-area-chart/visu-polar-area-chart.component';
 import { ChartsModule } from 'ng2-charts';
+import { MatPageVisuComponent } from './mat-page-visu/mat-page-visu.component';
 
 @NgModule({
   declarations: [
@@ -154,7 +155,8 @@ import { ChartsModule } from 'ng2-charts';
     VisuBarChartComponent,
     VisuPieChartComponent,
     VisuLineChartComponent,
-    VisuPolarAreaChartComponent
+    VisuPolarAreaChartComponent,
+    MatPageVisuComponent
   ],
   imports: [
     MatDatepickerModule,
