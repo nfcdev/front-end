@@ -15,7 +15,33 @@ export class MatPageVisuComponent implements OnInit {
 
   public pieChartOptions: ChartOptions = {
     responsive: true,
-    maintainAspectRatio: false
+    maintainAspectRatio: false,
+    tooltips: {
+      callbacks: {
+        title: function (tooltipItem, data) { return data.labels[tooltipItem[0].index]; },
+        label: function (tooltipItem, data) {
+          var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          var total = eval(data.datasets[tooltipItem.datasetIndex].data.join("+"));
+          let t = Number.parseInt('' + amount);
+
+          let cd = 24 * 60 * 60 * 1000;
+          let ch = 60 * 60 * 1000;
+          let d = Math.floor(t / cd);
+          let h = Math.floor((t - d * cd) / ch);
+          let m = Math.round((t - d * cd - h * ch) / 60000);
+          if (m === 60) {
+            h++;
+            m = 0;
+          }
+          if (h === 24) {
+            d++;
+            h = 0;
+          }
+          return '' + d + 'd ' + h + 'h ' + m + 'm';
+        },
+      }
+    },
+
   };
   public pieChartLabels: Label[] = [];
   public pieChartData: SingleDataSet = [];
@@ -24,7 +50,7 @@ export class MatPageVisuComponent implements OnInit {
   public pieChartPlugins = [];
   public pieChartColors: Color[] = [{
     backgroundColor: ['#1862a8', '#bb2b20', '#669966', '#ffcc33',
-     '#8e40b2','#f448ce','#f17c49']
+      '#8e40b2', '#f448ce', '#f17c49']
   }];
 
   values: Map<string, number> = new Map<string, number>();
@@ -45,7 +71,7 @@ export class MatPageVisuComponent implements OnInit {
       let currTime = new Date();
 
       for (var i = 0; i < data.length; i++) {
-        if (data[i].action == 'checked_in' || data[i].action =='checked_out' ) {
+        if (data[i].action == 'checked_in' || data[i].action == 'checked_out') {
           if (i !== data.length - 1) {
             this.values.set(data[i].branch, this.values.get(data[i].branch) + (data[i + 1].timestamp - data[i].timestamp));
           } else {
@@ -56,11 +82,14 @@ export class MatPageVisuComponent implements OnInit {
 
       this.values.forEach((value, key) => {
         this.pieChartLabels.push(key);
-        this.pieChartData.push(Math.floor((value) / (60 * 60 * 24)));
+        this.pieChartData.push((value * 1000) );
 
       });
       this.chart.chart.update();
     })
+  }
+  roundToTwo(num) {
+    return num.toFixed(2);
   }
 
 }
