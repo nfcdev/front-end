@@ -245,8 +245,6 @@ export class MaterialCheckInDialogComponent {
     })
 
     //Get the packages that belong to the current room
-
-
     this.updatePackages();
     this.createForm();
   }
@@ -264,6 +262,11 @@ export class MaterialCheckInDialogComponent {
               this.packages.push({ packageName: tmpPackage.package_number, packageId: tmpPackage.id });
             }
           })
+        }
+      } else {
+        for (var p of data) {
+          const tmpPackage = p;
+          this.packages.push({ packageName: tmpPackage.package_number, packageId: tmpPackage.id });
         }
       }
     })
