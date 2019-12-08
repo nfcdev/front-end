@@ -47,7 +47,6 @@ export class DataService {
     return throwError(errorMessage);
   }
 
-
   public sendGetRequest(request: string) {
     return this.httpClient.get(this.REST_API_SERVER + request).pipe(retry(2), catchError(this.handleError));
   }

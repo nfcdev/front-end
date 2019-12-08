@@ -256,16 +256,11 @@ export class MaterialCheckInDialogComponent {
     this.dataService.sendGetRequest("/package/storageroom/" + this.storage_room_id).subscribe((data: DataPackage[]) => {
       // Sets dataPackages to all the packages available in current room
       this.dataPackages = data;
-      console.log("Hämtat alla paket");
       if (this.reference_number) {
         for (var p of data) {
           const tmpPackage = p;
           this.dataService.sendGetRequest("/case/" + tmpPackage.case).subscribe((getCase: Case[]) => {
-            console.log("Kollat ett paket");
-            console.log(getCase);
-            console.log(this.reference_number);
             if (getCase[0].reference_number === this.reference_number) {
-              console.log("Pushar paket");
               this.packages.push({ packageName: tmpPackage.package_number, packageId: tmpPackage.id });
             }
           })
@@ -329,130 +324,126 @@ export class MaterialCheckInDialogComponent {
 
   }
 
+  checkInMaterial(mat): void {
+    const tmpMat = mat;
+    var article_data = {
+      "material_number": tmpMat,
+      "description": "",
+      "comment": "",
+    }
 
-  onConfirm(): void {
-    this.checkOutConfirmed = true;
+    var post_data = {
+      "material_number": tmpMat,
+      "storage_room": this.storage_room_id
+    };
 
-    //TODO: If item(s) does not exist, add case number and do different back-end call
+    //If comment is added then add it to data for post-request
+    if (this.data.comment !== "" && this.data.comment !== undefined) {
+      post_data["comment"] = this.data.comment;
+      article_data["comment"] = this.data.comment;
+      article_data["description"] = this.data.comment;
+    } else {
+      post_data["comment"] = "";
+      article_data["comment"] = "";
+      article_data["description"] = "";
+    }
 
-
-    //For check in of existing items
-    for (var mat of this.data.selectedMaterials) {
-      const tmpMat = mat;
-      var article_data = {
-        "material_number": tmpMat,
-        "description": "",
-        "comment": "",
-      }
-
-      var post_data = {
-        "material_number": tmpMat,
-        "storage_room": this.storage_room_id
+    //If package is added then add it to data for post-request
+    if (this.newPackage) {
+      article_data["storage_room"] = this.storage_room_id;
+      const packageData = {
+        "reference_number": this.reference_number,
+        "current_storage_room": this.storage_room_id,
+        "shelf": this.getShelfId(this.data.shelf)
       };
-
-      //If comment is added then add it to data for post-request
-      if (this.data.comment !== "" && this.data.comment !== undefined) {
-        post_data["comment"] = this.data.comment;
-        article_data["comment"] = this.data.comment;
-        article_data["description"] = this.data.comment;
-      } else {
-        post_data["comment"] = "";
-        article_data["comment"] = "";
-        article_data["description"] = "";
-      }
-
-      //If package is added then add it to data for post-request
-      if (this.newPackage) {
-        article_data["storage_room"] = this.storage_room_id;
-        const packageData = {
-          "reference_number": this.reference_number,
-          "current_storage_room": this.storage_room_id,
-          "shelf": this.getShelfId(this.data.shelf)
-        };
-        console.log(packageData);
-        this.dataService.sendPostRequest("/package", packageData).subscribe(
-          (data: PostDataPackage) => {
-            article_data["package"] = data.id;
-            post_data["package"] = data.id;
-            this.data.package = data.package_number;
-            if (!this.newData) {
-              this.dataService.sendPostRequest("/article/register", article_data).subscribe(
-                (data: any[]) => {
-                  this.materialsuccess(tmpMat);
-                },
-                (err => {
-                  this.materialFailure(tmpMat, err)
-                }));
-            } else {
-              console.log(post_data);
-              this.dataService.sendPostRequest("/article/check-in", post_data).subscribe(
-                (data: any[]) => {
-                  this.materialsuccess(tmpMat);
-                },
-                (err => {
-                  this.materialFailure(tmpMat, err)
-                }));
-            }
-          },
-          ((err) => {
-            console.log("ERROR WAS: ", err.error.message);
-          }));
-
-      } else if (this.data.package !== "" && this.data.package !== undefined) {
-
-        article_data["storage_room"] = this.storage_room_id
-
-        this.dataService.sendGetRequest("/package/package_number/" + this.data.package).subscribe((data: packageData) => {
-          this.package_id = data["id"];
-          article_data["package"] = this.package_id;
-          post_data["package"] = this.package_id;
-
+      this.dataService.sendPostRequest("/package", packageData).subscribe(
+        (data: PostDataPackage) => {
+          article_data["package"] = data.id;
+          post_data["package"] = data.id;
+          this.data.package = data.package_number;
           if (!this.newData) {
-
             this.dataService.sendPostRequest("/article/register", article_data).subscribe(
               (data: any[]) => {
                 this.materialsuccess(tmpMat);
               },
               (err => {
                 this.materialFailure(tmpMat, err)
-              }))
+              }));
           } else {
-            console.log(post_data)
             this.dataService.sendPostRequest("/article/check-in", post_data).subscribe(
               (data: any[]) => {
                 this.materialsuccess(tmpMat);
               },
               (err => {
                 this.materialFailure(tmpMat, err)
-              }))
+              }));
           }
-        })
-      } else {
-        post_data["shelf"] = this.getShelfId(this.data.shelf)
-        article_data["shelf"] = this.getShelfId(this.data.shelf)
-        article_data["storage_room"] = this.storage_room_id
+        },
+        ((err) => {
+          console.log("ERROR WAS: ", err.error.message);
+        }));
+
+    } else if (this.data.package !== "" && this.data.package !== undefined) {
+      article_data["storage_room"] = this.storage_room_id;
+      this.dataService.sendGetRequest("/package/package_number/" + this.data.package).subscribe((data: packageData) => {
+        this.package_id = data["id"];
+        article_data["package"] = this.package_id;
+        post_data["package"] = this.package_id;
+
         if (!this.newData) {
-          console.log(typeof article_data["package"])
-          console.log(article_data);
+
+
           this.dataService.sendPostRequest("/article/register", article_data).subscribe(
-            (data: any[]) => {
-              this.materialsuccess(tmpMat);
-            },
-            (err) => {
-              this.materialFailure(tmpMat, err)
-            })
-        } else {
-          console.log(post_data)
-          this.dataService.sendPostRequest("/article/check-in", post_data).subscribe(
             (data: any[]) => {
               this.materialsuccess(tmpMat);
             },
             (err => {
               this.materialFailure(tmpMat, err)
             }))
-        }
-      }
+        } else {
 
+          this.dataService.sendPostRequest("/article/check-in", post_data).subscribe(
+            (data: any[]) => {
+              this.materialsuccess(tmpMat);
+            },
+            (err => {
+              console.log("ERROR");
+              this.materialFailure(tmpMat, err)
+            }))
+        }
+      })
+      //await this.sleep(5000);
+    } else {
+      post_data["shelf"] = this.getShelfId(this.data.shelf)
+      article_data["shelf"] = this.getShelfId(this.data.shelf)
+      article_data["storage_room"] = this.storage_room_id
+      if (!this.newData) {
+        this.dataService.sendPostRequest("/article/register", article_data).subscribe(
+          (data: any[]) => {
+            this.materialsuccess(tmpMat);
+          },
+          (err) => {
+            this.materialFailure(tmpMat, err)
+          })
+      } else {
+        this.dataService.sendPostRequest("/article/check-in", post_data).subscribe(
+          (data: any[]) => {
+            this.materialsuccess(tmpMat);
+          },
+          (err => {
+            this.materialFailure(tmpMat, err)
+          }))
+      }
+    }
+
+  }
+
+  async onConfirm() {
+    this.checkOutConfirmed = true;
+
+    //For check in of existing items
+    for (var mat of this.data.selectedMaterials) {
+      await this.checkInMaterial(mat);
     }
 
 
@@ -472,7 +463,6 @@ export class MaterialCheckInDialogComponent {
 
   addCase(currentMaterial: string): boolean {
     this.dataService.sendGetRequest("/article/" + currentMaterial).subscribe((data: any[]) => {
-      console.log(data);
     })
     //Get case for the chosen material
     //If case is empty, then add case.
