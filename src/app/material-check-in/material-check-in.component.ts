@@ -141,7 +141,7 @@ export class MaterialCheckInComponent implements OnInit {
     // runs every time we close the Modal or submit
     dialogRef.afterClosed().subscribe(result => {
       this.tableDataService.refreshData();
-
+      this.tableDataService.resetSelection();
       if (result != null) { // if user presses cancel the result is null. TODO: better solution for checking this
 
         // reset material list
@@ -205,6 +205,11 @@ export class MaterialCheckInDialogComponent {
   duplicateMaterials: Duplicate[] = [];
 
   hasDuplicate: boolean = false;
+
+  checkInError: boolean = false;
+  failedMaterial: String[] = [];
+  successfulMaterial: String[] = [];
+  errorStrings: string[] = [];
 
 
   constructor(
@@ -333,15 +338,15 @@ export class MaterialCheckInDialogComponent {
 
     //For check in of existing items
     for (var mat of this.data.selectedMaterials) {
-
+      const tmpMat = mat;
       var article_data = {
-        "material_number": mat,
+        "material_number": tmpMat,
         "description": "",
         "comment": "",
       }
 
       var post_data = {
-        "material_number": mat,
+        "material_number": tmpMat,
         "storage_room": this.storage_room_id
       };
 
@@ -365,18 +370,33 @@ export class MaterialCheckInDialogComponent {
           "shelf": this.getShelfId(this.data.shelf)
         };
         console.log(packageData);
-        this.dataService.sendPostRequest("/package", packageData).subscribe((data: PostDataPackage) => {
-          article_data["package"] = data.id;
-          post_data["package"] = data.id;
-          this.data.package = data.package_number;
-          if (!this.newData) {
-            this.dataService.sendPostRequest("/article/register", article_data).subscribe((data: any[]) => { });
-          } else {
-            console.log("Skickar in skiten");
-            console.log(post_data);
-            this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[]) => { });
-          }
-        })
+        this.dataService.sendPostRequest("/package", packageData).subscribe(
+          (data: PostDataPackage) => {
+            article_data["package"] = data.id;
+            post_data["package"] = data.id;
+            this.data.package = data.package_number;
+            if (!this.newData) {
+              this.dataService.sendPostRequest("/article/register", article_data).subscribe(
+                (data: any[]) => {
+                  this.materialsuccess(tmpMat);
+                },
+                (err => {
+                  this.materialFailure(tmpMat, err)
+                }));
+            } else {
+              console.log(post_data);
+              this.dataService.sendPostRequest("/article/check-in", post_data).subscribe(
+                (data: any[]) => {
+                  this.materialsuccess(tmpMat);
+                },
+                (err => {
+                  this.materialFailure(tmpMat, err)
+                }));
+            }
+          },
+          ((err) => {
+            console.log("ERROR WAS: ", err.error.message);
+          }));
 
       } else if (this.data.package !== "" && this.data.package !== undefined) {
 
@@ -389,12 +409,22 @@ export class MaterialCheckInDialogComponent {
 
           if (!this.newData) {
 
-            this.dataService.sendPostRequest("/article/register", article_data).subscribe((data: any[]) => {
-            })
+            this.dataService.sendPostRequest("/article/register", article_data).subscribe(
+              (data: any[]) => {
+                this.materialsuccess(tmpMat);
+              },
+              (err => {
+                this.materialFailure(tmpMat, err)
+              }))
           } else {
             console.log(post_data)
-            this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[]) => {
-            })
+            this.dataService.sendPostRequest("/article/check-in", post_data).subscribe(
+              (data: any[]) => {
+                this.materialsuccess(tmpMat);
+              },
+              (err => {
+                this.materialFailure(tmpMat, err)
+              }))
           }
         })
       } else {
@@ -404,18 +434,40 @@ export class MaterialCheckInDialogComponent {
         if (!this.newData) {
           console.log(typeof article_data["package"])
           console.log(article_data);
-          this.dataService.sendPostRequest("/article/register", article_data).subscribe((data: any[]) => {
-          })
+          this.dataService.sendPostRequest("/article/register", article_data).subscribe(
+            (data: any[]) => {
+              this.materialsuccess(tmpMat);
+            },
+            (err) => {
+              this.materialFailure(tmpMat, err)
+            })
         } else {
           console.log(post_data)
-          this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[]) => {
-          })
+          this.dataService.sendPostRequest("/article/check-in", post_data).subscribe(
+            (data: any[]) => {
+              this.materialsuccess(tmpMat);
+            },
+            (err => {
+              this.materialFailure(tmpMat, err)
+            }))
         }
       }
 
     }
 
 
+  }
+
+
+  materialsuccess(material: String): void {
+    this.checkOutConfirmed = true;
+    this.successfulMaterial.push(material);
+  }
+
+  materialFailure(material: String, error: string): void {
+    this.checkInError = true;
+    this.errorStrings.push(error);
+    this.failedMaterial.push(material);
   }
 
   addCase(currentMaterial: string): boolean {
