@@ -87,7 +87,7 @@ export class MaterialCheckInComponent implements OnInit {
 
 
   selection: any[];
-  materials: String[];
+  materials: String[] = [];
   preChosen = false;
 
   storage_room: String;
@@ -120,7 +120,7 @@ export class MaterialCheckInComponent implements OnInit {
       }
     }
     var dialogRef;
-
+    console.log(this.materials);
     if (this.materialsAreSameCase) { // Opens the normal dialog for checking in material(s)
       dialogRef = this.dialog.open(MaterialCheckInDialogComponent, {
         width: '500px',
@@ -146,11 +146,13 @@ export class MaterialCheckInComponent implements OnInit {
 
         // reset material list
         this.materials = [];
+        this.selection = [];
       } else {
         console.log('Empty result');
         this.materialsAreSameCase = true;
       }
-
+      this.materials = [];
+      this.selection = [];
 
     });
 
@@ -190,12 +192,12 @@ export class MaterialCheckInDialogComponent {
   branch_id: Number;
   reference_number: string;
   // shelves: Shelf[] = [{"shelfName": "", "shelfId": 0}];
-  shelves: Shelf[] = [];
+  shelves: Shelf[] = [{"shelfName": "", "shelfId": 0}];
   // packages: Package[] = [{"packageName": "", "packageId": 0}];
-  packages: Package[] = [];
+  packages: Package[] = [ {"packageName": "", "packageId": 0}];
   dataPackages: DataPackage[];
   materialExists: boolean;
-  newData: boolean = true;
+  newData: boolean = false;
   newCase: boolean = false;
   newPackage: boolean = false;
   validInputMaterial: boolean = true;
@@ -287,20 +289,26 @@ export class MaterialCheckInDialogComponent {
   }
 
   onNoClick(): void {  // The cancel-button runs this function
+    this.data.selectedMaterials = [];
     this.dialogRef.close();
   }
 
   onXClick(): void { // Runs when X is clicked
+    this.data.selectedMaterials = [];
     this.dialogRef.close();
   }
   // Runs when the back arrow button is clicked
   onBackButton(): void {
+    this.data.selectedMaterials = [];
     this.dialogRef.close();
   }
+
+
   onCheckOut(): void {
     let hasDuplicate = false;
-    if (this.newData) {
+    if (!this.newData) {
       this.data.selectedMaterials.forEach((val, key, arr) => {
+        console.log("hej");
         this.dataService.sendGetRequest('/article?material_number=' + val).subscribe((data: any[]) => {
           if (data[0].status === 'checked_in') {
             let temp: Duplicate = { material_number: val, storage_room: data[0].storage_room };
@@ -319,6 +327,9 @@ export class MaterialCheckInDialogComponent {
     } else {
       this.onConfirm();
     }
+
+
+
 
   }
   onCancelDuplicate(): void {
@@ -353,18 +364,26 @@ export class MaterialCheckInDialogComponent {
 
     //If package is added then add it to data for post-request
     if (this.newPackage) {
+      console.log(this.newPackage);
       article_data["storage_room"] = this.storage_room_id;
       const packageData = {
         "reference_number": this.reference_number,
         "current_storage_room": this.storage_room_id,
         "shelf": this.getShelfId(this.data.shelf)
       };
+      this.newPackage = false;
+
       this.dataService.sendPostRequest("/package", packageData).subscribe(
         (data: PostDataPackage) => {
+          this.data.package = data.package_number;
+          console.log("INSIDE POST REQUEST");
+          console.log("Package number: " + data.package_number);
+          console.log("Package id: " + data.id);
+
           article_data["package"] = data.id;
           post_data["package"] = data.id;
           this.data.package = data.package_number;
-          if (!this.newData) {
+          if (this.newData) {
             this.dataService.sendPostRequest("/article/register", article_data).subscribe(
               (data: any[]) => {
                 this.materialsuccess(tmpMat);
@@ -373,6 +392,8 @@ export class MaterialCheckInDialogComponent {
                 this.materialFailure(tmpMat, err)
               }));
           } else {
+            console.log("NO NEW DATA");
+
             this.dataService.sendPostRequest("/article/check-in", post_data).subscribe(
               (data: any[]) => {
                 this.materialsuccess(tmpMat);
@@ -387,13 +408,14 @@ export class MaterialCheckInDialogComponent {
         }));
 
     } else if (this.data.package !== "" && this.data.package !== undefined) {
+      console.log("PACKAGE CHOSEN");
       article_data["storage_room"] = this.storage_room_id;
       this.dataService.sendGetRequest("/package/package_number/" + this.data.package).subscribe((data: packageData) => {
         this.package_id = data["id"];
         article_data["package"] = this.package_id;
         post_data["package"] = this.package_id;
 
-        if (!this.newData) {
+        if (this.newData) {
 
 
           this.dataService.sendPostRequest("/article/register", article_data).subscribe(
@@ -417,10 +439,13 @@ export class MaterialCheckInDialogComponent {
       })
       //await this.sleep(5000);
     } else {
+
+      console.log("ELSE");
+      console.log("newdata? " + this.newData);
       post_data["shelf"] = this.getShelfId(this.data.shelf)
       article_data["shelf"] = this.getShelfId(this.data.shelf)
       article_data["storage_room"] = this.storage_room_id
-      if (!this.newData) {
+      if (this.newData) {
         this.dataService.sendPostRequest("/article/register", article_data).subscribe(
           (data: any[]) => {
             this.materialsuccess(tmpMat);
@@ -443,9 +468,12 @@ export class MaterialCheckInDialogComponent {
 
   async onConfirm() {
     this.checkOutConfirmed = true;
-
+    console.log(this.data.selectedMaterials);
     for (var mat of this.data.selectedMaterials) {
+      console.log(mat);
       await this.checkInMaterial(mat);
+      await this.sleep(200);
+
     }
 
 
@@ -502,12 +530,14 @@ export class MaterialCheckInDialogComponent {
 
 
   addMaterial(newMaterial: string): void {
+    console.log("ADD MATERIAL");
     if (this.validMaterial(newMaterial)) {
       this.dataService.sendGetRequest("/article?material_number=" + newMaterial).subscribe((data: DialogData) => {
+        console.log(data[0]);
         if (data[0] != undefined) {
-          this.newData = true;
-        } else {
           this.newData = false;
+        } else {
+          this.newData = true;
         }
 
         this.reference_number = newMaterial.substring(0, 6);
@@ -564,6 +594,7 @@ export class MaterialCheckInDialogComponent {
   }
 
   removeMaterial(material: string): void {
+    console.log("removeMaterial");
     this.data.selectedMaterials.forEach((item, index) => {
       if (item === material) this.data.selectedMaterials.splice(index, 1);
     });
@@ -581,7 +612,7 @@ export class MaterialCheckInDialogComponent {
     var tempPackages: Package[] = [];
     for (var p of this.dataPackages) {
       if (p.shelf === selectedShelf.shelfId) {
-        tempPackages.push({ packageId: p.id, packageName: p.package_number });
+        this.packages.push({ packageId: p.id, packageName: p.package_number });
       }
     }
   }

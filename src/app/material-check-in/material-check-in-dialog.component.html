@@ -29,7 +29,7 @@
       (keyup.enter)="addMaterial(data.material_number); data.material_number =''">
   </mat-form-field>
   <button mat-button (click)="addMaterial(data.material_number); data.material_number=''">+</button>
-  <mat-label *ngIf=!newData class="newReference"> Nytt material*</mat-label>
+  <mat-label *ngIf=newData class="newReference"> Nytt material*</mat-label>
   <mat-label *ngIf=!validInputMaterial class="newReference" style="color:red;"> <br>Ej korrekt materialnummer*
   </mat-label>
 
