@@ -441,7 +441,6 @@ export class MaterialCheckInDialogComponent {
   async onConfirm() {
     this.checkOutConfirmed = true;
 
-    //For check in of existing items
     for (var mat of this.data.selectedMaterials) {
       await this.checkInMaterial(mat);
     }
