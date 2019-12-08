@@ -93,6 +93,9 @@ export class PackageCheckOutDialogComponent implements OnInit {
   selectedStorageRoomId: Number;
   packageCheckOutForm: FormGroup;
 
+  checkOutError: boolean = false;
+  errorMessage: string;
+
 
   constructor(
     public dialogRef: MatDialogRef<PackageCheckOutDialogComponent>,
@@ -125,8 +128,6 @@ export class PackageCheckOutDialogComponent implements OnInit {
     this.selectedStorageRoomId = this.storageRoomStore.getStorageRoom().id;
 
 
-
-
     // Checks out post_data to back-end
     var post_data = {
       "package_number": this.data.package,
@@ -141,12 +142,14 @@ export class PackageCheckOutDialogComponent implements OnInit {
     if (this.package !== undefined) {
       post_data["package"] = this.data.package;
     }
-    this.dataService.sendPostRequest("/package/check-out", post_data).subscribe((data: any[]) => {
-      this.checkOutConfirmed = true;
-    })
-    if (this.checkOutConfirmed == false) {
-      this.wrongRoom = true;
-    }
+    this.dataService.sendPostRequest("/package/check-out", post_data).subscribe(
+      (data: any[]) => {
+        this.checkOutConfirmed = true;
+      },
+      (err => {
+        this.checkOutError = true;
+        this.errorMessage = err;
+      }));
   }
 
   ngOnInit(): void {
