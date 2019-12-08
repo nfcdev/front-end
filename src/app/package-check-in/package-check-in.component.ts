@@ -263,28 +263,32 @@ export class PackageCheckInDialogComponent implements OnInit {
     this.hasDuplicate = false;
 
   }
-  onConfirm(): void {
+
+  checkInPackage(pg) {
+    const tmpPackage = pg;
+    var post_data = {
+      "package_number": tmpPackage,
+      "storage_room": this.storage_room_id,
+      "shelf": this.data.shelf.shelfId
+    };
+    //If comment is added then add it to data for post-request
+    if (this.data.comment !== "" && this.data.comment !== null) {
+      post_data["comment"] = this.data.comment;
+    }
+    this.dataService.sendPostRequest("/package/check-in", post_data).subscribe(
+      (data: any[]) => {
+        this.packageSuccess(tmpPackage);
+      },
+      (err => {
+        this.packageFailure(tmpPackage, err);
+      }))
+  }
+  async onConfirm() {
     this.checkOutConfirmed = true;
 
     if (this.hasPackage) {
       for (var pg of this.data.packageMaterials) {
-        const tmpPackage = pg;
-        var post_data = {
-          "package_number": tmpPackage,
-          "storage_room": this.storage_room_id,
-          "shelf": this.data.shelf.shelfId
-        };
-        //If comment is added then add it to data for post-request
-        if (this.data.comment !== "" && this.data.comment !== null) {
-          post_data["comment"] = this.data.comment;
-        }
-        this.dataService.sendPostRequest("/package/check-in", post_data).subscribe(
-          (data: any[]) => {
-            this.packageSuccess(tmpPackage);
-          },
-          (err => {
-            this.packageFailure(tmpPackage, err);
-          }))
+        await this.checkInPackage(pg);
       }
     } else if (this.hasReference) {
       //If a new package is to be created
