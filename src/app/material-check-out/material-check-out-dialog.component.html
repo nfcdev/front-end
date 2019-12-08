@@ -14,54 +14,68 @@
     <h1 mat-dialog-title>Checka ut material</h1>
 </div>
 <div mat-dialog-content [formGroup]="checkInForm">
-        <!-- Content to display before confirmation -->
+    <!-- Content to display before confirmation -->
     <!-- <div *ngIf="!checkOutConfirmed && data.preChosen">
         <div style="text-align: center;">Vill du checka ut följande material?</div>
     </div> -->
-    <div *ngIf="checkOutConfirmed">
-            <div style="text-align: center;">Följande material har checkats ut:</div>
+    <div *ngIf="checkOutConfirmed && successfulMaterial.length">
+        <div style="text-align: center;">Följande material har checkats ut:</div>
+        <mat-chip-list #chipList>
+            <mat-chip *ngFor="let material of successfulMaterial">
+                <app-material-page [material_number]="material"></app-material-page>
+                <br>
+            </mat-chip>
+        </mat-chip-list>
     </div>
     <div *ngIf="!checkOutConfirmed">
         <mat-form-field>
-            <input class="form-control"  name="material_number"
-            formControlName="material_number" matInput
-            [(ngModel)]="data.material_number" placeholder="Materialnummer" 
-            (keyup.enter)="addMaterial(data.material_number); data.material_number =''">
+            <input class="form-control" name="material_number" formControlName="material_number" matInput
+                [(ngModel)]="data.material_number" placeholder="Materialnummer"
+                (keyup.enter)="addMaterial(data.material_number); data.material_number =''">
         </mat-form-field>
         <button mat-button (click)="addMaterial(data.material_number); data.material_number=''">+</button>
     </div>
 
-    <mat-chip-list #chipList>
+    <div *ngIf="checkOutConfirmed && successfulMaterial.length">
+        <div style="text-align: center;">Med uppdaterad status: <br>
+            <span *ngIf="data.status">{{data.status}}</span>
+            <span *ngIf="!data.status">Utcheckat</span>
+        </div>
+    </div>
+
+    <mat-chip-list #chipList *ngIf="!checkOutConfirmed">
         <mat-chip *ngFor="let material of data.selectedMaterials">
             <app-material-page [material_number]="material"></app-material-page>
             <div *ngIf="!checkOutConfirmed">
                 <mat-icon matChipRemove (click)="removeMaterial(material)">cancel</mat-icon>
             </div>
             <br>
-    </mat-chip>
+        </mat-chip>
     </mat-chip-list>
     <br>
+    <div *ngIf="checkOutError">
+        <div style="text-align: center;">Följande material kunde inte checkas ut:</div>
+        <li *ngFor="let failed of failedMaterial; let i = index;">
+            <span>{{failed}}: {{errorStrings[i]}}</span>
+
+        </li>
+    </div>
 
 
     <div *ngIf="!checkOutConfirmed">
-    <mat-form-field>
-        <mat-select formControlName="status"
-       [(ngModel)]="data.status" name="status" placeholder="Ny status">
-          <mat-option *ngFor="let st of status" [value]="st">
-            {{st}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field>
+            <mat-select formControlName="status" [(ngModel)]="data.status" name="status" placeholder="Ny status">
+                <mat-option *ngFor="let st of status" [value]="st">
+                    {{st}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
-    
-    <div *ngIf="checkOutConfirmed">
-        <div style="text-align: center;">Med uppdaterad status: <br>
-             {{data.status}}
-             </div>
-</div>
 
 
-<!--    <div class="addNewField" *ngIf="!data.preChosen && !checkOutConfirmed">
+
+
+    <!--    <div class="addNewField" *ngIf="!data.preChosen && !checkOutConfirmed">
         Scanna/fyll i nytt material:
         <input #newMaterial class="add-new" placeholder="Fyll i.."
             (keyup.enter)="addMaterial(newMaterial.value); newMaterial.value='' ">
@@ -82,11 +96,11 @@
         </ng-container>
     </div>-->
     <div *ngIf="!checkOutConfirmed">
-    <mat-form-field>
-        <br>
-        <textarea cdkTextareaAutosize matInput class="form-control" name="comment"
-        formControlName="comment" [(ngModel)]="comment" placeholder="Lämna en anteckning" #input maxlength="255"></textarea>
-    </mat-form-field>
+        <mat-form-field>
+            <br>
+            <textarea cdkTextareaAutosize matInput class="form-control" name="comment" formControlName="comment"
+                [(ngModel)]="comment" placeholder="Lämna en anteckning" #input maxlength="255"></textarea>
+        </mat-form-field>
     </div>
     <br>
 
@@ -96,11 +110,12 @@
             <button mat-raised-button (click)="onNoClick()">Avbryt</button>
         </div>
         <div *ngIf="!checkOutConfirmed">
-                <button [disabled]='data.selectedMaterials.length == 0' mat-raised-button (click)="onConfirm()">Checka Ut</button>
+            <button [disabled]='data.selectedMaterials.length == 0' mat-raised-button (click)="onConfirm()">Checka
+                Ut</button>
         </div>
         <div *ngIf="checkOutConfirmed">
             <button mat-raised-button [mat-dialog-close]="data">Tillbaka</button>
-    </div>
+        </div>
     </div>
 
     <br>

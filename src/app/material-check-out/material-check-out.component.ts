@@ -70,7 +70,7 @@ export class MaterialCheckOutComponent implements OnInit {
     // runs every time we close the Modal or submit
     dialogRef.afterClosed().subscribe(result => {
       this.tableDataService.refreshData();
-
+      this.tableDataService.resetSelection();
       console.log('The dialog was closed');
 
       if (result != null) { // if user presses cancel the result is null. TODO: better solution for checking this
@@ -106,7 +106,12 @@ export class MaterialCheckOutDialogComponent implements OnInit {
   checkOutConfirmed: boolean = false;
   preChosen: boolean = false;
   comment: string;
-  materials: string[];
+  materials: string[] = [];
+  checkOutError: boolean = false;
+  failedMaterial: string[] = [];
+  successfulMaterial: string[] = [];
+  errorStrings: string[] = [];
+
 
   checkInForm: FormGroup;
   status: string[] = [ //TODO: Get status from database here instead
@@ -152,9 +157,9 @@ export class MaterialCheckOutDialogComponent implements OnInit {
     //console.log(this.comment);
     // TODO: check-out the materials in this.data.selectedMaterials in the back-end here together with this.comment
     for (var mat of this.data.selectedMaterials) {
-
+      const tmpMat = mat;
       var post_data = {
-        "material_number": mat,
+        "material_number": tmpMat,
         "storage_room": this.storage_room_id,
       };
 
@@ -166,12 +171,16 @@ export class MaterialCheckOutDialogComponent implements OnInit {
 
       switch (this.data.status) {
         case "Utcheckat":
-          this.dataService.sendPostRequest("/article/check-out", post_data).subscribe((data: any[]) => {
-          })
+          this.dataService.sendPostRequest("/article/check-out", post_data).subscribe(
+            (data: any[]) => {
+              this.materialsuccess(tmpMat);
+            },
+            (err) => {
+              this.materialFailure(tmpMat, err)
+            });
           break;
         case "Införlivat":
-          console.log(mat);
-          this.dataService.sendGetRequest("/article?material_number=" + mat).subscribe((data: ArticleData) => {
+          this.dataService.sendGetRequest("/article?material_number=" + tmpMat).subscribe((data: ArticleData) => {
             var shelf_name = data[0].shelf;
             this.dataService.sendGetRequest("/shelf/storageroom/" + post_data.storage_room).subscribe((data: ShelfData[]) => {
               for (var shelf of data) {
@@ -180,26 +189,57 @@ export class MaterialCheckOutDialogComponent implements OnInit {
                 }
               }
               console.log(post_data);
-              this.dataService.sendPostRequest("/article/incorporate", post_data).subscribe((data: any[]) => {
-              })
+              this.dataService.sendPostRequest("/article/incorporate", post_data).subscribe(
+                (data: any[]) => {
+                  this.materialsuccess(tmpMat);
+                },
+                ((err) => {
+                  this.materialFailure(tmpMat, err)
+                }));
             })
           })
 
           break;
         case "Kasserat":
-          this.dataService.sendPostRequest("/article/discard", post_data).subscribe((data: any[]) => {
-          })
+          this.dataService.sendPostRequest("/article/discard", post_data).subscribe(
+            (data: any[]) => {
+              this.materialsuccess(tmpMat);
+            },
+            (err) => {
+              this.materialFailure(tmpMat, err)
+            });
           break;
         case "Åter":
-          this.dataService.sendPostRequest("/article/process", post_data).subscribe((data: any[]) => {
-          })
+          this.dataService.sendPostRequest("/article/process", post_data).subscribe(
+            (data: any[]) => {
+              this.materialsuccess(tmpMat);
+            },
+            (err) => {
+              this.materialFailure(tmpMat, err)
+            });
           break;
         default:
-          this.dataService.sendPostRequest("/article/check-out", post_data).subscribe((data: any[]) => {
-          })
+          this.dataService.sendPostRequest("/article/check-out", post_data).subscribe(
+            (data: any[]) => {
+              this.materialsuccess(tmpMat);
+            },
+            (err) => {
+              this.materialFailure(tmpMat, err)
+            });
 
       }
     }
+  }
+
+  materialsuccess(material: string): void {
+    this.checkOutConfirmed = true;
+    this.successfulMaterial.push(material);
+  }
+
+  materialFailure(material: string, error: string): void {
+    this.checkOutError = true;
+    this.errorStrings.push(error);
+    this.failedMaterial.push(material);
   }
 
   addMaterial(newMaterial: string): void {

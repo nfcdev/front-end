@@ -28,5 +28,8 @@ export class TableDataService {
   refreshData() {
     this.table.refresh();
   }
+  resetSelection(){
+    this.table.resetSelection();
+  }
 
 }
