@@ -141,7 +141,7 @@ export class MaterialCheckInComponent implements OnInit {
     // runs every time we close the Modal or submit
     dialogRef.afterClosed().subscribe(result => {
       this.tableDataService.refreshData();
-
+      this.tableDataService.resetSelection();
       if (result != null) { // if user presses cancel the result is null. TODO: better solution for checking this
 
         // reset material list

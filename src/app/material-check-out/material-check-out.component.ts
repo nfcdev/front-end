@@ -70,7 +70,7 @@ export class MaterialCheckOutComponent implements OnInit {
     // runs every time we close the Modal or submit
     dialogRef.afterClosed().subscribe(result => {
       this.tableDataService.refreshData();
-
+      this.tableDataService.resetSelection();
       console.log('The dialog was closed');
 
       if (result != null) { // if user presses cancel the result is null. TODO: better solution for checking this

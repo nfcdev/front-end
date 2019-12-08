@@ -102,10 +102,12 @@ export class PackageCheckInComponent implements OnInit {
     });
     // runs every time we close the Modal or submit
     dialogRef.afterClosed().subscribe(result => {
+      this.tableDataService.resetSelection();
       this.tableDataService.refreshData();
+      this.packages = []
+      this.preChosen =false;
       console.log('The dialog was closed');
-      if (result != null) { // if user presses cancel the result is null. We get here from the 'Tillbaka' button
-        //console.log(result);
+      if (result != null) { 
       } else {
         console.log('Empty result');
       }
@@ -123,10 +125,14 @@ export class PackageCheckInComponent implements OnInit {
     this.materialCheckBoxService.checkBoxChange.subscribe(newSelection => {
       this.selection = newSelection.selected;
       this.packages = this.selection.reduce((a, { package_number }) => a.concat(package_number), []);
+       if (this.packages != undefined){
+        this.preChosen = true;
+      }
     });
     if (this.packages == undefined) {
       this.packages = [];
     }
+    
   }
 }
 export interface Duplicate {
@@ -186,6 +192,10 @@ export class PackageCheckInDialogComponent implements OnInit {
         map(name => name ? this._filter(name) : this.data.packageInfo.slice())
       );
     this.addMaterials()
+    if (this.data.preChosen){
+        this.hasPackage = true;
+          }
+   
 
   }
   private _filter(name: string): PackageInfo[] {
@@ -247,6 +257,7 @@ export class PackageCheckInDialogComponent implements OnInit {
   }
   onConfirm(): void {
     this.checkOutConfirmed = true;
+    
     if (this.hasPackage) {
       for (var pg of this.data.packageMaterials) {
         var post_data = {
@@ -254,7 +265,6 @@ export class PackageCheckInDialogComponent implements OnInit {
           "storage_room": this.storage_room_id,
           "shelf": this.data.shelf.shelfId
         };
-
         //If comment is added then add it to data for post-request
         if (this.data.comment !== "" && this.data.comment !== null) {
           post_data["comment"] = this.data.comment;
@@ -305,12 +315,6 @@ export class PackageCheckInDialogComponent implements OnInit {
     this.reference_number = reference;
     this.hasReference = true;
   }
-
-
-
-
-
-
 
   addMaterials() {
     for (var pg of this.data.packageMaterials) {
