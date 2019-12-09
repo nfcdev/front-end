@@ -124,7 +124,7 @@ export class MaterialCheckInComponent implements OnInit {
     if (this.materialsAreSameCase) { // Opens the normal dialog for checking in material(s)
       dialogRef = this.dialog.open(MaterialCheckInDialogComponent, {
         width: '500px',
-        height: '550px',
+        //height: '650px',
 
         data:
         {
