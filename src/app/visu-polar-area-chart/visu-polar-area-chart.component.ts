@@ -13,7 +13,7 @@ export class VisuPolarAreaChartComponent implements OnInit {
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
 
   public polarAreaChartLabels: Label[] = ['Vapen', 'Bio', 'Finger', 'Drog', 'Brand'];
-  public polarAreaChartData: SingleDataSet = [50, 80, 40, 60, 20];
+  public polarAreaChartData: SingleDataSet = [0, 0, 0, 0, 0];
   public polarAreaLegend = true;
 
   public polarAreaChartType: ChartType = 'polarArea';
@@ -22,21 +22,28 @@ export class VisuPolarAreaChartComponent implements OnInit {
 
   ngOnInit() {
     let LabelList: Label[] = [];
-    let branchIDList = [];
     let DataList: SingleDataSet = [];
-    this.dataService.sendGetRequest("/branch").subscribe((data: any[]) => {
+    var branchMap = new Map();
+    this.dataService.sendGetRequest("/branch").subscribe((data: any[]) => {   //Gets all branches
       console.log(data);
       data.forEach(dataRow => {
         LabelList.push(dataRow.name)
-        branchIDList.push(dataRow.id);
+        branchMap.set(dataRow.name, 0);
       });
       this.polarAreaChartLabels = LabelList;
-      for (var id of branchIDList) {
-        this.dataService.sendGetRequest("/article/branch/" + id).subscribe((data: any[]) => {
-          DataList.push(data.length);
-        })
-      }
-      this.polarAreaChartData = DataList;
+      this.dataService.sendGetRequest("/article").subscribe((data: any[]) => {  //Gets all articles
+        data.forEach(dataRow => {                                               //Loop though all articles to count them
+          for (var i = 0; i <= LabelList.length; ++i){
+            if (dataRow.branch === LabelList[i]){
+              branchMap.set(LabelList[i], (branchMap.get(LabelList[i]))+1);     //Adds count for correct branch
+            }
+          }
+        });
+        for (var branch of LabelList){
+          DataList.push(branchMap.get(branch));
+        }
+        this.polarAreaChartData = DataList;
+      })      
     })
     this.chart.chart.update();
   }

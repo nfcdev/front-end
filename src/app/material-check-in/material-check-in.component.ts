@@ -87,7 +87,7 @@ export class MaterialCheckInComponent implements OnInit {
 
 
   selection: any[];
-  materials: String[];
+  materials: String[] = [];
   preChosen = false;
 
   storage_room: String;
@@ -120,7 +120,7 @@ export class MaterialCheckInComponent implements OnInit {
       }
     }
     var dialogRef;
-
+    console.log(this.materials);
     if (this.materialsAreSameCase) { // Opens the normal dialog for checking in material(s)
       dialogRef = this.dialog.open(MaterialCheckInDialogComponent, {
         width: '500px',
@@ -146,11 +146,13 @@ export class MaterialCheckInComponent implements OnInit {
 
         // reset material list
         this.materials = [];
+        this.selection = [];
       } else {
         console.log('Empty result');
         this.materialsAreSameCase = true;
       }
-
+      this.materials = [];
+      this.selection = [];
 
     });
 
@@ -190,12 +192,12 @@ export class MaterialCheckInDialogComponent {
   branch_id: Number;
   reference_number: string;
   // shelves: Shelf[] = [{"shelfName": "", "shelfId": 0}];
-  shelves: Shelf[] = [];
+  shelves: Shelf[] = [{"shelfName": "", "shelfId": 0}];
   // packages: Package[] = [{"packageName": "", "packageId": 0}];
-  packages: Package[] = [];
+  packages: Package[] = [ {"packageName": "", "packageId": 0}];
   dataPackages: DataPackage[];
   materialExists: boolean;
-  newData: boolean = true;
+  newData: boolean = false;
   newCase: boolean = false;
   newPackage: boolean = false;
   validInputMaterial: boolean = true;
@@ -205,6 +207,11 @@ export class MaterialCheckInDialogComponent {
   duplicateMaterials: Duplicate[] = [];
 
   hasDuplicate: boolean = false;
+
+  checkInError: boolean = false;
+  failedMaterial: String[] = [];
+  successfulMaterial: String[] = [];
+  errorStrings: string[] = [];
 
 
   constructor(
@@ -240,8 +247,6 @@ export class MaterialCheckInDialogComponent {
     })
 
     //Get the packages that belong to the current room
-
-
     this.updatePackages();
     this.createForm();
   }
@@ -251,19 +256,19 @@ export class MaterialCheckInDialogComponent {
     this.dataService.sendGetRequest("/package/storageroom/" + this.storage_room_id).subscribe((data: DataPackage[]) => {
       // Sets dataPackages to all the packages available in current room
       this.dataPackages = data;
-      console.log("Hämtat alla paket");
       if (this.reference_number) {
         for (var p of data) {
           const tmpPackage = p;
           this.dataService.sendGetRequest("/case/" + tmpPackage.case).subscribe((getCase: Case[]) => {
-            console.log("Kollat ett paket");
-            console.log(getCase);
-            console.log(this.reference_number);
             if (getCase[0].reference_number === this.reference_number) {
-              console.log("Pushar paket");
               this.packages.push({ packageName: tmpPackage.package_number, packageId: tmpPackage.id });
             }
           })
+        }
+      } else {
+        for (var p of data) {
+          const tmpPackage = p;
+          this.packages.push({ packageName: tmpPackage.package_number, packageId: tmpPackage.id });
         }
       }
     })
@@ -284,20 +289,26 @@ export class MaterialCheckInDialogComponent {
   }
 
   onNoClick(): void {  // The cancel-button runs this function
+    this.data.selectedMaterials = [];
     this.dialogRef.close();
   }
 
   onXClick(): void { // Runs when X is clicked
+    this.data.selectedMaterials = [];
     this.dialogRef.close();
   }
   // Runs when the back arrow button is clicked
   onBackButton(): void {
+    this.data.selectedMaterials = [];
     this.dialogRef.close();
   }
+
+
   onCheckOut(): void {
     let hasDuplicate = false;
-    if (this.newData) {
+    if (!this.newData) {
       this.data.selectedMaterials.forEach((val, key, arr) => {
+        console.log("hej");
         this.dataService.sendGetRequest('/article?material_number=' + val).subscribe((data: any[]) => {
           if (data[0].status === 'checked_in') {
             let temp: Duplicate = { material_number: val, storage_room: data[0].storage_room };
@@ -317,6 +328,9 @@ export class MaterialCheckInDialogComponent {
       this.onConfirm();
     }
 
+
+
+
   }
   onCancelDuplicate(): void {
     this.duplicateMaterials = [];
@@ -324,103 +338,161 @@ export class MaterialCheckInDialogComponent {
 
   }
 
+  checkInMaterial(mat): void {
+    const tmpMat = mat;
+    var article_data = {
+      "material_number": tmpMat,
+      "description": "",
+      "comment": "",
+    }
 
-  onConfirm(): void {
-    this.checkOutConfirmed = true;
+    var post_data = {
+      "material_number": tmpMat,
+      "storage_room": this.storage_room_id
+    };
 
-    //TODO: If item(s) does not exist, add case number and do different back-end call
+    //If comment is added then add it to data for post-request
+    if (this.data.comment !== "" && this.data.comment !== undefined) {
+      post_data["comment"] = this.data.comment;
+      article_data["comment"] = this.data.comment;
+      article_data["description"] = this.data.comment;
+    } else {
+      post_data["comment"] = "";
+      article_data["comment"] = "";
+      article_data["description"] = "";
+    }
 
-
-    //For check in of existing items
-    for (var mat of this.data.selectedMaterials) {
-
-      var article_data = {
-        "material_number": mat,
-        "description": "",
-        "comment": "",
-      }
-
-      var post_data = {
-        "material_number": mat,
-        "storage_room": this.storage_room_id
+    //If package is added then add it to data for post-request
+    if (this.newPackage) {
+      console.log(this.newPackage);
+      article_data["storage_room"] = this.storage_room_id;
+      const packageData = {
+        "reference_number": this.reference_number,
+        "current_storage_room": this.storage_room_id,
+        "shelf": this.getShelfId(this.data.shelf)
       };
+      this.newPackage = false;
 
-      //If comment is added then add it to data for post-request
-      if (this.data.comment !== "" && this.data.comment !== undefined) {
-        post_data["comment"] = this.data.comment;
-        article_data["comment"] = this.data.comment;
-        article_data["description"] = this.data.comment;
-      } else {
-        post_data["comment"] = "";
-        article_data["comment"] = "";
-        article_data["description"] = "";
-      }
+      this.dataService.sendPostRequest("/package", packageData).subscribe(
+        (data: PostDataPackage) => {
+          this.data.package = data.package_number;
+          console.log("INSIDE POST REQUEST");
+          console.log("Package number: " + data.package_number);
+          console.log("Package id: " + data.id);
 
-      //If package is added then add it to data for post-request
-      if (this.newPackage) {
-        article_data["storage_room"] = this.storage_room_id;
-        const packageData = {
-          "reference_number": this.reference_number,
-          "current_storage_room": this.storage_room_id,
-          "shelf": this.getShelfId(this.data.shelf)
-        };
-        console.log(packageData);
-        this.dataService.sendPostRequest("/package", packageData).subscribe((data: PostDataPackage) => {
           article_data["package"] = data.id;
           post_data["package"] = data.id;
           this.data.package = data.package_number;
-          if (!this.newData) {
-            this.dataService.sendPostRequest("/article/register", article_data).subscribe((data: any[]) => { });
+          if (this.newData) {
+            this.dataService.sendPostRequest("/article/register", article_data).subscribe(
+              (data: any[]) => {
+                this.materialsuccess(tmpMat);
+              },
+              (err => {
+                this.materialFailure(tmpMat, err)
+              }));
           } else {
-            console.log("Skickar in skiten");
-            console.log(post_data);
-            this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[]) => { });
+            console.log("NO NEW DATA");
+
+            this.dataService.sendPostRequest("/article/check-in", post_data).subscribe(
+              (data: any[]) => {
+                this.materialsuccess(tmpMat);
+              },
+              (err => {
+                this.materialFailure(tmpMat, err)
+              }));
           }
-        })
+        },
+        ((err) => {
+          console.log("ERROR WAS: ", err.error.message);
+        }));
 
-      } else if (this.data.package !== "" && this.data.package !== undefined) {
+    } else if (this.data.package !== "" && this.data.package !== undefined) {
+      console.log("PACKAGE CHOSEN");
+      article_data["storage_room"] = this.storage_room_id;
+      this.dataService.sendGetRequest("/package/package_number/" + this.data.package).subscribe((data: packageData) => {
+        this.package_id = data["id"];
+        article_data["package"] = this.package_id;
+        post_data["package"] = this.package_id;
 
-        article_data["storage_room"] = this.storage_room_id
+        if (this.newData) {
 
-        this.dataService.sendGetRequest("/package/package_number/" + this.data.package).subscribe((data: packageData) => {
-          this.package_id = data["id"];
-          article_data["package"] = this.package_id;
-          post_data["package"] = this.package_id;
 
-          if (!this.newData) {
-
-            this.dataService.sendPostRequest("/article/register", article_data).subscribe((data: any[]) => {
-            })
-          } else {
-            console.log(post_data)
-            this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[]) => {
-            })
-          }
-        })
-      } else {
-        post_data["shelf"] = this.getShelfId(this.data.shelf)
-        article_data["shelf"] = this.getShelfId(this.data.shelf)
-        article_data["storage_room"] = this.storage_room_id
-        if (!this.newData) {
-          console.log(typeof article_data["package"])
-          console.log(article_data);
-          this.dataService.sendPostRequest("/article/register", article_data).subscribe((data: any[]) => {
-          })
+          this.dataService.sendPostRequest("/article/register", article_data).subscribe(
+            (data: any[]) => {
+              this.materialsuccess(tmpMat);
+            },
+            (err => {
+              this.materialFailure(tmpMat, err)
+            }))
         } else {
-          console.log(post_data)
-          this.dataService.sendPostRequest("/article/check-in", post_data).subscribe((data: any[]) => {
-          })
+
+          this.dataService.sendPostRequest("/article/check-in", post_data).subscribe(
+            (data: any[]) => {
+              this.materialsuccess(tmpMat);
+            },
+            (err => {
+              console.log("ERROR");
+              this.materialFailure(tmpMat, err)
+            }))
         }
+      })
+      //await this.sleep(5000);
+    } else {
+
+      console.log("ELSE");
+      console.log("newdata? " + this.newData);
+      post_data["shelf"] = this.getShelfId(this.data.shelf)
+      article_data["shelf"] = this.getShelfId(this.data.shelf)
+      article_data["storage_room"] = this.storage_room_id
+      if (this.newData) {
+        this.dataService.sendPostRequest("/article/register", article_data).subscribe(
+          (data: any[]) => {
+            this.materialsuccess(tmpMat);
+          },
+          (err) => {
+            this.materialFailure(tmpMat, err)
+          })
+      } else {
+        this.dataService.sendPostRequest("/article/check-in", post_data).subscribe(
+          (data: any[]) => {
+            this.materialsuccess(tmpMat);
+          },
+          (err => {
+            this.materialFailure(tmpMat, err)
+          }))
       }
+    }
+
+  }
+
+  async onConfirm() {
+    this.checkOutConfirmed = true;
+    console.log(this.data.selectedMaterials);
+    for (var mat of this.data.selectedMaterials) {
+      console.log(mat);
+      await this.checkInMaterial(mat);
+      await this.sleep(200);
 
     }
 
 
   }
 
+
+  materialsuccess(material: String): void {
+    this.checkOutConfirmed = true;
+    this.successfulMaterial.push(material);
+  }
+
+  materialFailure(material: String, error: string): void {
+    this.checkInError = true;
+    this.errorStrings.push(error);
+    this.failedMaterial.push(material);
+  }
+
   addCase(currentMaterial: string): boolean {
     this.dataService.sendGetRequest("/article/" + currentMaterial).subscribe((data: any[]) => {
-      console.log(data);
     })
     //Get case for the chosen material
     //If case is empty, then add case.
@@ -458,12 +530,14 @@ export class MaterialCheckInDialogComponent {
 
 
   addMaterial(newMaterial: string): void {
+    console.log("ADD MATERIAL");
     if (this.validMaterial(newMaterial)) {
       this.dataService.sendGetRequest("/article?material_number=" + newMaterial).subscribe((data: DialogData) => {
+        console.log(data[0]);
         if (data[0] != undefined) {
-          this.newData = true;
-        } else {
           this.newData = false;
+        } else {
+          this.newData = true;
         }
 
         this.reference_number = newMaterial.substring(0, 6);
@@ -520,6 +594,7 @@ export class MaterialCheckInDialogComponent {
   }
 
   removeMaterial(material: string): void {
+    console.log("removeMaterial");
     this.data.selectedMaterials.forEach((item, index) => {
       if (item === material) this.data.selectedMaterials.splice(index, 1);
     });
@@ -539,7 +614,7 @@ export class MaterialCheckInDialogComponent {
     var tempPackages: Package[] = [];
     for (var p of this.dataPackages) {
       if (p.shelf === selectedShelf.shelfId) {
-        tempPackages.push({ packageId: p.id, packageName: p.package_number });
+        this.packages.push({ packageId: p.id, packageName: p.package_number });
       }
     }
   }

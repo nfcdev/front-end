@@ -4,25 +4,19 @@
 <div mat-dialog-content [formGroup]="checkInPackageForm">
   <br>
   <div class="packageCheckInForm" style="height:100%; overflow:visible;" *ngIf="!checkOutConfirmed && !hasDuplicate">
-  <mat-form-field>
-      <input readonly="{{hasPackage}}" class="form-control" name="Diarienummer" matInput formControlName="reference_number"
-        [(ngModel)]="data.reference_number" placeholder="Diarienummer" (keyup.enter)="addNewPackage(data.reference_number)">
+    <mat-form-field>
+      <input readonly="{{hasPackage}}" class="form-control" name="Diarienummer" matInput
+        formControlName="reference_number" [(ngModel)]="data.reference_number" placeholder="Diarienummer"
+        (keyup.enter)="addNewPackage(data.reference_number)">
     </mat-form-field>
     <button mat-button (click)="addNewPackage(data.reference_number)">+</button>
     <br>
-  <mat-form-field>
+    <mat-form-field>
 
-    <input readonly="{{hasReference}}"
-        class="form-control"
-        name="package"
-        formControlName="package"
-        matInput
-        [(ngModel)]="data.package"
-        placeholder="Paket"
-        (keyup.enter)="addPackage(data.package); data.package =''"
-      />
-  </mat-form-field>
-  <button mat-button (click)="addPackage(data.package); data.package=''">+</button>
+      <input readonly="{{hasReference}}" class="form-control" name="package" formControlName="package" matInput
+        [(ngModel)]="data.package" placeholder="Paket" (keyup.enter)="addPackage(data.package); data.package =''" />
+    </mat-form-field>
+    <button mat-button (click)="addPackage(data.package); data.package=''">+</button>
 
     <mat-chip-list #chipList>
       <mat-chip *ngFor="let package of data.packageMaterials">
@@ -61,16 +55,16 @@
     <br />
     <mat-form-field>
       <br>
-      <textarea cdkTextareaAutosize readonly = "{{hasReference}}" matInput class="form-control" formControlName="comment" [(ngModel)]="data.comment" name="comment"
-        placeholder="Lämna en anteckning" #input maxlength="255"></textarea>
+      <textarea cdkTextareaAutosize readonly="{{hasReference}}" matInput class="form-control" formControlName="comment"
+        [(ngModel)]="data.comment" name="comment" placeholder="Lämna en anteckning" #input maxlength="255"></textarea>
     </mat-form-field>
     <br />
   </div>
-  <div class="packageConfirmation" *ngIf="checkOutConfirmed && !hasReference">
+  <div class="packageConfirmation" *ngIf="checkOutConfirmed && !hasReference && successfulPackages.length">
     Följande paket har checkats in på hylla {{ data.shelf.shelfName }} i rum
     {{ data.storage_room }}:
     <mat-chip-list #chipList>
-      <div *ngFor="let pck of data.packageMaterials">
+      <div *ngFor="let pck of successfulPackages">
         <mat-chip>
           <app-package-page [package]='pck'></app-package-page>
           <br>
@@ -78,29 +72,35 @@
       </div>
     </mat-chip-list>
   </div>
-  <div class="newPackageConfirmation" *ngIf="checkOutConfirmed && hasReference">
-      Följande paket har skapats och checkats in på hylla {{ data.shelf.shelfName }} i rum
-      {{ data.storage_room }}:
-      <mat-chip-list #chipList>
-            <mat-chip>
-              <app-package-page [package]='newPackage'></app-package-page>
-              <br>
-            </mat-chip> 
-        </mat-chip-list>
-      </div>
-  
-    </div>
+  <div class="newPackageConfirmation" *ngIf="checkOutConfirmed && hasReference && successfulPackages.length">
+    Följande paket har skapats och checkats in på hylla {{ data.shelf.shelfName }} i rum
+    {{ data.storage_room }}:
+    <mat-chip-list #chipList>
+      <mat-chip>
+        <app-package-page [package]='newPackage'></app-package-page>
+        <br>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+
+  <div class="newPackageConfirmation" *ngIf="checkInError && failedPackages.length">
+    Följande paket kunde inte checkas in:
+    <li *ngFor="let failed of failedPackages; let i = index;">
+      <span>{{failed}}: {{errorStrings[i]}}</span>
+    </li>
+  </div>
+
+</div>
 <div mat-dialog-actions>
-    <div class="packageCheckInButtons" *ngIf="!checkOutConfirmed && !hasDuplicate">
-        <button mat-raised-button (click)="onNoClick()">Avbryt</button>
-    
-        <button class="btn" mat-raised-button
-          [disabled]="checkInPackageForm.pristine || checkInPackageForm.invalid"
-          cdkFocusInitial (click)="onCheckOut()">Checka in</button>
-          <br />
-        </div>
-    
-  
+  <div class="packageCheckInButtons" *ngIf="!checkOutConfirmed && !hasDuplicate">
+    <button mat-raised-button (click)="onNoClick()">Avbryt</button>
+
+    <button class="btn" mat-raised-button [disabled]="checkInPackageForm.pristine || checkInPackageForm.invalid"
+      cdkFocusInitial (click)="onCheckOut()">Checka in</button>
+    <br />
+  </div>
+
+
   <div class="confirmationButtons" *ngIf="checkOutConfirmed">
     <button mat-raised-button style="overflow:visible" [mat-dialog-close]="data">
       Tillbaka
@@ -110,7 +110,7 @@
 </div>
 
 
-<div mat-dialog-content *ngIf="hasDuplicate && !checkOutConfirmed" >
+<div mat-dialog-content *ngIf="hasDuplicate && !checkOutConfirmed">
   <div *ngFor="let dupe of duplicatePackages" style="color: red">
     Paket <app-package-page [package]='dupe.package_number'></app-package-page> är för
     närvarande incheckat i rum {{dupe.storage_room}}
