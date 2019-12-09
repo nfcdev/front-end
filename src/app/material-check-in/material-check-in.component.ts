@@ -600,9 +600,10 @@ export class MaterialCheckInDialogComponent {
     });
     if (this.data.selectedMaterials.length == 0){
     this.reference_number = "";
+    this.newData = false;
   }
     this.newCase = false;
-    this.newData = true;
+    
   }
 
   sleep(ms) {
