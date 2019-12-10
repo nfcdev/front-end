@@ -94,6 +94,7 @@
       (click)="onCheckOut()">Checka in</button>
     <br>
   </div>
+</div>
 
 <div mat-dialog-content *ngIf="hasDuplicate && !checkOutConfirmed">
   <div *ngFor="let dupe of duplicateMaterials" style="color: red">
@@ -128,5 +129,4 @@
 
 <div mat-dialog-actions *ngIf="checkOutConfirmed">
   <button style="float:right; " class="btn" mat-raised-button [mat-dialog-close]="data">Tillbaka</button>
-</div>
 </div>
