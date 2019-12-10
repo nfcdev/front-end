@@ -14,7 +14,7 @@ export class MatPageVisuComponent implements OnInit {
   @ViewChild(BaseChartDirective, { static: false }) chart: BaseChartDirective;
 
   public pieChartOptions: ChartOptions = {
-    responsive: true,
+    responsive: false,
     maintainAspectRatio: false,
     tooltips: {
       callbacks: {
