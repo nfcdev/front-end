@@ -14,7 +14,8 @@
     <mat-form-field>
 
       <input readonly="{{hasReference}}" class="form-control" name="package" formControlName="package" matInput
-        [(ngModel)]="data.package" placeholder="Paket" (keyup.enter)="addPackage(data.package); data.package =''" />
+        [(ngModel)]="data.package" placeholder="Paket" (keyup.enter)="addPackage(data.package); data.package =''" 
+        (focusout)="addPackage(data.package); data.package =''" />
     </mat-form-field>
     <button mat-button (click)="addPackage(data.package); data.package=''">+</button>
 

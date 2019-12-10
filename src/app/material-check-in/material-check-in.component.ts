@@ -124,7 +124,7 @@ export class MaterialCheckInComponent implements OnInit {
     if (this.materialsAreSameCase) { // Opens the normal dialog for checking in material(s)
       dialogRef = this.dialog.open(MaterialCheckInDialogComponent, {
         width: '500px',
-        height: '550px',
+        //height: '650px',
 
         data:
         {
@@ -140,7 +140,7 @@ export class MaterialCheckInComponent implements OnInit {
     }
     // runs every time we close the Modal or submit
     dialogRef.afterClosed().subscribe(result => {
-      this.tableDataService.refreshData();
+      //this.tableDataService.refreshData();
       this.tableDataService.resetSelection();
       if (result != null) { // if user presses cancel the result is null. TODO: better solution for checking this
 
@@ -598,9 +598,12 @@ export class MaterialCheckInDialogComponent {
     this.data.selectedMaterials.forEach((item, index) => {
       if (item === material) this.data.selectedMaterials.splice(index, 1);
     });
+    if (this.data.selectedMaterials.length == 0){
     this.reference_number = "";
+    this.newData = false;
+  }
     this.newCase = false;
-    this.newData = true;
+    
   }
 
   sleep(ms) {

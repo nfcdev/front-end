@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { log } from 'util';
 import { MaterialCheckBoxService } from '../table-article-data/material-check-box.service';
 import { SelectionModel } from '@angular/cdk/collections';
+import { TableDataService } from '../table-article-data/table-data-service';
 
 //import { dataSource, transformData } from '../table-article-data/table-article-data.component'
 
@@ -54,7 +55,11 @@ export class SearchBarComponent {
 
   constructor(private dataService: DataService,
     private fb: FormBuilder,
-    private materialCheckOutService: MaterialCheckBoxService) {
+    private materialCheckOutService: MaterialCheckBoxService,
+    private tableDataService: TableDataService
+    ) {
+    this.tableDataService.setSearchBar(this);
+
     this.createForm();
   }
 
@@ -173,7 +178,10 @@ export class SearchBarComponent {
   }
 
   search() {
+    this.articleTable.resetSelection();
     this.getSearchData(this.createQuery());
   }
+
+  
 
 }

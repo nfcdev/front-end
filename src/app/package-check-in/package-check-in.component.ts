@@ -103,7 +103,7 @@ export class PackageCheckInComponent implements OnInit {
     // runs every time we close the Modal or submit
     dialogRef.afterClosed().subscribe(result => {
       this.tableDataService.resetSelection();
-      this.tableDataService.refreshData();
+      //this.tableDataService.refreshData();
       this.packages = []
       this.preChosen = false;
       console.log('The dialog was closed');
@@ -132,7 +132,7 @@ export class PackageCheckInComponent implements OnInit {
     if (this.packages == undefined) {
       this.packages = [];
     }
-
+    
   }
 }
 export interface Duplicate {
