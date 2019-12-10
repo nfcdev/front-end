@@ -192,9 +192,9 @@ export class MaterialCheckInDialogComponent {
   branch_id: Number;
   reference_number: string;
   // shelves: Shelf[] = [{"shelfName": "", "shelfId": 0}];
-  shelves: Shelf[] = [{"shelfName": "", "shelfId": 0}];
+  shelves: Shelf[] = [{ "shelfName": "", "shelfId": 0 }];
   // packages: Package[] = [{"packageName": "", "packageId": 0}];
-  packages: Package[] = [ {"packageName": "", "packageId": 0}];
+  packages: Package[] = [{ "packageName": "", "packageId": 0 }];
   dataPackages: DataPackage[];
   materialExists: boolean;
   newData: boolean = false;
@@ -253,6 +253,7 @@ export class MaterialCheckInDialogComponent {
 
 
   updatePackages() {
+    this.packages = [{ "packageName": "", "packageId": 0 }];
     this.dataService.sendGetRequest("/package/storageroom/" + this.storage_room_id).subscribe((data: DataPackage[]) => {
       // Sets dataPackages to all the packages available in current room
       this.dataPackages = data;
@@ -260,7 +261,12 @@ export class MaterialCheckInDialogComponent {
         for (var p of data) {
           const tmpPackage = p;
           this.dataService.sendGetRequest("/case/" + tmpPackage.case).subscribe((getCase: Case[]) => {
-            if (getCase[0].reference_number === this.reference_number) {
+            const shelfId = this.getShelfId(this.data.shelf);
+            if (shelfId) {
+              if (tmpPackage.shelf == shelfId && getCase[0].reference_number === this.reference_number) {
+                this.packages.push({ packageName: tmpPackage.package_number, packageId: tmpPackage.id });
+              }
+            } else if (getCase[0].reference_number === this.reference_number) {
               this.packages.push({ packageName: tmpPackage.package_number, packageId: tmpPackage.id });
             }
           })
@@ -268,7 +274,14 @@ export class MaterialCheckInDialogComponent {
       } else {
         for (var p of data) {
           const tmpPackage = p;
-          this.packages.push({ packageName: tmpPackage.package_number, packageId: tmpPackage.id });
+          const shelfId = this.getShelfId(this.data.shelf);
+          if (shelfId) {
+            if (tmpPackage.shelf == shelfId) {
+              this.packages.push({ packageName: tmpPackage.package_number, packageId: tmpPackage.id });
+            }
+          } else {
+            this.packages.push({ packageName: tmpPackage.package_number, packageId: tmpPackage.id });
+          }
         }
       }
     })
@@ -439,8 +452,6 @@ export class MaterialCheckInDialogComponent {
       })
       //await this.sleep(5000);
     } else {
-
-      console.log("ELSE");
       console.log("newdata? " + this.newData);
       post_data["shelf"] = this.getShelfId(this.data.shelf)
       article_data["shelf"] = this.getShelfId(this.data.shelf)
@@ -530,7 +541,6 @@ export class MaterialCheckInDialogComponent {
 
 
   addMaterial(newMaterial: string): void {
-    console.log("ADD MATERIAL");
     if (this.validMaterial(newMaterial)) {
       this.dataService.sendGetRequest("/article?material_number=" + newMaterial).subscribe((data: DialogData) => {
         console.log(data[0]);
@@ -551,6 +561,7 @@ export class MaterialCheckInDialogComponent {
             }
           }
         })
+        this.updatePackages();
         if (!this.data.selectedMaterials.includes(newMaterial)) {
           if (newMaterial && newMaterial.length > 0) {
             this.data.selectedMaterials.push(newMaterial);
@@ -564,7 +575,6 @@ export class MaterialCheckInDialogComponent {
 
     }
 
-    this.updatePackages();
     console.log(this.data.selectedMaterials)
   }
 
@@ -594,16 +604,15 @@ export class MaterialCheckInDialogComponent {
   }
 
   removeMaterial(material: string): void {
-    console.log("removeMaterial");
     this.data.selectedMaterials.forEach((item, index) => {
       if (item === material) this.data.selectedMaterials.splice(index, 1);
     });
-    if (this.data.selectedMaterials.length == 0){
-    this.reference_number = "";
-    this.newData = false;
-  }
+    if (this.data.selectedMaterials.length == 0) {
+      this.reference_number = "";
+      this.newData = false;
+    }
     this.newCase = false;
-    
+    this.updatePackages();
   }
 
   sleep(ms) {
@@ -613,9 +622,16 @@ export class MaterialCheckInDialogComponent {
 
   shelfSelected(selectedShelf: Shelf) {
     var tempPackages: Package[] = [];
+    this.packages = [{ "packageName": "", "packageId": 0 }];
     for (var p of this.dataPackages) {
-      if (p.shelf === selectedShelf.shelfId) {
-        this.packages.push({ packageId: p.id, packageName: p.package_number });
+      if (selectedShelf.shelfName == "" || p.shelf === selectedShelf.shelfId) {
+        if (this.reference_number) {
+          if (p.package_number.split('-')[0] == this.reference_number) {
+            this.packages.push({ packageId: p.id, packageName: p.package_number });
+          }
+        } else {
+          this.packages.push({ packageId: p.id, packageName: p.package_number });
+        }
       }
     }
   }
