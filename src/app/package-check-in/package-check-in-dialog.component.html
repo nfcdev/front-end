@@ -7,7 +7,7 @@
     <mat-form-field>
       <input readonly="{{hasPackage}}" class="form-control" name="Diarienummer" matInput
         formControlName="reference_number" [(ngModel)]="data.reference_number" placeholder="Diarienummer"
-        (keyup.enter)="addNewPackage(data.reference_number)">
+        (keyup.enter)="addNewPackage(data.reference_number)" (focusout)="addNewPackage(data.reference_number)">
     </mat-form-field>
     <button mat-button (click)="addNewPackage(data.reference_number)">+</button>
     <br>
