@@ -178,7 +178,7 @@ export class SearchBarComponent {
   }
 
   search() {
-    console.log("SEARCH");
+    this.articleTable.resetSelection();
     this.getSearchData(this.createQuery());
   }
 

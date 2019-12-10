@@ -132,7 +132,7 @@ export class PackageCheckInComponent implements OnInit {
     if (this.packages == undefined) {
       this.packages = [];
     }
-
+    
   }
 }
 export interface Duplicate {
