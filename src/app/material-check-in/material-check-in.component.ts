@@ -598,9 +598,12 @@ export class MaterialCheckInDialogComponent {
     this.data.selectedMaterials.forEach((item, index) => {
       if (item === material) this.data.selectedMaterials.splice(index, 1);
     });
+    if (this.data.selectedMaterials.length == 0){
     this.reference_number = "";
+    this.newData = false;
+  }
     this.newCase = false;
-    this.newData = true;
+    
   }
 
   sleep(ms) {
