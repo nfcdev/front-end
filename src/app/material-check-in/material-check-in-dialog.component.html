@@ -26,7 +26,7 @@
   <mat-form-field>
     <input class="form-control" name="material_number" formControlName="material_number" matInput
       [(ngModel)]="data.material_number" placeholder="Materialnummer"
-      (keyup.enter)="addMaterial(data.material_number); data.material_number =''">
+      (keyup.enter)="addMaterial(data.material_number); data.material_number =''" (focusout)="addMaterial(data.material_number); data.material_number =''">
   </mat-form-field>
   <button mat-button (click)="addMaterial(data.material_number); data.material_number=''">+</button>
   <mat-label *ngIf=newData class="newReference"> Nytt material*</mat-label>
