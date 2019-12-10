@@ -42,6 +42,11 @@ export interface Shelf {
   shelfName: String;
   shelfId: number;
 }
+
+export interface Case {
+  reference_number: String;
+  id: number;
+}
 export interface DialogData {
   package: string;
   packageMaterials: string[];
@@ -198,6 +203,7 @@ export class PackageCheckInDialogComponent implements OnInit {
         map(name => name ? this._filter(name) : this.data.packageInfo.slice())
       );
     this.addMaterials()
+    this.addReferenceNumber();
     if (this.data.preChosen) {
       this.hasPackage = true;
     }
@@ -338,6 +344,7 @@ export class PackageCheckInDialogComponent implements OnInit {
         this.data.packageMaterials.push(newPackage);
         this.checkInPackageForm.controls['package'].reset()
         this.addMaterials();
+        this.addReferenceNumber();
         this.hasPackage = true;
       }
     } else {
@@ -350,6 +357,18 @@ export class PackageCheckInDialogComponent implements OnInit {
     this.hasReference = true;
   }
 
+  addReferenceNumber() {
+    this.data.reference_number = "";
+    for (var pg of this.data.packageMaterials) {
+      
+      this.dataService.sendGetRequest("/package/package_number/" + pg).subscribe((data: Package) => {
+        console.log(data.case);
+        this.dataService.sendGetRequest("/case/" + data.case).subscribe((case_data: Case) => {
+          this.data.reference_number = case_data[0].reference_number;
+       })
+      })
+    }
+  }
   addMaterials() {
     for (var pg of this.data.packageMaterials) {
       this.dataService.sendGetRequest("/package/package_number/" + pg).subscribe((data: Package) => {
@@ -367,5 +386,6 @@ export class PackageCheckInDialogComponent implements OnInit {
     });
     this.materials = [];
     this.addMaterials();
+    this.addReferenceNumber();
   }
 }
