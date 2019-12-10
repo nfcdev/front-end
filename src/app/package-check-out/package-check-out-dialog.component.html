@@ -2,7 +2,7 @@
     <h1 mat-dialog-title>Checka ut paket</h1>
 </div>
 <div mat-dialog-content [formGroup]="packageCheckOutForm">
-
+<br>
     <div *ngIf="checkOutConfirmed">
         <div style="text-align: center;">Paket {{data.package}} har checkats ut.</div>
     </div>
@@ -31,11 +31,10 @@
     <div mat-dialog-actions>
         <div *ngIf="!checkOutConfirmed">
             <button mat-raised-button (click)="onNoClick()">Avbryt</button>
-        </div>
-        <div *ngIf="!checkOutConfirmed && !checkOutError">
             <button [disabled]='packageCheckOutForm.invalid || packageCheckOutForm.pristine' mat-raised-button
                 (click)="onConfirm()">Checka Ut</button>
         </div>
+
         <div *ngIf="checkOutConfirmed">
             <button mat-raised-button [mat-dialog-close]="data">Tillbaka</button>
         </div>

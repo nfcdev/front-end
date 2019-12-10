@@ -109,11 +109,10 @@
     <div mat-dialog-actions>
         <div *ngIf="!checkOutConfirmed">
             <button mat-raised-button (click)="onNoClick()">Avbryt</button>
-        </div>
-        <div *ngIf="!checkOutConfirmed">
             <button [disabled]='data.selectedMaterials.length == 0' mat-raised-button (click)="onConfirm()">Checka
                 Ut</button>
         </div>
+        
         <div *ngIf="checkOutConfirmed">
             <button mat-raised-button [mat-dialog-close]="data">Tillbaka</button>
         </div>
