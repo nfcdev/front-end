@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { LoginService } from "./login.service";
 import { AuthenticationService } from "../auth/authService";
+import {AppComponent } from '../app.component'
 
 @Component({
   selector: "app-login",
@@ -11,7 +12,10 @@ import { AuthenticationService } from "../auth/authService";
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router: Router, private loginService: LoginService, private authService: AuthenticationService) { }
+  constructor(private router: Router,
+              private loginService: LoginService,
+              private authService: AuthenticationService,
+              private appComponent: AppComponent) { }
 
   u_shortcode: string;
   // u_password: string;
@@ -38,6 +42,7 @@ export class LoginComponent implements OnInit {
       console.log("res", res);
       this.authService.login(res);
       this.router.navigate(["/main"]);
+      this.appComponent.updateRoomSettings();
     });
 
     // TODO: Add an action if the login fails. User most be notified

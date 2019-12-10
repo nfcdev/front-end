@@ -40,6 +40,10 @@ export class AppComponent implements OnInit {
   isAdmin: boolean = false;
 
   ngOnInit(): void {
+    this.updateRoomSettings();
+  }
+
+  updateRoomSettings() {
     this.storageRoomService
     .getBranchNameForStorageRoom(this.storageRoomStore.getStorageRoom())
     .subscribe(branchName => {
@@ -53,8 +57,10 @@ export class AppComponent implements OnInit {
       this.userLoggedIn = loggedIn;
     });
     this.branchService.getBranches().subscribe(res => {
+
       this.branches = res;
     });
+
     this.storageRoomStore.currentStorageRoom.subscribe(room => {
       this.selectedStorageRoomId = room.id;
       this.selectedStorageName = room.name;
