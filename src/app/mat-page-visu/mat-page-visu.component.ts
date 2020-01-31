@@ -18,7 +18,7 @@ export class MatPageVisuComponent implements OnInit {
     maintainAspectRatio: false,
     tooltips: {
       callbacks: {
-        title: function (tooltipItem, data) { return data.labels[tooltipItem[0].index]; },
+        title: function (tooltipItem, data) { return null; },
         label: function (tooltipItem, data) {
           var amount = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
           var total = eval(data.datasets[tooltipItem.datasetIndex].data.join("+"));
