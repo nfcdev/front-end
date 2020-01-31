@@ -7,6 +7,14 @@
 
 <div mat-dialog-content class="wrapper" style="height:100%; overflow:visible;" [formGroup]="checkInForm"
   *ngIf="!checkOutConfirmed && !hasDuplicate">
+
+  <br>
+
+  <mat-form-field readonly>
+    <input class="form-control" name="TID" required formControlName="data.rfid_tid"
+           [(ngModel)]="data.rfid_tid" placeholder="TID"><!--readonly-->
+  </mat-form-field>
+  <mat-label *ngIf=newCase class="newReference"> RFID transponder ID (TID)</mat-label>
   
   <br>
 
