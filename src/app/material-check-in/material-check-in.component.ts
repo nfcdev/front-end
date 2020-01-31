@@ -16,6 +16,7 @@ export interface DialogData {
   storage_room: string;
   shelf: string;
   package: string;
+  rfid_tid: string;
   comment: string;
   placement: any;
   selectedMaterials: String[];
