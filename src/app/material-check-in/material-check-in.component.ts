@@ -71,7 +71,8 @@ export interface packageData {
   package_number: string,
   shelf: number,
   case: number,
-  current_storage_room: number
+  current_storage_room: number,
+  rfid_tid : string
 }
 
 export interface Case {
@@ -198,6 +199,7 @@ export class MaterialCheckInDialogComponent {
   packages: Package[] = [{ "packageName": "", "packageId": 0 }];
   dataPackages: DataPackage[];
   materialExists: boolean;
+  rfid_tid: string;
   newData: boolean = false;
   newCase: boolean = false;
   newPackage: boolean = false;
@@ -297,7 +299,8 @@ export class MaterialCheckInDialogComponent {
       storage_room: [{ value: '', disabled: true }, Validators.required],
       shelf: ['', Validators.required],
       package: [''],
-      comment: ['']
+      comment: [''],
+      rfid_tid: ['']
     });
 
   }
@@ -383,7 +386,8 @@ export class MaterialCheckInDialogComponent {
       const packageData = {
         "reference_number": this.reference_number,
         "current_storage_room": this.storage_room_id,
-        "shelf": this.getShelfId(this.data.shelf)
+        "shelf": this.getShelfId(this.data.shelf),
+        "rfid_tid": this.rfid_tid,
       };
       this.newPackage = false;
 

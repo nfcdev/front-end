@@ -10,6 +10,7 @@ export interface DialogData {
   storage_room: string;
   shelf: string;
   package: string;
+  rfid_tid: string;
   placement: any;
 }
 
@@ -106,7 +107,8 @@ export class CheckInFormDialogComponent {
       area: [{value: '', disabled: true}, Validators.required],
       storage_room: [{value: '', disabled: true}, Validators.required],
       shelf: ['', Validators.required],
-      package: ['']
+      package: [''],
+      rfid_tid: ['']
     });
 
   }
